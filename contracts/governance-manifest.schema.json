@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/governance-manifest.schema.json",
+  "title": "Governance Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "apiVersion",
+    "governanceVersion",
+    "profile",
+    "adapters",
+    "evidence",
+    "exceptions",
+    "approval"
+  ],
+  "properties": {
+    "apiVersion": {
+      "type": "string",
+      "const": "ai-dev-governance/v1"
+    },
+    "governanceVersion": {
+      "type": "string",
+      "pattern": "^v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "profile": {
+      "type": "string",
+      "enum": ["strict-baseline", "strict-baseline+embedded"]
+    },
+    "adapters": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "providers/codex",
+          "providers/claude",
+          "profiles/embedded"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["planningPath", "validationPath", "releasePath"],
+      "properties": {
+        "planningPath": {"type": "string", "minLength": 1},
+        "validationPath": {"type": "string", "minLength": 1},
+        "releasePath": {"type": "string", "minLength": 1}
+      }
+    },
+    "exceptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["registryPath", "reviewCadenceDays"],
+      "properties": {
+        "registryPath": {"type": "string", "minLength": 1},
+        "reviewCadenceDays": {"type": "integer", "minimum": 1}
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["accountableRole", "requiredReviewers"],
+      "properties": {
+        "accountableRole": {"type": "string", "minLength": 1},
+        "requiredReviewers": {"type": "integer", "minimum": 1}
+      }
+    },
+    "updateCadence": {
+      "type": "string",
+      "enum": ["monthly", "quarterly"]
+    },
+    "compatibility": {
+      "type": "string",
+      "enum": ["strict"]
+    }
+  }
+}

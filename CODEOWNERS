@@ -1,0 +1,5 @@
+# Replace with your internal team aliases
+* @org/ai-governance-maintainers
+core/* @org/ai-governance-maintainers
+contracts/* @org/ai-governance-maintainers
+runbooks/* @org/ai-governance-maintainers

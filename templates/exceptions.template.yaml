@@ -1,0 +1,16 @@
+exceptions: []
+
+# Example item:
+# - id: EXC-0001
+#   policyRef: core/GIT_BRANCH_STRATEGY.md#hotfix-policy-controlled
+#   rationale: "Emergency prod failure required immediate fix"
+#   risk: "Medium"
+#   compensatingControls:
+#     - "Pair review"
+#     - "Additional monitoring"
+#   owner: "team-name"
+#   approver: "engineering-manager"
+#   createdAt: "2026-03-11"
+#   expiresAt: "2026-03-25"
+#   closureCriteria: "Backfill tests and docs merged"
+#   status: "active"

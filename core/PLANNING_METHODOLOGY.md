@@ -1,0 +1,101 @@
+# Planning Methodology and Decision Framework
+
+## Purpose
+
+This core policy defines planning gates for AI-assisted development. It is provider-agnostic and applies to all repository types unless a stricter adapter profile is enabled.
+
+Keywords `MUST`, `SHOULD`, and `MAY` are normative.
+
+## Planning Exit Criteria
+
+Planning for a phase is complete only when all are true:
+
+1. Pool questions are resolved and archived.
+2. Acceptance criteria are defined for planned chunks.
+3. Risks and mitigations are recorded.
+4. Required sign-offs are recorded with immutable references.
+
+## Pool Question Cycles
+
+- Planning MUST run at phase level.
+- Domain sub-pools MAY be used (e.g., storage, timing, safety).
+- All sub-pools MUST close before phase sign-off.
+- Each domain SHOULD start with 4-6 high-impact questions.
+
+## Artifacts
+
+Default artifact paths (override via governance manifest):
+
+- Pool Q/A: `docs/planning/pool_questions/`
+- Sign-offs: `docs/planning/signoffs.md`
+- Risk logs: `docs/planning/phase-<n>-risks.md`
+
+Each pool question artifact MUST include:
+
+- Goal
+- Scope and non-goals
+- Questions and answers
+- Decision and rationale
+- Remaining risks
+
+## Ambiguity Model (Normalized)
+
+A phase cannot pass planning if any unresolved questions remain.
+
+For resolved questions, ambiguity MUST be scored as:
+
+```
+score = sum(P * U * M * I) / sum(I)
+```
+
+Domains:
+
+- `P` (probability decision is wrong now): [0.0, 1.0]
+- `U` (uncertainty): {0.0, 0.5, 1.0}
+- `M` (momentum/critical path impact): [0.0, 1.0]
+- `I` (importance weight): integer [1, 5]
+
+Default gates:
+
+- Ambiguity score MUST be <= 0.20
+- Confidence average MUST be >= 4.0/5.0
+
+Strict baseline adapter gate:
+
+- Ambiguity score MUST be <= 0.10
+- Confidence average MUST be >= 4.5/5.0
+
+Confidence rubric:
+
+- 5: verified by measurement/test/data
+- 4: reasoned and peer-reviewed
+- 3: plausible but unverified
+- 2: weakly supported
+- 1: speculative
+
+## Acceptance Criteria Mapping
+
+- Functional/behavioral requirements MUST map to executable acceptance criteria.
+- Non-functional requirements (performance, memory, reliability) MUST include measurable acceptance checks.
+- Acceptance checks MAY be encoded as Gherkin, executable test suites, or both.
+
+## Sign-off and Auditability
+
+- Every phase MUST have a named accountable human approver.
+- LLM chat can assist, but cannot serve as sole approval authority.
+- Sign-off records MUST include date, approver, and immutable trace (commit, PR, or signed review record).
+
+## Chunk Readiness Gate
+
+Before implementation starts, each chunk MUST have:
+
+- Mapped acceptance criteria
+- Defined validation method (manual or automated)
+- Risks and rollback approach
+- Ownership and review assignment
+
+## Context Management
+
+- Keep active context lean and linked.
+- Archive completed phase details.
+- Keep provider-specific guidance in adapter docs, not core policy.

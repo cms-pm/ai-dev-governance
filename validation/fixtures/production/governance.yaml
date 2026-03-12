@@ -1,0 +1,18 @@
+apiVersion: ai-dev-governance/v1
+governanceVersion: v0.1.0
+profile: strict-baseline+embedded
+adapters:
+  - providers/codex
+  - profiles/embedded
+evidence:
+  planningPath: docs/planning
+  validationPath: docs/validation
+  releasePath: docs/releases
+exceptions:
+  registryPath: docs/governance/exceptions.yaml
+  reviewCadenceDays: 7
+approval:
+  accountableRole: principal-engineer
+  requiredReviewers: 2
+updateCadence: quarterly
+compatibility: strict
