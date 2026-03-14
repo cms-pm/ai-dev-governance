@@ -14,8 +14,9 @@
 3. Confirm migration notes for breaking changes
 4. Confirm exception registry status (no expired critical waivers)
 5. Confirm required CI checks are green
-6. Update `CHANGELOG.md`
-7. Create annotated tag and release notes
+6. Confirm unresolved critical board findings are zero or covered by approved exceptions
+7. Update `CHANGELOG.md`
+8. Create annotated tag and release notes
 
 ## Required Release Artifacts
 
@@ -23,3 +24,4 @@
 - Compatibility statement
 - Migration notes (if MAJOR)
 - Evidence summary
+- Board critical closure summary

@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.1.0
+governanceVersion: v0.2.0
 profile: strict-baseline
 adapters:
   - providers/codex
@@ -13,5 +13,14 @@ exceptions:
 approval:
   accountableRole: tech-lead
   requiredReviewers: 1
+boardReview:
+  enabled: true
+  packetTemplatePath: .governance/ai-dev-governance/templates/BOARD_REVIEW_PACKET_TEMPLATE.md
+  meetingTemplatePath: .governance/ai-dev-governance/templates/BOARD_REVIEW_MEETING_TEMPLATE.md
+  opportunityTemplatePath: .governance/ai-dev-governance/templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md
+  sprintCritiqueCadenceDays: 7
+  accountabilityCadenceDays: 28
+  incidentReviewSlaHours: 24
+  criticalFindingsBlockRelease: true
 updateCadence: monthly
 compatibility: strict

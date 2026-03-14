@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines minimum evidence fields required for planning sign-off, acceptance validation, and release quality gates.
+Defines minimum evidence fields required for planning sign-off, acceptance validation, board governance, and release quality gates.
 
 ## Planning Evidence
 
@@ -27,6 +27,18 @@ Each acceptance item MUST include:
 - pass/fail status
 - artifact URI/path
 
+## Board Review Evidence
+
+Each board review cycle MUST include:
+
+- meeting ID and cadence lane
+- packet reference
+- severity-ranked critiques
+- action register with owners and due windows
+- adopted/deferred/rejected decision log
+- go/no-go statement
+- unresolved critical finding count
+
 ## Release Evidence
 
 Each release MUST include:
@@ -36,6 +48,7 @@ Each release MUST include:
 - migration notes (if required)
 - exception status summary
 - required checks summary
+- board critical closure summary
 
 ## Format
 

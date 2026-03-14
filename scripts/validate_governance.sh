@@ -21,14 +21,19 @@ required_files=(
   "core/PLANNING_METHODOLOGY.md"
   "core/AI_ASSISTED_TDR_METHODOLOGY.md"
   "core/GIT_BRANCH_STRATEGY.md"
+  "core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md"
   "core/EXCEPTIONS_AND_WAIVERS.md"
   "core/SECURITY_CONTROLS.md"
   "core/EVIDENCE_CONTRACT.md"
   "contracts/governance-manifest.schema.json"
   "contracts/governance-manifest.example.yaml"
   "runbooks/RELEASE_PROCESS.md"
+  "runbooks/BOARD_REVIEW_OPERATIONS.md"
   "runbooks/SUBMODULE_CONSUMER_RUNBOOK.md"
   "runbooks/COMPATIBILITY_MATRIX.md"
+  "templates/BOARD_REVIEW_PACKET_TEMPLATE.md"
+  "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
+  "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
   "validation/CONSISTENCY_RULES.md"
 )
 
@@ -50,6 +55,11 @@ rg -q "Non-functional requirements .* MUST" core/PLANNING_METHODOLOGY.md || fail
 rg -q "Performance \(timing bounds\)" core/AI_ASSISTED_TDR_METHODOLOGY.md || fail "TDR non-functional validation missing"
 pass "Planning/TDR consistency"
 
+rg -q "Cadence Model" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board review cadence section missing"
+rg -q "Constructive Criticism Protocol" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board constructive critique section missing"
+rg -q "board findings" runbooks/RELEASE_PROCESS.md || fail "Release process must include board finding gate"
+pass "Board governance consistency"
+
 required_manifest_keys=(
   "apiVersion:"
   "governanceVersion:"
@@ -58,10 +68,14 @@ required_manifest_keys=(
   "evidence:"
   "exceptions:"
   "approval:"
+  "boardReview:"
 )
 for k in "${required_manifest_keys[@]}"; do
   rg -q "^${k}" contracts/governance-manifest.example.yaml || fail "Manifest example missing key: ${k}"
 done
+
+rg -q "enabled:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.enabled missing"
+rg -q "criticalFindingsBlockRelease:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.criticalFindingsBlockRelease missing"
 pass "Manifest example keys"
 
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"

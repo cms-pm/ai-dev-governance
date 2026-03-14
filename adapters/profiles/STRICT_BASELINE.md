@@ -11,6 +11,8 @@ This profile is mandatory for production-bound projects and is the default organ
 - Required human review: 2 reviewers for critical paths
 - Hotfix backfill SLA: 24 hours
 - Release requires green pre-merge checks and green release gate checks
+- Board review is mandatory (weekly sprint critique, monthly accountability, and emergency lane)
+- Open critical board findings block release unless approved exception exists
 
 ## Non-Weakening Rule
 

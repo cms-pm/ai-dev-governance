@@ -2,6 +2,19 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.2.0] - 2026-03-14
+
+### Added
+- Core board review governance policy: `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`.
+- Board review operations runbook: `runbooks/BOARD_REVIEW_OPERATIONS.md`.
+- Board packet and opportunity register templates.
+- Manifest contract support for board review configuration (`boardReview`).
+
+### Changed
+- Integrated board-review outcomes into planning, TDR, evidence, strict baseline, and release procedures.
+- Added release gate check for unresolved critical board findings.
+- Expanded governance validation script to enforce board governance artifacts and manifest keys.
+
 ## [0.1.0] - 2026-03-11
 
 ### Added

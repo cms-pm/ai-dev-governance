@@ -7,12 +7,15 @@
 3. Git strategy must require pre-merge CI checks.
 4. Hotfix policy must exist and require post-incident backfill.
 5. Human accountability must be present for merge/release approval.
+6. Board review policy must define cadence, critique protocol, and gate outcomes.
+7. Release process must include board critical-closure checks.
 
 ## Contract Rules
 
 1. `contracts/governance-manifest.schema.json` must exist.
 2. `contracts/governance-manifest.example.yaml` must include required keys.
-3. `VERSION` must be valid SemVer without leading `v`.
+3. Strict baseline examples must declare `boardReview` configuration.
+4. `VERSION` must be valid SemVer without leading `v`.
 
 ## Release Rules
 

@@ -58,6 +58,12 @@ If behavior depends on hardware characteristics, acceptance criteria MUST includ
 - Revisions MUST be tracked in change history with rationale.
 - Deprecated criteria MUST be marked and linked to replacement criteria.
 
+## Board Review Integration
+
+- Adopted board opportunities that change system behavior MUST map to acceptance criteria IDs.
+- Critical board actions MUST have explicit closure evidence before status changes to closed.
+- Board action IDs SHOULD appear in traceability metadata where applicable.
+
 ## Evidence Requirements
 
 Evidence MUST be stored in declared paths and include:

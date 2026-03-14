@@ -14,11 +14,12 @@ Planning for a phase is complete only when all are true:
 2. Acceptance criteria are defined for planned chunks.
 3. Risks and mitigations are recorded.
 4. Required sign-offs are recorded with immutable references.
+5. Required board-review actions are integrated or explicitly deferred with rationale.
 
 ## Pool Question Cycles
 
 - Planning MUST run at phase level.
-- Domain sub-pools MAY be used (e.g., storage, timing, safety).
+- Domain sub-pools MAY be used (for example, storage, timing, safety).
 - All sub-pools MUST close before phase sign-off.
 - Each domain SHOULD start with 4-6 high-impact questions.
 
@@ -29,6 +30,7 @@ Default artifact paths (override via governance manifest):
 - Pool Q/A: `docs/planning/pool_questions/`
 - Sign-offs: `docs/planning/signoffs.md`
 - Risk logs: `docs/planning/phase-<n>-risks.md`
+- Board artifacts: `<planningPath>/board/`
 
 Each pool question artifact MUST include:
 
@@ -78,6 +80,12 @@ Confidence rubric:
 - Functional/behavioral requirements MUST map to executable acceptance criteria.
 - Non-functional requirements (performance, memory, reliability) MUST include measurable acceptance checks.
 - Acceptance checks MAY be encoded as Gherkin, executable test suites, or both.
+
+## Board Review Integration
+
+- Strict baseline projects MUST run board review using `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`.
+- Adopted board opportunities MUST map to planning chunks, risk updates, and acceptance IDs.
+- Open critical board actions MUST block release unless approved exception exists.
 
 ## Sign-off and Auditability
 

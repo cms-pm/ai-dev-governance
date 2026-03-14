@@ -67,6 +67,27 @@
         "requiredReviewers": {"type": "integer", "minimum": 1}
       }
     },
+    "boardReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "enabled",
+        "packetTemplatePath",
+        "meetingTemplatePath",
+        "opportunityTemplatePath",
+        "criticalFindingsBlockRelease"
+      ],
+      "properties": {
+        "enabled": {"type": "boolean"},
+        "packetTemplatePath": {"type": "string", "minLength": 1},
+        "meetingTemplatePath": {"type": "string", "minLength": 1},
+        "opportunityTemplatePath": {"type": "string", "minLength": 1},
+        "sprintCritiqueCadenceDays": {"type": "integer", "minimum": 1},
+        "accountabilityCadenceDays": {"type": "integer", "minimum": 1},
+        "incidentReviewSlaHours": {"type": "integer", "minimum": 1},
+        "criticalFindingsBlockRelease": {"type": "boolean"}
+      }
+    },
     "updateCadence": {
       "type": "string",
       "enum": ["monthly", "quarterly"]

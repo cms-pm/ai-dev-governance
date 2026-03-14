@@ -11,9 +11,10 @@ This repository provides a strict baseline that teams can reuse across projects 
 - `core/`: Mandatory, provider-agnostic governance policies
 - `adapters/`: Provider and project overlays (cannot weaken core requirements)
 - `contracts/`: Machine-validated interfaces (manifest schema and examples)
-- `runbooks/`: Release, branch protection, and submodule operations
+- `runbooks/`: Release, branch protection, board review, and submodule operations
 - `validation/`: Consistency rules and sample consumer fixtures
 - `scripts/`: Local validation tooling
+- `templates/`: Reusable governance report templates
 
 ## Versioning and Compatibility
 
@@ -36,6 +37,7 @@ This repository provides a strict baseline that teams can reuse across projects 
 - Planning gate and ambiguity reduction: `core/PLANNING_METHODOLOGY.md`
 - Test-driven requirements and evidence: `core/AI_ASSISTED_TDR_METHODOLOGY.md`
 - Branching and release controls: `core/GIT_BRANCH_STRATEGY.md`
+- Board review governance and integration lane: `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`
 - Exceptions and waivers: `core/EXCEPTIONS_AND_WAIVERS.md`
 - AI-assisted security controls: `core/SECURITY_CONTROLS.md`
 - Evidence contract: `core/EVIDENCE_CONTRACT.md`
@@ -47,4 +49,4 @@ This repository provides a strict baseline that teams can reuse across projects 
 - Required CI checks enabled
 - Releases cut only from protected `main`
 
-See `runbooks/RELEASE_PROCESS.md` and `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
+See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, and `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
