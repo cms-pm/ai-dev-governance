@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/implementation-handoff.schema.json",
+  "title": "Implementation Handoff",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "handoffId",
+    "sourceMeetingId",
+    "riskTier",
+    "adoptedActionIds",
+    "chunkMappings",
+    "acceptanceMappings",
+    "riskDeltaPaths",
+    "traceabilityPath",
+    "owner",
+    "status"
+  ],
+  "properties": {
+    "handoffId": {"type": "string", "pattern": "^HOF-[0-9]{4}$"},
+    "sourceMeetingId": {"type": "string", "pattern": "^MTG-[0-9]{4}$"},
+    "riskTier": {"type": "string", "enum": ["low", "medium", "high", "critical"]},
+    "adoptedActionIds": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^ACT-[0-9]{3}$"},
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "chunkMappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["actionId", "chunkId"],
+        "properties": {
+          "actionId": {"type": "string", "pattern": "^ACT-[0-9]{3}$"},
+          "chunkId": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "acceptanceMappings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["chunkId", "acceptanceId"],
+        "properties": {
+          "chunkId": {"type": "string", "minLength": 1},
+          "acceptanceId": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "riskDeltaPaths": {
+      "type": "array",
+      "items": {"type": "string", "minLength": 1},
+      "minItems": 1
+    },
+    "traceabilityPath": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1},
+    "status": {"type": "string", "enum": ["draft", "ready", "executing", "closed"]}
+  }
+}

@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Defines minimum evidence fields required for planning sign-off, acceptance validation, board governance, and release quality gates.
+Defines minimum evidence fields required for planning sign-off, acceptance validation, board governance, autonomous delivery transitions, and release quality gates.
 
 ## Planning Evidence
 
@@ -15,6 +15,7 @@ Each phase sign-off record MUST include:
 - confidence score
 - unresolved question count
 - reference to artifacts
+- risk-tier assignment summary
 
 ## Validation Evidence
 
@@ -38,6 +39,27 @@ Each board review cycle MUST include:
 - adopted/deferred/rejected decision log
 - go/no-go statement
 - unresolved critical finding count
+
+## Expert-Agent Selection Evidence
+
+Each board composition cycle MUST include:
+
+- role/lens coverage map
+- candidate scoring records
+- corpus source references
+- conflict-check outcome
+- composition approval record (chair signoff)
+- refresh trigger and cadence metadata
+
+## Automation Transition Evidence
+
+Each state transition MUST include:
+
+- state name
+- transition timestamp
+- required artifact references
+- transition outcome (`pass|fail|blocked`)
+- blocker reason (if not pass)
 
 ## Release Evidence
 

@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.2.0
+governanceVersion: v0.3.0
 profile: strict-baseline+embedded
 adapters:
   - providers/codex
@@ -14,6 +14,41 @@ exceptions:
 approval:
   accountableRole: tech-lead
   requiredReviewers: 2
+automation:
+  mode: risk-tiered
+  stateMachine:
+    - ingest
+    - plan
+    - artifact-generation
+    - implementation
+    - validation
+    - board-review
+    - gate
+    - release
+  tiers:
+    low:
+      autoMerge: true
+      requiredHumanApprovals: 0
+      boardReviewRequired: false
+    medium:
+      autoMerge: false
+      requiredHumanApprovals: 1
+      boardReviewRequired: false
+    high:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+    critical:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+  boardTriggerRules:
+    highRequiresBoard: true
+    criticalRequiresBoard: true
+  humanInterventionRules:
+    chairApprovalForHighCritical: true
+    exceptionApprovalRequired: true
+    compositionApprovalRequired: true
 boardReview:
   enabled: true
   packetTemplatePath: .governance/ai-dev-governance/templates/BOARD_REVIEW_PACKET_TEMPLATE.md
@@ -23,5 +58,23 @@ boardReview:
   accountabilityCadenceDays: 28
   incidentReviewSlaHours: 24
   criticalFindingsBlockRelease: true
+  selection:
+    requiredLenses:
+      - architecture
+      - reliability
+      - security
+      - performance
+      - operability
+      - cognitive-load
+      - domain-specific
+    minimumWeightedScore: 4.0
+    minimumRoleFitScore: 4.0
+    minimumEvidenceAccessibilityScore: 4.0
+    refreshCadence: quarterly
+    incidentTriggeredRefresh: true
+  composition:
+    rosterPath: docs/governance/board/board-composition.yaml
+    approvalRecordPath: docs/governance/board/board-composition-approval.md
+    minimumAlternatesPerSeat: 1
 updateCadence: monthly
 compatibility: strict

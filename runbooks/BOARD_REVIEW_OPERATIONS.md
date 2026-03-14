@@ -10,20 +10,34 @@ Operational procedure for running board review governance in consuming repositor
 - Current risk log
 - Current traceability and evidence status
 - Prior meeting action closure report
+- Current approved board composition and member profiles
 
 ## Operating Cadence
 
 1. Weekly sprint critique during active delivery.
 2. Monthly accountability review.
 3. Incident review within 24 hours of critical governance breach.
+4. Quarterly composition refresh (or incident-triggered refresh).
+
+## Board Selection and Composition Workflow
+
+1. Define seat roles and required lenses.
+2. Prepare candidate longlist and corpus sources.
+3. Score candidates (`Prominence`, `CorpusDepth`, `RoleFit`, `EvidenceAccessibility`, `RecencyRelevance`).
+4. Propose composition with primary and alternate per seat.
+5. Run conflict checks and coverage checks.
+6. Obtain human chair approval.
+7. Publish composition artifacts.
 
 ## Execution Steps
 
 1. Create packet from `templates/BOARD_REVIEW_PACKET_TEMPLATE.md`.
 2. Run meeting using `templates/BOARD_REVIEW_MEETING_TEMPLATE.md`.
 3. Update opportunity register using `templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md`.
-4. Integrate adopted actions into planning/TDR/risk artifacts.
-5. Update validation traceability and closure evidence.
+4. Emit structured findings and decision artifacts.
+5. Emit implementation handoff artifact for adopted actions.
+6. Integrate adopted actions into planning/TDR/risk artifacts.
+7. Update validation traceability and closure evidence.
 
 ## Release Gate Implication
 
@@ -34,6 +48,10 @@ Operational procedure for running board review governance in consuming repositor
 - Board packet
 - Meeting record
 - Opportunity register update
+- Structured finding records
+- Structured decision records
+- Structured implementation handoff
 - Risk update
 - Traceability update
 - Sign-off record
+- Composition approval record

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/board-decision.schema.json",
+  "title": "Board Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "decisionId",
+    "meetingId",
+    "relatedFindingIds",
+    "outcome",
+    "rationale",
+    "gate"
+  ],
+  "properties": {
+    "decisionId": {"type": "string", "pattern": "^DEC-[0-9]{4}$"},
+    "meetingId": {"type": "string", "pattern": "^MTG-[0-9]{4}$"},
+    "relatedFindingIds": {
+      "type": "array",
+      "items": {"type": "string", "pattern": "^FND-[0-9]{4}$"},
+      "uniqueItems": true
+    },
+    "outcome": {"type": "string", "enum": ["Adopted", "Deferred", "Rejected"]},
+    "rationale": {"type": "string", "minLength": 1},
+    "revisitDate": {"type": "string", "format": "date"},
+    "gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["scopeDecision", "gateStatement", "preconditions"],
+      "properties": {
+        "scopeDecision": {"type": "string", "enum": ["Go", "No-Go"]},
+        "gateStatement": {"type": "string", "minLength": 1},
+        "preconditions": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    }
+  }
+}

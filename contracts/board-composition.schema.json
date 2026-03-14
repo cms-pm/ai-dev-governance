@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/board-composition.schema.json",
+  "title": "Board Composition",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "boardId",
+    "effectiveDate",
+    "requiredLenses",
+    "seats",
+    "coverageCheck",
+    "approval"
+  ],
+  "properties": {
+    "boardId": {"type": "string", "pattern": "^BRD-[0-9]{4}-[0-9]{2}$"},
+    "effectiveDate": {"type": "string", "format": "date"},
+    "requiredLenses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "seats": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["seatRole", "lens", "primaryMemberId", "alternateMemberIds"],
+        "properties": {
+          "seatRole": {"type": "string", "minLength": 1},
+          "lens": {"type": "string", "minLength": 1},
+          "primaryMemberId": {"type": "string", "pattern": "^BM-[0-9]{3}$"},
+          "alternateMemberIds": {
+            "type": "array",
+            "minItems": 1,
+            "items": {"type": "string", "pattern": "^BM-[0-9]{3}$"},
+            "uniqueItems": true
+          }
+        }
+      }
+    },
+    "coverageCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["allLensesCovered", "uncoveredLenses"],
+      "properties": {
+        "allLensesCovered": {"type": "boolean"},
+        "uncoveredLenses": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "approval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["chairApprover", "approvedAt", "status"],
+      "properties": {
+        "chairApprover": {"type": "string", "minLength": 1},
+        "approvedAt": {"type": "string", "format": "date-time"},
+        "status": {"type": "string", "enum": ["approved", "rejected", "conditional"]}
+      }
+    }
+  }
+}

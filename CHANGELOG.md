@@ -2,6 +2,29 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.3.0] - 2026-03-14
+
+### Added
+- Core autonomous delivery policy: `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md`.
+- Autonomous delivery runbook: `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`.
+- Expert-agent board selection process and scoring rubric in board governance policy.
+- New schema contracts:
+  - `contracts/board-member-profile.schema.json`
+  - `contracts/board-composition.schema.json`
+  - `contracts/board-finding.schema.json`
+  - `contracts/board-decision.schema.json`
+  - `contracts/implementation-handoff.schema.json`
+- New board selection templates:
+  - `templates/BOARD_SELECTION_DOSSIER_TEMPLATE.md`
+  - `templates/BOARD_MEMBER_PROFILE_TEMPLATE.md`
+  - `templates/BOARD_COMPOSITION_APPROVAL_TEMPLATE.md`
+
+### Changed
+- Extended governance manifest contract with `automation`, `boardReview.selection`, and `boardReview.composition`.
+- Upgraded board templates to include machine-readable sections.
+- Integrated risk-tier autonomy and board selection requirements into planning, TDR, evidence, strict baseline, and release procedures.
+- Expanded validator and fixture manifests for autonomous + board-selection controls.
+
 ## [0.2.0] - 2026-03-14
 
 ### Added

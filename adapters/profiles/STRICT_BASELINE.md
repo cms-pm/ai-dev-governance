@@ -13,6 +13,8 @@ This profile is mandatory for production-bound projects and is the default organ
 - Release requires green pre-merge checks and green release gate checks
 - Board review is mandatory (weekly sprint critique, monthly accountability, and emergency lane)
 - Open critical board findings block release unless approved exception exists
+- Risk-tier autonomy policy is mandatory
+- Expert-agent board selection records are mandatory
 
 ## Non-Weakening Rule
 

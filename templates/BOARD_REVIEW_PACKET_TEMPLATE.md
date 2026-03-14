@@ -11,6 +11,20 @@ Copy target naming convention:
 - Scribe: `<name>`
 - Meeting objective: `<decision this meeting must produce>`
 
+## Machine-Readable Metadata (YAML)
+
+```yaml
+packetId: PKT-0001
+cadenceLane: Accountability Review
+meetingDate: YYYY-MM-DD
+relatedBoardId: BRD-YYYY-MM
+sourceRiskTierSummary:
+  low: 0
+  medium: 0
+  high: 0
+  critical: 0
+```
+
 ## Required Inputs
 
 1. Active scope/roadmap summary and delta since last meeting.

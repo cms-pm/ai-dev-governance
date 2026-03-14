@@ -12,10 +12,10 @@ git submodule update --init --recursive
 ```bash
 cd .governance/ai-dev-governance
 git fetch --tags
-git checkout v0.2.0
+git checkout v0.3.0
 cd -
 git add .governance/ai-dev-governance
-git commit -m "Pin governance submodule to v0.2.0"
+git commit -m "Pin governance submodule to v0.3.0"
 ```
 
 ## Scheduled Bump
@@ -49,5 +49,6 @@ git commit -m "Rollback governance submodule pin"
 - Pin to tags, never track remote branches.
 - Review changelog and migration notes before every bump.
 - Use monthly or quarterly cadence from governance manifest.
-- Configure `boardReview` in governance manifest for strict baseline use.
-- Adopt board templates from `templates/` for packet, meeting, and opportunity reports.
+- Configure `automation` and `boardReview` in governance manifest for strict baseline use.
+- Configure `boardReview.selection` and `boardReview.composition` references.
+- Adopt board templates from `templates/` for packet, meeting, opportunity, and selection/composition reports.

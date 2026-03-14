@@ -14,6 +14,7 @@ Each chunk MUST have:
 2. Acceptance criteria at feature and chunk level
 3. Validation plan (manual, automated, or hybrid)
 4. Evidence destination path declared in governance manifest
+5. Machine-readable implementation handoff record
 
 ## Acceptance Criteria Design
 
@@ -63,6 +64,11 @@ If behavior depends on hardware characteristics, acceptance criteria MUST includ
 - Adopted board opportunities that change system behavior MUST map to acceptance criteria IDs.
 - Critical board actions MUST have explicit closure evidence before status changes to closed.
 - Board action IDs SHOULD appear in traceability metadata where applicable.
+
+## Automation Integration
+
+- Implementation handoff records MUST include acceptance mappings, risk-tier assignment, and gate expectations.
+- High/critical tiers MUST include board review linkage IDs before transition to gate state.
 
 ## Evidence Requirements
 

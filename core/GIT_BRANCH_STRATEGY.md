@@ -26,7 +26,16 @@ All pre-merge chunk checks for `main` MUST satisfy:
 2. Unit/integration checks: pass
 3. Lint/static checks: pass
 4. Performance checks: pass when applicable
-5. Required human review: approved
+5. Required human review: approved per risk tier
+
+## Risk-Tiered Merge Policy
+
+- `low`: auto-merge allowed when all checks pass.
+- `medium`: one human reviewer required.
+- `high`: board review completion + chair signoff + one reviewer.
+- `critical`: board review completion + chair signoff + designated accountable approver.
+
+Risk tier MUST be declared in planning artifacts and mirrored in implementation handoff.
 
 ## CI and Branch Protection
 

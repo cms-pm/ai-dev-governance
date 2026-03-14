@@ -9,13 +9,16 @@
 5. Human accountability must be present for merge/release approval.
 6. Board review policy must define cadence, critique protocol, and gate outcomes.
 7. Release process must include board critical-closure checks.
+8. Autonomous delivery policy must define state machine and deterministic stop rules.
+9. Board policy must define expert-agent selection criteria and scoring rubric.
 
 ## Contract Rules
 
 1. `contracts/governance-manifest.schema.json` must exist.
 2. `contracts/governance-manifest.example.yaml` must include required keys.
-3. Strict baseline examples must declare `boardReview` configuration.
-4. `VERSION` must be valid SemVer without leading `v`.
+3. Strict baseline examples must declare `automation`, `boardReview.selection`, and `boardReview.composition`.
+4. Board member/composition/finding/decision/handoff schemas must exist.
+5. `VERSION` must be valid SemVer without leading `v`.
 
 ## Release Rules
 

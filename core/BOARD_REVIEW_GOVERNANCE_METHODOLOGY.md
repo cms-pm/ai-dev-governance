@@ -15,8 +15,9 @@ This methodology governs:
 3. Constructive criticism and opportunity triage standards.
 4. Decision/gate outcomes.
 5. Integration into planning, TDR, risk, and evidence artifacts.
+6. Expert-agent board selection and composition refresh.
 
-This methodology complements core planning and TDR policies.
+This methodology complements core planning, TDR, and autonomous delivery policies.
 
 ## Governance Principles
 
@@ -25,11 +26,13 @@ This methodology complements core planning and TDR policies.
 3. Constructive candor: critique systems and process, not people.
 4. Closed-loop ownership: accepted opportunities require owner, due window, and closure evidence.
 5. Fail-closed operations: unresolved critical issues block promotion unless covered by approved exception.
+6. Corpus-grounded expertise: each board seat is backed by a machine-usable professional corpus relevant to that seat.
 
 ## Roles and Responsibilities
 
 1. Chairperson
    - Owns agenda, timeboxing, and scope control.
+   - Approves board composition and all high/critical board gates.
 2. Review Panel
    - Produces severity-ranked findings with concrete adjustments.
 3. Accountable Delivery Lead
@@ -107,6 +110,57 @@ Tracking rules:
 - Every opportunity MUST have a stable ID.
 - IDs MUST appear in the opportunity register, risk log, and planning chunk mapping.
 
+## Expert-Agent Board Selection
+
+### Required Lenses
+
+Each board composition MUST cover these lenses:
+
+- architecture
+- reliability
+- security
+- performance
+- operability
+- cognitive-load
+- domain-specific lens (project-defined)
+
+### Candidate Eligibility
+
+Candidates MUST satisfy all:
+
+1. Prominent standing with inspectable renown/impact evidence.
+2. Substantial published corpus (books/papers/talks/articles).
+3. Direct role fit to assigned board seat.
+4. Machine-usable corpus coverage enabling reproducible reasoning.
+
+### Selection Scoring Rubric
+
+Score each candidate 1-5 per criterion:
+
+- `Prominence`
+- `CorpusDepth`
+- `RoleFit`
+- `EvidenceAccessibility`
+- `RecencyRelevance`
+
+Default selection threshold:
+
+- Weighted average MUST be >= 4.0
+- `RoleFit` MUST be >= 4
+- `EvidenceAccessibility` MUST be >= 4
+
+### Selection Workflow
+
+1. Define roles and required lenses.
+2. Build candidate longlist.
+3. Ingest/normalize candidate corpus references.
+4. Score candidates and run conflict checks.
+5. Build composition proposal (primary + alternate per seat).
+6. Obtain human chair approval.
+7. Refresh quarterly or incident-triggered.
+
+Operational rule: board personas are expert-informed simulation profiles and MUST never be presented as endorsements.
+
 ## Decision and Gate Outcomes
 
 Every meeting MUST classify outcomes as:
@@ -126,6 +180,8 @@ Per meeting:
 3. Risk log update
 4. Planning/TDR integration updates
 5. Validation traceability updates
+6. Structured finding and decision artifacts
+7. Structured implementation handoff artifact
 
 Default paths are project-defined via governance manifest evidence fields.
 
@@ -133,6 +189,7 @@ Default paths are project-defined via governance manifest evidence fields.
 
 - Planning: adopted outcomes feed phase/chunk planning and ambiguity closure.
 - TDR: adopted outcomes requiring behavior change MUST map to acceptance criteria IDs.
+- Autonomous delivery: board artifacts gate high/critical transitions.
 - Git/Release: unresolved critical findings block release unless approved exception exists.
 - Evidence contract: board review evidence MUST be complete and auditable.
 
@@ -143,6 +200,7 @@ Default paths are project-defined via governance manifest evidence fields.
 3. Accepted actions without closure evidence.
 4. Cadence slips without exception and recovery date.
 5. Promotion decisions without explicit gate criteria.
+6. Seat assignments without corpus evidence and scoring records.
 
 ## Positioning Note
 

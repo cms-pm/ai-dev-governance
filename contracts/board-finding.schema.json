@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/board-finding.schema.json",
+  "title": "Board Finding",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "findingId",
+    "meetingId",
+    "severity",
+    "lens",
+    "observation",
+    "riskGap",
+    "requiredAdjustment",
+    "closureEvidence",
+    "owner",
+    "targetDate",
+    "status"
+  ],
+  "properties": {
+    "findingId": {"type": "string", "pattern": "^FND-[0-9]{4}$"},
+    "meetingId": {"type": "string", "pattern": "^MTG-[0-9]{4}$"},
+    "severity": {"type": "string", "enum": ["Critical", "High", "Medium", "Low"]},
+    "lens": {"type": "string", "minLength": 1},
+    "observation": {"type": "string", "minLength": 1},
+    "riskGap": {"type": "string", "minLength": 1},
+    "requiredAdjustment": {"type": "string", "minLength": 1},
+    "closureEvidence": {"type": "string", "minLength": 1},
+    "owner": {"type": "string", "minLength": 1},
+    "targetDate": {"type": "string", "format": "date"},
+    "status": {"type": "string", "enum": ["open", "in-progress", "closed"]}
+  }
+}

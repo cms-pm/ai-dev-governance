@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://internal.example/schemas/board-member-profile.schema.json",
+  "title": "Board Member Profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "memberId",
+    "displayName",
+    "seatRole",
+    "lenses",
+    "simulationPositioning",
+    "corpusSources",
+    "prominenceEvidence",
+    "scores",
+    "eligibility",
+    "review"
+  ],
+  "properties": {
+    "memberId": {"type": "string", "pattern": "^BM-[0-9]{3}$"},
+    "displayName": {"type": "string", "minLength": 1},
+    "seatRole": {"type": "string", "minLength": 1},
+    "lenses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1},
+      "uniqueItems": true
+    },
+    "simulationPositioning": {"type": "string", "const": "expert-informed-simulation"},
+    "corpusSources": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "reference"],
+        "properties": {
+          "type": {"type": "string", "enum": ["book", "paper", "talk", "article", "dataset", "repo"]},
+          "reference": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "prominenceEvidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "scores": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["Prominence", "CorpusDepth", "RoleFit", "EvidenceAccessibility", "RecencyRelevance", "weightedAverage"],
+      "properties": {
+        "Prominence": {"type": "number", "minimum": 1, "maximum": 5},
+        "CorpusDepth": {"type": "number", "minimum": 1, "maximum": 5},
+        "RoleFit": {"type": "number", "minimum": 1, "maximum": 5},
+        "EvidenceAccessibility": {"type": "number", "minimum": 1, "maximum": 5},
+        "RecencyRelevance": {"type": "number", "minimum": 1, "maximum": 5},
+        "weightedAverage": {"type": "number", "minimum": 1, "maximum": 5}
+      }
+    },
+    "eligibility": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["isEligible", "reason"],
+      "properties": {
+        "isEligible": {"type": "boolean"},
+        "reason": {"type": "string", "minLength": 1}
+      }
+    },
+    "review": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["reviewedBy", "reviewedAt"],
+      "properties": {
+        "reviewedBy": {"type": "string", "minLength": 1},
+        "reviewedAt": {"type": "string", "format": "date-time"}
+      }
+    }
+  }
+}

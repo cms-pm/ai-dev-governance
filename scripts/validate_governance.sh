@@ -21,16 +21,26 @@ required_files=(
   "core/PLANNING_METHODOLOGY.md"
   "core/AI_ASSISTED_TDR_METHODOLOGY.md"
   "core/GIT_BRANCH_STRATEGY.md"
+  "core/AUTONOMOUS_DELIVERY_GOVERNANCE.md"
   "core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md"
   "core/EXCEPTIONS_AND_WAIVERS.md"
   "core/SECURITY_CONTROLS.md"
   "core/EVIDENCE_CONTRACT.md"
   "contracts/governance-manifest.schema.json"
   "contracts/governance-manifest.example.yaml"
+  "contracts/board-member-profile.schema.json"
+  "contracts/board-composition.schema.json"
+  "contracts/board-finding.schema.json"
+  "contracts/board-decision.schema.json"
+  "contracts/implementation-handoff.schema.json"
   "runbooks/RELEASE_PROCESS.md"
   "runbooks/BOARD_REVIEW_OPERATIONS.md"
+  "runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md"
   "runbooks/SUBMODULE_CONSUMER_RUNBOOK.md"
   "runbooks/COMPATIBILITY_MATRIX.md"
+  "templates/BOARD_SELECTION_DOSSIER_TEMPLATE.md"
+  "templates/BOARD_MEMBER_PROFILE_TEMPLATE.md"
+  "templates/BOARD_COMPOSITION_APPROVAL_TEMPLATE.md"
   "templates/BOARD_REVIEW_PACKET_TEMPLATE.md"
   "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
@@ -46,6 +56,11 @@ version="$(tr -d '[:space:]' < VERSION)"
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "VERSION is not SemVer (expected x.y.z)"
 pass "VERSION format"
 
+for s in contracts/*.schema.json; do
+  python3 -m json.tool "$s" >/dev/null || fail "Invalid JSON schema: $s"
+done
+pass "Schema files parse as valid JSON"
+
 rg -q "pre-merge" core/GIT_BRANCH_STRATEGY.md || fail "Git strategy must require pre-merge checks"
 ! rg -q "main only" core/GIT_BRANCH_STRATEGY.md || fail "Git strategy must not allow main-only CI gating"
 rg -q "Hotfixes are allowed" core/GIT_BRANCH_STRATEGY.md || fail "Controlled hotfix policy missing"
@@ -57,8 +72,14 @@ pass "Planning/TDR consistency"
 
 rg -q "Cadence Model" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board review cadence section missing"
 rg -q "Constructive Criticism Protocol" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board constructive critique section missing"
+rg -q "Expert-Agent Board Selection" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board expert-agent selection section missing"
 rg -q "board findings" runbooks/RELEASE_PROCESS.md || fail "Release process must include board finding gate"
 pass "Board governance consistency"
+
+rg -q "Automation State Machine" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Autonomous state machine section missing"
+rg -q "Deterministic Stop Rules" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Autonomous stop rules missing"
+rg -q "Risk-Tiered Autonomy" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Risk-tier autonomy section missing"
+pass "Autonomous delivery consistency"
 
 required_manifest_keys=(
   "apiVersion:"
@@ -68,6 +89,7 @@ required_manifest_keys=(
   "evidence:"
   "exceptions:"
   "approval:"
+  "automation:"
   "boardReview:"
 )
 for k in "${required_manifest_keys[@]}"; do
@@ -76,7 +98,29 @@ done
 
 rg -q "enabled:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.enabled missing"
 rg -q "criticalFindingsBlockRelease:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.criticalFindingsBlockRelease missing"
+rg -q "selection:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.selection missing"
+rg -q "composition:" contracts/governance-manifest.example.yaml || fail "Manifest boardReview.composition missing"
+rg -q "stateMachine:" contracts/governance-manifest.example.yaml || fail "Manifest automation.stateMachine missing"
+rg -q "tiers:" contracts/governance-manifest.example.yaml || fail "Manifest automation.tiers missing"
 pass "Manifest example keys"
+
+python3 - <<'PY' || fail "Manifest schema required-key checks failed"
+import json
+from pathlib import Path
+
+schema = json.loads(Path("contracts/governance-manifest.schema.json").read_text())
+required = set(schema.get("required", []))
+for k in ("automation", "boardReview"):
+    if k not in required:
+        raise SystemExit(f"missing top-level required key: {k}")
+
+board_review_props = schema["properties"]["boardReview"]
+board_required = set(board_review_props.get("required", []))
+for k in ("selection", "composition"):
+    if k not in board_required:
+        raise SystemExit(f"missing boardReview required key: {k}")
+PY
+pass "Manifest schema keys"
 
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"

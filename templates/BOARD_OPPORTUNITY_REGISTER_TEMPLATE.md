@@ -9,6 +9,24 @@ Copy target naming convention:
 |---|---|---|---|---|---|---|---|---|
 | COM-001 | `<meeting-id>` | `<Critical|High|Medium|Low>` | `<gap>` | `<change request>` | `<owner>` | `<window>` | `<artifact/test>` | `<status>` |
 
+## Machine-Readable Register (JSON)
+
+```json
+[
+  {
+    "opportunityId": "COM-001",
+    "sourceMeetingId": "MTG-0001",
+    "severity": "High",
+    "gap": "...",
+    "requiredAdjustment": "...",
+    "owner": "...",
+    "targetWindow": "YYYY-MM-DD",
+    "closureEvidence": "...",
+    "status": "Adopted"
+  }
+]
+```
+
 ## Closure Summary
 
 - Closed this cycle: `<count>`

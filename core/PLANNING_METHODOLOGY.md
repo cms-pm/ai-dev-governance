@@ -15,6 +15,7 @@ Planning for a phase is complete only when all are true:
 3. Risks and mitigations are recorded.
 4. Required sign-offs are recorded with immutable references.
 5. Required board-review actions are integrated or explicitly deferred with rationale.
+6. Risk-tier assignment exists for each planned chunk.
 
 ## Pool Question Cycles
 
@@ -87,6 +88,12 @@ Confidence rubric:
 - Adopted board opportunities MUST map to planning chunks, risk updates, and acceptance IDs.
 - Open critical board actions MUST block release unless approved exception exists.
 
+## Autonomous Delivery Integration
+
+- Risk-tier assignment MUST be produced during planning.
+- High/critical tier chunks MUST declare board trigger expectations.
+- Planning artifacts MUST include machine-readable handoff metadata for automation state transitions.
+
 ## Sign-off and Auditability
 
 - Every phase MUST have a named accountable human approver.
@@ -101,6 +108,7 @@ Before implementation starts, each chunk MUST have:
 - Defined validation method (manual or automated)
 - Risks and rollback approach
 - Ownership and review assignment
+- Risk tier and automation path
 
 ## Context Management
 
