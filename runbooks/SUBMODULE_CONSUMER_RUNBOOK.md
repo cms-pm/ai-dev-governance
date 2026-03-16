@@ -52,3 +52,41 @@ git commit -m "Rollback governance submodule pin"
 - Configure `automation` and `boardReview` in governance manifest for strict baseline use.
 - Configure `boardReview.selection` and `boardReview.composition` references.
 - Adopt board templates from `templates/` for packet, meeting, opportunity, and selection/composition reports.
+
+## Fork-Based Contribution Model (Recommended for Product Extensions)
+
+When consuming a fast-moving upstream (for example, `paperclip`) while adding product-specific behavior:
+
+1. Fork upstream repository into organization namespace.
+2. Add upstream as a second remote in the fork (`upstream`).
+3. Build feature branches in fork with one chunk/SCN scope per branch.
+4. Pin consumer submodule to exact fork commit SHA in integration repo.
+5. Open upstream backport PRs from fork branches for generally useful improvements.
+
+This preserves:
+
+- reproducible integration via pinned submodule SHA
+- clean separation of product delta vs upstream baseline
+- low-friction upstream contribution path
+
+## Upstream Sync Cadence (Fork Maintainers)
+
+```bash
+cd <fork-worktree>
+git fetch upstream
+git checkout main
+git rebase upstream/main
+git push --force-with-lease origin main
+```
+
+After syncing fork `main`, update consumer submodule pointer in a dedicated chunk PR.
+
+## Backport Procedure (Fork -> Upstream)
+
+1. Ensure branch is atomic to one chunk/SCN.
+2. Confirm tests/checks are green in fork.
+3. Open upstream PR with:
+   - motivation
+   - scoped behavior change
+   - validation evidence
+4. Link upstream PR in consumer repo signoff/traceability notes.

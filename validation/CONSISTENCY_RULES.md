@@ -11,6 +11,7 @@
 7. Release process must include board critical-closure checks.
 8. Autonomous delivery policy must define state machine and deterministic stop rules.
 9. Board policy must define expert-agent selection criteria and scoring rubric.
+10. Git strategy and branch protection must require chunk-scope enforcement.
 
 ## Contract Rules
 

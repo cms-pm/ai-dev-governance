@@ -2,6 +2,18 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.4.0] - 2026-03-16
+
+### Added
+- Atomic-scope policy guardrails requiring one acceptance target (`SCN-*`) or one chunk SCN prefix per implementation PR/MR.
+- Executable chunk-scope validator: `scripts/validate_chunk_scope.sh`.
+- Branch protection baseline now includes required `chunk-scope` check.
+- Submodule consumer runbook guidance for fork-first upstream sync and backport workflow.
+
+### Changed
+- Planning methodology chunk-readiness gate now requires declared atomic PR scope target.
+- Governance consistency rules and validator script now enforce chunk-scope policy and runbook requirements.
+
 ## [0.3.0] - 2026-03-14
 
 ### Added

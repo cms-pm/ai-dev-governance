@@ -18,6 +18,14 @@ Keywords `MUST`, `SHOULD`, and `MAY` are normative.
 - Larger chunks are allowed with explicit justification.
 - Parallel chunks are allowed only when dependency and conflict analysis is documented.
 
+## Atomic Scope Guardrails
+
+- Each implementation PR/MR MUST map to exactly one acceptance target (`SCN-*`) or one approved SCN prefix (`SCN-X.Y-*`) for the same chunk.
+- A PR/MR MUST NOT mix unrelated feature work across multiple chunk IDs.
+- A chunk-scope CI check MUST run pre-merge and fail on mixed SCN scope.
+- Exceptions MUST be recorded in the exceptions registry with expiry and compensating controls.
+- Teams SHOULD keep per-PR changed-file count bounded (default <= 40) and justify any exceedance in review notes.
+
 ## Required Pre-Merge Gates
 
 All pre-merge chunk checks for `main` MUST satisfy:

@@ -44,6 +44,7 @@ required_files=(
   "templates/BOARD_REVIEW_PACKET_TEMPLATE.md"
   "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
+  "scripts/validate_chunk_scope.sh"
   "validation/CONSISTENCY_RULES.md"
 )
 
@@ -64,7 +65,13 @@ pass "Schema files parse as valid JSON"
 rg -q "pre-merge" core/GIT_BRANCH_STRATEGY.md || fail "Git strategy must require pre-merge checks"
 ! rg -q "main only" core/GIT_BRANCH_STRATEGY.md || fail "Git strategy must not allow main-only CI gating"
 rg -q "Hotfixes are allowed" core/GIT_BRANCH_STRATEGY.md || fail "Controlled hotfix policy missing"
+rg -q "exactly one acceptance target" core/GIT_BRANCH_STRATEGY.md || fail "Atomic SCN scope policy missing"
+rg -q "chunk-scope CI check MUST run pre-merge" core/GIT_BRANCH_STRATEGY.md || fail "Chunk-scope CI requirement missing"
 pass "Git strategy consistency"
+
+rg -q "chunk-scope" runbooks/BRANCH_PROTECTION_BASELINE.md || fail "Branch protection must require chunk-scope check"
+rg -q "Fork-Based Contribution Model" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md || fail "Submodule fork contribution guidance missing"
+pass "Branch protection and submodule runbook consistency"
 
 rg -q "Non-functional requirements .* MUST" core/PLANNING_METHODOLOGY.md || fail "Planning non-functional requirement mapping missing"
 rg -q "Performance \(timing bounds\)" core/AI_ASSISTED_TDR_METHODOLOGY.md || fail "TDR non-functional validation missing"

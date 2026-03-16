@@ -12,6 +12,7 @@
 ## Required Checks
 
 - governance-consistency
+- chunk-scope
 - markdown-link-check
 - schema-validation
 

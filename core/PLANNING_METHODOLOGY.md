@@ -109,6 +109,7 @@ Before implementation starts, each chunk MUST have:
 - Risks and rollback approach
 - Ownership and review assignment
 - Risk tier and automation path
+- Declared atomic PR scope target (`SCN-*` or chunk SCN prefix)
 
 ## Context Management
 
