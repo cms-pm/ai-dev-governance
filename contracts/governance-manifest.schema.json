@@ -35,6 +35,7 @@
         "enum": [
           "providers/codex",
           "providers/claude",
+          "tooling/rtk",
           "profiles/embedded"
         ]
       },

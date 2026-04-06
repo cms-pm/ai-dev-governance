@@ -15,6 +15,7 @@ This profile is mandatory for production-bound projects and is the default organ
 - Open critical board findings block release unless approved exception exists
 - Risk-tier autonomy policy is mandatory
 - Expert-agent board selection records are mandatory
+- Strict Claude/Codex consumers must enable `tooling/rtk` and retain RTK setup plus usage evidence for release
 
 ## Non-Weakening Rule
 

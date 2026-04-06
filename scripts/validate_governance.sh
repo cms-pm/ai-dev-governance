@@ -37,13 +37,17 @@ required_files=(
   "runbooks/BOARD_REVIEW_OPERATIONS.md"
   "runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md"
   "runbooks/SUBMODULE_CONSUMER_RUNBOOK.md"
+  "runbooks/RTK_ADOPTION_RUNBOOK.md"
   "runbooks/COMPATIBILITY_MATRIX.md"
+  "adapters/tooling/RTK_CONTEXT_ADAPTER.md"
   "templates/BOARD_SELECTION_DOSSIER_TEMPLATE.md"
   "templates/BOARD_MEMBER_PROFILE_TEMPLATE.md"
   "templates/BOARD_COMPOSITION_APPROVAL_TEMPLATE.md"
   "templates/BOARD_REVIEW_PACKET_TEMPLATE.md"
   "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
+  "templates/AGENTS_RTK_SNIPPET_TEMPLATE.md"
+  "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
   "scripts/validate_chunk_scope.sh"
   "validation/CONSISTENCY_RULES.md"
 )
@@ -71,6 +75,7 @@ pass "Git strategy consistency"
 
 rg -q "chunk-scope" runbooks/BRANCH_PROTECTION_BASELINE.md || fail "Branch protection must require chunk-scope check"
 rg -q "Fork-Based Contribution Model" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md || fail "Submodule fork contribution guidance missing"
+rg -q "tooling/rtk" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md || fail "Submodule runbook must require tooling/rtk for strict Claude/Codex consumers"
 pass "Branch protection and submodule runbook consistency"
 
 rg -q "Non-functional requirements .* MUST" core/PLANNING_METHODOLOGY.md || fail "Planning non-functional requirement mapping missing"
@@ -81,6 +86,7 @@ rg -q "Cadence Model" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board
 rg -q "Constructive Criticism Protocol" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board constructive critique section missing"
 rg -q "Expert-Agent Board Selection" core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md || fail "Board expert-agent selection section missing"
 rg -q "board findings" runbooks/RELEASE_PROCESS.md || fail "Release process must include board finding gate"
+rg -q "rtk gain" runbooks/RELEASE_PROCESS.md || fail "Release process must require RTK evidence for strict Claude/Codex consumers"
 pass "Board governance consistency"
 
 rg -q "Automation State Machine" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Autonomous state machine section missing"
@@ -128,6 +134,71 @@ for k in ("selection", "composition"):
         raise SystemExit(f"missing boardReview required key: {k}")
 PY
 pass "Manifest schema keys"
+
+rg -q "rtk init -g" adapters/providers/CLAUDE_CONTEXT_ADAPTER.md || fail "Claude adapter must document RTK hook install"
+rg -q "rtk init -g --codex" adapters/providers/CODEX_CONTEXT_ADAPTER.md || fail "Codex adapter must document RTK install"
+rg -q "tooling/rtk" adapters/tooling/RTK_CONTEXT_ADAPTER.md || fail "RTK tooling adapter must define manifest mapping"
+rg -q "rtk gain" runbooks/RTK_ADOPTION_RUNBOOK.md || fail "RTK runbook must include gain evidence workflow"
+rg -q "rtk discover" runbooks/RTK_ADOPTION_RUNBOOK.md || fail "RTK runbook must include discover workflow"
+rg -q "@RTK.md" templates/AGENTS_RTK_SNIPPET_TEMPLATE.md || fail "AGENTS template must reference RTK.md"
+pass "RTK documentation consistency"
+
+python3 - "$version" <<'PY' || fail "Manifest RTK policy checks failed"
+import json
+import re
+import sys
+from pathlib import Path
+
+version = f"v{sys.argv[1]}"
+schema = json.loads(Path("contracts/governance-manifest.schema.json").read_text())
+adapter_enum = set(schema["properties"]["adapters"]["items"]["enum"])
+if "tooling/rtk" not in adapter_enum:
+    raise SystemExit("schema adapter enum missing tooling/rtk")
+
+manifest_paths = [
+    Path("contracts/governance-manifest.example.yaml"),
+    Path("validation/fixtures/prototype/governance.yaml"),
+    Path("validation/fixtures/mvp/governance.yaml"),
+    Path("validation/fixtures/production/governance.yaml"),
+]
+
+provider_ids = {"providers/claude", "providers/codex"}
+
+def parse_manifest(path: Path) -> dict:
+    data = {
+        "governanceVersion": None,
+        "profile": None,
+        "adapters": [],
+    }
+    in_adapters = False
+    for line in path.read_text().splitlines():
+        version_match = re.match(r"^governanceVersion:\s*(\S+)", line)
+        if version_match:
+            data["governanceVersion"] = version_match.group(1)
+        profile_match = re.match(r"^profile:\s*(\S+)", line)
+        if profile_match:
+            data["profile"] = profile_match.group(1)
+        if line.startswith("adapters:"):
+            in_adapters = True
+            continue
+        if re.match(r"^\S", line):
+            in_adapters = False
+        if in_adapters:
+            item_match = re.match(r"^\s*-\s*(\S+)", line)
+            if item_match:
+                data["adapters"].append(item_match.group(1))
+    return data
+
+for path in manifest_paths:
+    manifest = parse_manifest(path)
+    if manifest["governanceVersion"] != version:
+        raise SystemExit(f"{path} governanceVersion {manifest['governanceVersion']} != {version}")
+    profile = manifest["profile"] or ""
+    adapters = set(manifest["adapters"])
+    if profile.startswith("strict-baseline") and adapters.intersection(provider_ids) and "tooling/rtk" not in adapters:
+        raise SystemExit(f"{path} missing tooling/rtk for strict Claude/Codex manifest")
+PY
+pass "Manifest RTK policy"
 
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"

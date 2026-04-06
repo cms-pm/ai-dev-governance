@@ -17,8 +17,9 @@
 6. Confirm unresolved critical board findings are zero or covered by approved exceptions
 7. Confirm high/critical tier items have required human signoffs
 8. Confirm structured board and implementation handoff artifacts are present for high/critical changes
-9. Update `CHANGELOG.md`
-10. Create annotated tag and release notes
+9. For strict Claude/Codex releases, confirm RTK setup and usage evidence is present (`rtk init --show`, `rtk gain`, `rtk discover`, or documented no-op)
+10. Update `CHANGELOG.md`
+11. Create annotated tag and release notes
 
 ## Required Release Artifacts
 
@@ -28,3 +29,4 @@
 - Evidence summary
 - Board critical closure summary
 - Risk-tier gate summary
+- RTK evidence summary for strict Claude/Codex consumers

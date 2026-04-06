@@ -19,7 +19,8 @@
 2. `contracts/governance-manifest.example.yaml` must include required keys.
 3. Strict baseline examples must declare `automation`, `boardReview.selection`, and `boardReview.composition`.
 4. Board member/composition/finding/decision/handoff schemas must exist.
-5. `VERSION` must be valid SemVer without leading `v`.
+5. Strict Claude/Codex manifests must declare `tooling/rtk`.
+6. `VERSION` must be valid SemVer without leading `v`.
 
 ## Release Rules
 

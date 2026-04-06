@@ -41,3 +41,18 @@ If upgrading from v0.2.x:
    - `templates/BOARD_COMPOSITION_APPROVAL_TEMPLATE.md`
 4. Emit machine-readable board findings/decisions and implementation handoff artifacts.
 5. Enforce risk-tier gate behavior in release readiness process.
+
+## v0.5.x RTK Token-Governance Integration
+
+If upgrading from v0.4.x:
+
+1. Add `tooling/rtk` to strict baseline manifests that use `providers/claude` or `providers/codex`.
+2. Install RTK and run the appropriate global setup:
+   - `rtk init -g` for Claude Code
+   - `rtk init -g --codex` for Codex
+3. Verify setup with `rtk init --show`.
+4. Add repo-local RTK reinforcement only if needed using:
+   - `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`
+   - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
+5. Capture RTK release evidence with `rtk gain` and `rtk discover` outputs or a documented no-op result.
+6. Record any excluded commands or temporary RTK bypasses through the exceptions process.

@@ -2,6 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required |
 |--------------------|------------------------|--------------------|
+| v0.5.x             | strict                 | Yes (strict Claude/Codex consumers must add `tooling/rtk` and retain RTK evidence) |
 | v0.4.x             | strict                 | Yes (adopt chunk-scope CI gate and atomic SCN scope policy) |
 | v0.3.x             | strict                 | Yes (add `automation`, `boardReview.selection`, and `boardReview.composition` in strict baseline manifests) |
 | v0.2.x             | strict                 | Yes (add `boardReview` to manifest for strict baseline consumers) |
@@ -11,4 +12,4 @@
 
 - Minor and patch versions are backward compatible unless explicitly declared otherwise.
 - Major versions may require manifest and policy migration.
-- Strict baseline consumers should keep board review and automation controls enabled from v0.3.x onward and enforce chunk-scope validation from v0.4.x onward.
+- Strict baseline consumers should keep board review and automation controls enabled from v0.3.x onward, enforce chunk-scope validation from v0.4.x onward, and enable `tooling/rtk` for Claude/Codex workflows from v0.5.x onward.

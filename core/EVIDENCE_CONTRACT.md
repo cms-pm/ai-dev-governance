@@ -71,6 +71,7 @@ Each release MUST include:
 - exception status summary
 - required checks summary
 - board critical closure summary
+- RTK setup verification and usage summary for strict Claude/Codex consumers (`rtk init --show`, `rtk gain`, and `rtk discover`, or documented no-op evidence)
 
 ## Format
 

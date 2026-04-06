@@ -1,8 +1,9 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.3.0
+governanceVersion: v0.5.0
 profile: strict-baseline+embedded
 adapters:
   - providers/codex
+  - tooling/rtk
   - profiles/embedded
 evidence:
   planningPath: docs/planning

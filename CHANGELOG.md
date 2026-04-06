@@ -2,6 +2,22 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.5.0] - 2026-04-05
+
+### Added
+- Standalone RTK tooling adapter: `adapters/tooling/RTK_CONTEXT_ADAPTER.md`.
+- RTK adoption runbook: `runbooks/RTK_ADOPTION_RUNBOOK.md`.
+- Repo-local RTK bootstrap templates:
+  - `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`
+  - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
+
+### Changed
+- Extended governance manifest contract to support `tooling/rtk`.
+- Updated strict Claude/Codex examples and fixtures to require RTK alongside provider adapters.
+- Added RTK release evidence requirements to strict Claude/Codex workflows.
+- Expanded governance validation to enforce RTK adapter coverage, manifest version alignment, and RTK documentation consistency.
+- Updated README, migration, compatibility, release, and submodule runbooks for RTK-enabled consumer rollout.
+
 ## [0.4.0] - 2026-03-16
 
 ### Added

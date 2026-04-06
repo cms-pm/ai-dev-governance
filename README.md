@@ -4,12 +4,12 @@
 
 ## Purpose
 
-This repository provides a strict baseline that teams can reuse across projects via Git submodule, with project-specific adapters layered on top.
+This repository provides a strict baseline that teams can reuse across projects via Git submodule, with provider, tooling, and project-specific adapters layered on top.
 
 ## Repository Layout
 
 - `core/`: Mandatory, provider-agnostic governance policies
-- `adapters/`: Provider and project overlays (cannot weaken core requirements)
+- `adapters/`: Provider, tooling, and project overlays (cannot weaken core requirements)
 - `contracts/`: Machine-validated interfaces (manifest schema and examples)
 - `runbooks/`: Release, branch protection, board review, autonomous delivery, and submodule operations
 - `validation/`: Consistency rules and sample consumer fixtures
@@ -30,7 +30,8 @@ This repository provides a strict baseline that teams can reuse across projects 
 1. Add this repository as a submodule.
 2. Add `governance.yaml` in the consuming repo root using `contracts/governance-manifest.example.yaml`.
 3. Enable strict baseline profile.
-4. Validate governance with `scripts/validate_governance.sh` from submodule root.
+4. Add `tooling/rtk` when the consuming repo uses `providers/claude` or `providers/codex`.
+5. Validate governance with `scripts/validate_governance.sh` from submodule root.
 
 ## Required Core Policies
 
@@ -50,4 +51,4 @@ This repository provides a strict baseline that teams can reuse across projects 
 - Required CI checks enabled
 - Releases cut only from protected `main`
 
-See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`, and `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
+See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`, `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`, and `runbooks/RTK_ADOPTION_RUNBOOK.md`.
