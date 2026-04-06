@@ -31,7 +31,8 @@ This repository provides a strict baseline that teams can reuse across projects 
 2. Add `governance.yaml` in the consuming repo root using `contracts/governance-manifest.example.yaml`.
 3. Enable strict baseline profile.
 4. Add `tooling/rtk` when the consuming repo uses `providers/claude` or `providers/codex`.
-5. Validate governance with `scripts/validate_governance.sh` from submodule root.
+5. For portable repo-local RTK tracking, use `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` with `.rtk/history.db` ignored from version control.
+6. Validate governance with `scripts/validate_governance.sh` from submodule root.
 
 ## Required Core Policies
 

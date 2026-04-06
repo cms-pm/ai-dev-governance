@@ -48,6 +48,7 @@ required_files=(
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
   "templates/AGENTS_RTK_SNIPPET_TEMPLATE.md"
   "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
+  "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
   "scripts/validate_chunk_scope.sh"
   "validation/CONSISTENCY_RULES.md"
 )
@@ -141,6 +142,10 @@ rg -q "tooling/rtk" adapters/tooling/RTK_CONTEXT_ADAPTER.md || fail "RTK tooling
 rg -q "rtk gain" runbooks/RTK_ADOPTION_RUNBOOK.md || fail "RTK runbook must include gain evidence workflow"
 rg -q "rtk discover" runbooks/RTK_ADOPTION_RUNBOOK.md || fail "RTK runbook must include discover workflow"
 rg -q "@RTK.md" templates/AGENTS_RTK_SNIPPET_TEMPLATE.md || fail "AGENTS template must reference RTK.md"
+rg -q "RTK_DB_PATH" runbooks/RTK_ADOPTION_RUNBOOK.md || fail "RTK runbook must document RTK_DB_PATH portable tracking"
+rg -q "RTK_LOCAL_WRAPPER_TEMPLATE.sh" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md || fail "Submodule runbook must reference RTK wrapper template"
+rg -q "scripts/rtk-local.sh" templates/RTK_INSTRUCTIONS_TEMPLATE.md || fail "RTK instructions template must mention repo-local wrapper"
+rg -q "scripts/rtk-local.sh" templates/AGENTS_RTK_SNIPPET_TEMPLATE.md || fail "AGENTS template must mention repo-local wrapper"
 pass "RTK documentation consistency"
 
 python3 - "$version" <<'PY' || fail "Manifest RTK policy checks failed"

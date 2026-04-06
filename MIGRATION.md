@@ -56,3 +56,12 @@ If upgrading from v0.4.x:
    - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
 5. Capture RTK release evidence with `rtk gain` and `rtk discover` outputs or a documented no-op result.
 6. Record any excluded commands or temporary RTK bypasses through the exceptions process.
+
+## v0.5.1 Portable RTK Tracking Guidance
+
+If upgrading from v0.5.0:
+
+1. Add `.rtk/` to the consumer repo `.gitignore` if you want repo-local RTK tracking.
+2. Copy `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` to `scripts/rtk-local.sh`.
+3. Keep the wrapper default database path at `./.rtk/history.db`.
+4. Prefer `scripts/rtk-local.sh init --show`, `scripts/rtk-local.sh gain -p`, and `scripts/rtk-local.sh discover` for release evidence in sandboxed or portable workflows.

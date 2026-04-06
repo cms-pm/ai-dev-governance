@@ -9,5 +9,7 @@ When a task can be handled through shell-visible inspection, search, git, test, 
 
 Use targeted internal tools only when they are clearly more precise or when RTK cannot intercept the workflow.
 
+Prefer `scripts/rtk-local.sh` for RTK evidence capture and other shell-visible workflows that should keep RTK tracking under `./.rtk/history.db`.
+
 Capture `rtk init --show`, `rtk gain`, and `rtk discover` outputs in release evidence for strict Claude/Codex changes.
 ```

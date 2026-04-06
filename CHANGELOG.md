@@ -2,6 +2,16 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.5.1] - 2026-04-06
+
+### Added
+- Portable RTK wrapper template: `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh`.
+
+### Changed
+- Updated RTK adoption and submodule consumer runbooks to recommend repo-local tracking through `scripts/rtk-local.sh` with `RTK_DB_PATH` pointing at `./.rtk/history.db`.
+- Updated repo-local RTK instruction templates and release guidance to support portable wrapper-based evidence capture.
+- Refreshed manifest examples and validation fixtures to `v0.5.1`.
+
 ## [0.5.0] - 2026-04-05
 
 ### Added

@@ -17,7 +17,7 @@
 6. Confirm unresolved critical board findings are zero or covered by approved exceptions
 7. Confirm high/critical tier items have required human signoffs
 8. Confirm structured board and implementation handoff artifacts are present for high/critical changes
-9. For strict Claude/Codex releases, confirm RTK setup and usage evidence is present (`rtk init --show`, `rtk gain`, `rtk discover`, or documented no-op)
+9. For strict Claude/Codex releases, confirm RTK setup and usage evidence is present (`scripts/rtk-local.sh init --show`, `scripts/rtk-local.sh gain -p`, `scripts/rtk-local.sh discover`, `rtk init --show`, `rtk gain`, `rtk discover`, or documented no-op)
 10. Update `CHANGELOG.md`
 11. Create annotated tag and release notes
 

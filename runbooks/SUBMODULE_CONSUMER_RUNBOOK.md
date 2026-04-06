@@ -12,10 +12,10 @@ git submodule update --init --recursive
 ```bash
 cd .governance/ai-dev-governance
 git fetch --tags
-git checkout v0.5.0
+git checkout v0.5.1
 cd -
 git add .governance/ai-dev-governance
-git commit -m "Pin governance submodule to v0.5.0"
+git commit -m "Pin governance submodule to v0.5.1"
 ```
 
 ## Scheduled Bump
@@ -53,9 +53,10 @@ git commit -m "Rollback governance submodule pin"
 - Configure `boardReview.selection` and `boardReview.composition` references.
 - Strict Claude/Codex consumers must declare `tooling/rtk` in the governance manifest.
 - Install RTK with `rtk init -g` or `rtk init -g --codex`, then verify with `rtk init --show`.
-- Capture RTK release evidence with `rtk gain` and `rtk discover`, or document a no-op result if no savings opportunities remain.
+- For portable repo-local tracking, add `.rtk/` to `.gitignore`, install `scripts/rtk-local.sh` from `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh`, and keep the default database path at `./.rtk/history.db`.
+- Capture RTK release evidence with `scripts/rtk-local.sh gain -p` and `scripts/rtk-local.sh discover`, or document a no-op result if no savings opportunities remain.
 - Adopt board templates from `templates/` for packet, meeting, opportunity, and selection/composition reports.
-- Use `runbooks/RTK_ADOPTION_RUNBOOK.md` plus `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md` and `templates/RTK_INSTRUCTIONS_TEMPLATE.md` when repo-local RTK guidance is needed.
+- Use `runbooks/RTK_ADOPTION_RUNBOOK.md` plus `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`, `templates/RTK_INSTRUCTIONS_TEMPLATE.md`, and `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` when repo-local RTK guidance is needed.
 
 ## Fork-Based Contribution Model (Recommended for Product Extensions)
 

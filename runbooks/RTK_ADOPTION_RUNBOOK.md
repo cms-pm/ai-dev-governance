@@ -30,7 +30,6 @@ Verify the binary:
 
 ```bash
 rtk --version
-rtk gain
 ```
 
 ## Claude Code Setup
@@ -55,6 +54,20 @@ rtk init --show
 - For repo-local reinforcement, start from:
   - `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`
   - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
+  - `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh`
+
+## Portable Repo-Local Tracking Pattern
+
+Use this pattern when you want RTK tracking to stay inside the consumer repository workspace, especially for sandboxed execution and checked-in release workflows.
+
+1. Add `.rtk/` to the consumer repo `.gitignore`.
+2. Copy `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` to `scripts/rtk-local.sh`.
+3. Make the wrapper executable with `chmod +x scripts/rtk-local.sh`.
+4. Keep the default repo-local tracking path at `./.rtk/history.db`.
+
+The wrapper sets `RTK_DB_PATH` to the repo-local database before invoking `rtk`.
+
+Equivalent alternatives such as exporting `RTK_DB_PATH` directly or setting RTK config `tracking.database_path` are allowed, but the wrapper is the preferred portable pattern because it is easy to audit and share across teams.
 
 ## Recommended Command Patterns
 
@@ -71,17 +84,25 @@ rtk docker ps
 ```
 
 - Narrow built-in inspection tools remain acceptable for precise lookups, but broad exploration should stay on RTK-visible shell paths.
+- For evidence capture and sandbox-sensitive tracking, prefer the repo-local wrapper:
+
+```bash
+scripts/rtk-local.sh init --show
+scripts/rtk-local.sh gain -p
+scripts/rtk-local.sh discover
+```
 
 ## Evidence Capture
 
 Store the following under the release evidence path declared in the governance manifest:
 
 ```bash
-rtk init --show
-rtk gain
-rtk discover
+scripts/rtk-local.sh init --show
+scripts/rtk-local.sh gain -p
+scripts/rtk-local.sh discover
 ```
 
+- Direct `rtk init --show`, `rtk gain`, and `rtk discover` are still acceptable when repo-local tracking is not needed.
 - Keep the `rtk gain` snapshot for adoption and trend evidence.
 - Keep the `rtk discover` snapshot to show whether shell flows are still bypassing RTK.
 - If `rtk discover` reports no additional opportunities, record that no-op result instead of fabricating savings activity.
