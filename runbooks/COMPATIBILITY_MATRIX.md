@@ -2,7 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required |
 |--------------------|------------------------|--------------------|
-| v0.5.x             | strict                 | Yes (strict Claude/Codex consumers must add `tooling/rtk`, retain RTK evidence, and may adopt the repo-local RTK wrapper pattern from v0.5.1 onward) |
+| v0.5.x             | strict                 | Yes (strict Claude/Codex consumers must add `tooling/rtk`, retain RTK evidence, may adopt the repo-local RTK wrapper pattern from v0.5.1 onward, and may use consumer-local overlays from v0.5.2 onward) |
 | v0.4.x             | strict                 | Yes (adopt chunk-scope CI gate and atomic SCN scope policy) |
 | v0.3.x             | strict                 | Yes (add `automation`, `boardReview.selection`, and `boardReview.composition` in strict baseline manifests) |
 | v0.2.x             | strict                 | Yes (add `boardReview` to manifest for strict baseline consumers) |
