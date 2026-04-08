@@ -2,6 +2,17 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.5.2] - 2026-04-07
+
+### Added
+- Optional consumer overlay convention at `docs/governance/amendments/`.
+- Overlay bootstrap template: `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md`.
+
+### Changed
+- Updated validator to detect and sanity-check an optional consumer overlay when run from a consuming repository root or with `GOVERNANCE_CONSUMER_ROOT`.
+- Updated README, migration, submodule-consumer, and board-review runbooks to document project-local amendment layering without modifying the shared submodule.
+- Refreshed manifest examples and validation fixtures to `v0.5.2`.
+
 ## [0.5.1] - 2026-04-06
 
 ### Added

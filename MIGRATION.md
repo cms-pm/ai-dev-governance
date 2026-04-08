@@ -65,3 +65,12 @@ If upgrading from v0.5.0:
 2. Copy `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` to `scripts/rtk-local.sh`.
 3. Keep the wrapper default database path at `./.rtk/history.db`.
 4. Prefer `scripts/rtk-local.sh init --show`, `scripts/rtk-local.sh gain -p`, and `scripts/rtk-local.sh discover` for release evidence in sandboxed or portable workflows.
+
+## v0.5.2 Optional Consumer Overlay Support
+
+If upgrading from v0.5.1:
+
+1. Keep using the shared submodule as the generic baseline.
+2. When project-specific tightening is needed, place it in `docs/governance/amendments/` in the consumer repository rather than modifying the shared submodule.
+3. Add `docs/governance/amendments/README.md` using `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md` when the overlay is present.
+4. Run the validator from the consumer root, or set `GOVERNANCE_CONSUMER_ROOT`, so optional overlay checks can execute.

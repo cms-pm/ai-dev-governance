@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+INVOCATION_DIR="$(pwd)"
 cd "$ROOT_DIR"
 
 fail() {
@@ -47,6 +48,7 @@ required_files=(
   "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
   "templates/AGENTS_RTK_SNIPPET_TEMPLATE.md"
+  "templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md"
   "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
   "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
   "scripts/validate_chunk_scope.sh"
@@ -207,5 +209,18 @@ pass "Manifest RTK policy"
 
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"
+
+consumer_root="${GOVERNANCE_CONSUMER_ROOT:-$INVOCATION_DIR}"
+if [[ -n "$consumer_root" && "$consumer_root" != "$ROOT_DIR" && -d "$consumer_root" ]]; then
+  overlay_dir="$consumer_root/docs/governance/amendments"
+  if [[ -d "$overlay_dir" ]]; then
+    [[ -f "$overlay_dir/README.md" ]] || fail "Optional consumer overlay exists but is missing docs/governance/amendments/README.md"
+    pass "Optional consumer overlay detected"
+  else
+    pass "Optional consumer overlay not present"
+  fi
+else
+  pass "Optional consumer overlay check skipped"
+fi
 
 echo "All governance validation checks passed."

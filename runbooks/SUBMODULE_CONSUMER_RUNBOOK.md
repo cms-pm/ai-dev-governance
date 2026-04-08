@@ -57,6 +57,9 @@ git commit -m "Rollback governance submodule pin"
 - Capture RTK release evidence with `scripts/rtk-local.sh gain -p` and `scripts/rtk-local.sh discover`, or document a no-op result if no savings opportunities remain.
 - Adopt board templates from `templates/` for packet, meeting, opportunity, and selection/composition reports.
 - Use `runbooks/RTK_ADOPTION_RUNBOOK.md` plus `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`, `templates/RTK_INSTRUCTIONS_TEMPLATE.md`, and `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` when repo-local RTK guidance is needed.
+- If the consumer needs stricter project-local interpretation, place it in `docs/governance/amendments/` instead of editing the shared submodule.
+- When using a local overlay, create `docs/governance/amendments/README.md` from `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md`.
+- Run `scripts/validate_governance.sh` from the consumer root when possible so optional overlay checks run against `docs/governance/amendments/`.
 
 ## Fork-Based Contribution Model (Recommended for Product Extensions)
 

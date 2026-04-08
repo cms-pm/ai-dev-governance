@@ -32,12 +32,13 @@ Operational procedure for running board review governance in consuming repositor
 ## Execution Steps
 
 1. Create packet from `templates/BOARD_REVIEW_PACKET_TEMPLATE.md`.
-2. Run meeting using `templates/BOARD_REVIEW_MEETING_TEMPLATE.md`.
-3. Update opportunity register using `templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md`.
-4. Emit structured findings and decision artifacts.
-5. Emit implementation handoff artifact for adopted actions.
-6. Integrate adopted actions into planning/TDR/risk artifacts.
-7. Update validation traceability and closure evidence.
+2. If the consumer repository has a local overlay in `docs/governance/amendments/`, load any project-local board addenda after the upstream template.
+3. Run meeting using `templates/BOARD_REVIEW_MEETING_TEMPLATE.md`.
+4. Update opportunity register using `templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md`.
+5. Emit structured findings and decision artifacts.
+6. Emit implementation handoff artifact for adopted actions.
+7. Integrate adopted actions into planning/TDR/risk artifacts.
+8. Update validation traceability and closure evidence.
 
 ## Release Gate Implication
 

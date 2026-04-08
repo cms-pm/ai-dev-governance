@@ -16,6 +16,8 @@ This repository provides a strict baseline that teams can reuse across projects 
 - `scripts/`: Local validation tooling
 - `templates/`: Reusable governance report templates
 
+Consuming repositories MAY also maintain an optional local overlay at `docs/governance/amendments/`. That overlay lives outside this repository and is intended for project-specific tightening that should not be upstreamed into the shared baseline.
+
 ## Versioning and Compatibility
 
 - SemVer tags: `vMAJOR.MINOR.PATCH`
@@ -32,7 +34,8 @@ This repository provides a strict baseline that teams can reuse across projects 
 3. Enable strict baseline profile.
 4. Add `tooling/rtk` when the consuming repo uses `providers/claude` or `providers/codex`.
 5. For portable repo-local RTK tracking, use `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` with `.rtk/history.db` ignored from version control.
-6. Validate governance with `scripts/validate_governance.sh` from submodule root.
+6. If project-specific governance tightening is needed, add an optional local overlay at `docs/governance/amendments/` in the consuming repo.
+7. Validate governance with `scripts/validate_governance.sh` from the consumer repo root when possible so optional overlay checks can run too.
 
 ## Required Core Policies
 
