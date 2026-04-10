@@ -17,7 +17,10 @@ Defines token-governance guardrails for teams using RTK to compress shell-visibl
   - `rtk init --show`
 - Codex setup:
   - `rtk init -g --codex`
-  - `rtk init --show`
+  - `rtk init --show --codex`
+- Codex consumers using repo-local reinforcement or repo-local tracking SHOULD also verify:
+  - local `AGENTS.md` and `RTK.md` are present
+  - at least one RTK-backed repo-local command updates the RTK database or appears in `rtk gain --history`
 - Restart the AI tool after setup so the hook or global instructions are reloaded.
 
 ## Operating Rules
@@ -30,9 +33,12 @@ Defines token-governance guardrails for teams using RTK to compress shell-visibl
 
 ## Release Evidence
 
-- Save `rtk init --show` output as setup verification.
+- Save setup verification that matches the active provider:
+  - Claude Code: `rtk init --show`
+  - Codex: `rtk init --show --codex`
 - Save `rtk gain` output as token-savings evidence.
 - Save `rtk discover` output as missed-opportunity evidence, or record a documented no-op result when no additional opportunities are identified.
+- For Codex consumers using repo-local tracking, also save one live usage proof such as `rtk gain --history` after a repo-local RTK command.
 - If RTK excludes specific commands through config, record the excluded commands and rationale in release evidence or the exceptions registry.
 
 ## Required Mapping

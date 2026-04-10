@@ -46,7 +46,7 @@ rtk init --show
 
 ```bash
 rtk init -g --codex
-rtk init --show
+rtk init --show --codex
 ```
 
 - Restart Codex after setup.
@@ -55,6 +55,8 @@ rtk init --show
   - `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`
   - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
   - `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh`
+- If the consumer wants checked-in repo-local Codex reinforcement, also create or refresh local `AGENTS.md` and `RTK.md` with `rtk init --codex` or the templates above.
+- For Codex consumers, do not treat `rtk init --show` without `--codex` as sufficient local verification because it reports Claude-oriented local status.
 
 ## Portable Repo-Local Tracking Pattern
 
@@ -68,6 +70,13 @@ Use this pattern when you want RTK tracking to stay inside the consumer reposito
 The wrapper sets `RTK_DB_PATH` to the repo-local database before invoking `rtk`.
 
 Equivalent alternatives such as exporting `RTK_DB_PATH` directly or setting RTK config `tracking.database_path` are allowed, but the wrapper is the preferred portable pattern because it is easy to audit and share across teams.
+
+For Codex consumers using repo-local tracking, verification is not complete until both of the following are true:
+
+1. `scripts/rtk-local.sh init --show --codex` reports local `AGENTS.md` and local `RTK.md`.
+2. A repo-local RTK command such as `scripts/rtk-local.sh ls -la .` causes either:
+   - `./.rtk/history.db` timestamp growth, or
+   - a new entry in `scripts/rtk-local.sh gain --history`.
 
 ## Recommended Command Patterns
 
@@ -87,7 +96,9 @@ rtk docker ps
 - For evidence capture and sandbox-sensitive tracking, prefer the repo-local wrapper:
 
 ```bash
-scripts/rtk-local.sh init --show
+scripts/rtk-local.sh init --show --codex
+scripts/rtk-local.sh ls -la .
+scripts/rtk-local.sh gain --history
 scripts/rtk-local.sh gain -p
 scripts/rtk-local.sh discover
 ```
@@ -97,12 +108,15 @@ scripts/rtk-local.sh discover
 Store the following under the release evidence path declared in the governance manifest:
 
 ```bash
-scripts/rtk-local.sh init --show
+scripts/rtk-local.sh init --show --codex
+scripts/rtk-local.sh ls -la .
+scripts/rtk-local.sh gain --history
 scripts/rtk-local.sh gain -p
 scripts/rtk-local.sh discover
 ```
 
 - Direct `rtk init --show`, `rtk gain`, and `rtk discover` are still acceptable when repo-local tracking is not needed.
+- For Codex consumers, prefer `rtk init --show --codex` or `scripts/rtk-local.sh init --show --codex` for setup evidence instead of the Claude-oriented default.
 - Keep the `rtk gain` snapshot for adoption and trend evidence.
 - Keep the `rtk discover` snapshot to show whether shell flows are still bypassing RTK.
 - If `rtk discover` reports no additional opportunities, record that no-op result instead of fabricating savings activity.

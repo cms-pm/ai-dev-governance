@@ -50,12 +50,15 @@ If upgrading from v0.4.x:
 2. Install RTK and run the appropriate global setup:
    - `rtk init -g` for Claude Code
    - `rtk init -g --codex` for Codex
-3. Verify setup with `rtk init --show`.
+3. Verify setup with the provider-specific command:
+   - `rtk init --show` for Claude
+   - `rtk init --show --codex` for Codex
 4. Add repo-local RTK reinforcement only if needed using:
    - `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`
    - `templates/RTK_INSTRUCTIONS_TEMPLATE.md`
-5. Capture RTK release evidence with `rtk gain` and `rtk discover` outputs or a documented no-op result.
-6. Record any excluded commands or temporary RTK bypasses through the exceptions process.
+5. For Codex consumers using repo-local tracking or checked-in local reinforcement, verify one live repo-local RTK command updates the RTK database or appears in `rtk gain --history`.
+6. Capture RTK release evidence with `rtk gain` and `rtk discover` outputs or a documented no-op result.
+7. Record any excluded commands or temporary RTK bypasses through the exceptions process.
 
 ## v0.5.1 Portable RTK Tracking Guidance
 

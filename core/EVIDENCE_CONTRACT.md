@@ -71,7 +71,10 @@ Each release MUST include:
 - exception status summary
 - required checks summary
 - board critical closure summary
-- RTK setup verification and usage summary for strict Claude/Codex consumers (`rtk init --show`, `rtk gain`, and `rtk discover`, or documented no-op evidence)
+- RTK setup verification and usage summary for strict Claude/Codex consumers:
+  - Claude Code: `rtk init --show`, `rtk gain`, and `rtk discover`
+  - Codex: `rtk init --show --codex`, `rtk gain`, and `rtk discover`
+  - when repo-local RTK tracking is used, include one live usage proof such as `rtk gain --history` after a repo-local RTK command or equivalent database-mutation evidence
 
 ## Format
 

@@ -16,10 +16,11 @@ Defines recommended context conventions for teams using Codex-style assistants.
 - Strict baseline consumers using `providers/codex` MUST also declare `tooling/rtk`.
 - Install and verify RTK with:
   - `rtk init -g --codex`
-  - `rtk init --show`
+  - `rtk init --show --codex`
 - `rtk init -g --codex` creates global `AGENTS.md` and `RTK.md` instructions. Teams SHOULD keep repo-local instructions compatible with those global rules and use the RTK templates in this repository when they need local reinforcement.
+- When repo-local Codex reinforcement is desired, teams SHOULD check in local `AGENTS.md` plus local `RTK.md` and verify one live RTK-tracked command against the chosen tracking database.
 - Prefer RTK-backed shell commands for high-volume reads, searches, listings, git, test, and CI output. Native internal tools remain allowed for narrow targeted inspection, but they SHOULD NOT be the default when a shell flow is available.
-- Release evidence for strict Codex consumers MUST include RTK setup verification plus `rtk gain` and `rtk discover` output or a documented no-op result.
+- Release evidence for strict Codex consumers MUST include Codex-specific RTK setup verification plus `rtk gain` and `rtk discover` output or a documented no-op result. When repo-local tracking is used, include live usage proof such as `rtk gain --history` after a repo-local RTK command.
 
 ## Required Mapping
 

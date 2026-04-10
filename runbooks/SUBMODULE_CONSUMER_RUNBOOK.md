@@ -52,8 +52,11 @@ git commit -m "Rollback governance submodule pin"
 - Configure `automation` and `boardReview` in governance manifest for strict baseline use.
 - Configure `boardReview.selection` and `boardReview.composition` references.
 - Strict Claude/Codex consumers must declare `tooling/rtk` in the governance manifest.
-- Install RTK with `rtk init -g` or `rtk init -g --codex`, then verify with `rtk init --show`.
+- Install RTK with `rtk init -g` or `rtk init -g --codex`, then verify with the provider-specific command:
+  - Claude: `rtk init --show`
+  - Codex: `rtk init --show --codex`
 - For portable repo-local tracking, add `.rtk/` to `.gitignore`, install `scripts/rtk-local.sh` from `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh`, and keep the default database path at `./.rtk/history.db`.
+- For Codex consumers using repo-local tracking or checked-in local reinforcement, also verify local `AGENTS.md` and local `RTK.md`, then prove one live RTK-tracked command through `scripts/rtk-local.sh gain --history` or equivalent database-mutation evidence.
 - Capture RTK release evidence with `scripts/rtk-local.sh gain -p` and `scripts/rtk-local.sh discover`, or document a no-op result if no savings opportunities remain.
 - Adopt board templates from `templates/` for packet, meeting, opportunity, and selection/composition reports.
 - Use `runbooks/RTK_ADOPTION_RUNBOOK.md` plus `templates/AGENTS_RTK_SNIPPET_TEMPLATE.md`, `templates/RTK_INSTRUCTIONS_TEMPLATE.md`, and `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` when repo-local RTK guidance is needed.
