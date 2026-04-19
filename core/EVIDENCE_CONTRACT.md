@@ -75,6 +75,11 @@ Each release MUST include:
   - Claude Code: `rtk init --show`, `rtk gain`, and `rtk discover`
   - Codex: `rtk init --show --codex`, `rtk gain`, and `rtk discover`
   - when repo-local RTK tracking is used, include one live usage proof such as `rtk gain --history` after a repo-local RTK command or equivalent database-mutation evidence
+- graphify posture (when the manifest declares a `graphify` object):
+  - `graphify.securityMode` in use (verbatim from manifest)
+  - `graphify.allowlistHash` — SHA-256 of the sorted allowlist
+  - graphify CLI version + pinned commit SHA
+  - a sample Astaire L0 projection demonstrating the `source_repo` invariant is observed
 
 ## Format
 
