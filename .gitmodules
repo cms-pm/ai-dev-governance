@@ -1,0 +1,6 @@
+[submodule "astaire"]
+	path = astaire
+	url = https://github.com/cms-pm/astaire
+[submodule "graphify"]
+	path = graphify
+	url = https://github.com/safishamsi/graphify.git
