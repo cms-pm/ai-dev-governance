@@ -2,6 +2,18 @@
 
 `ai-dev-governance` is a standalone, internal governance repository for AI-assisted software development.
 
+## Governance Principles
+
+> **Port-of-first-resort.** Every agent call begins at Astaire's L0. L0 answers
+> the majority directly; otherwise it routes — to a deeper Astaire projection
+> (L1/L2), to graphify for structural traversal, to RTK-gated shell inspection,
+> or further out. Agents never bypass the router; tentacles extend the reach
+> without fragmenting the memory.
+
+The principle is authoritative. `core/PLANNING_METHODOLOGY.md` §Context
+Management and the `templates/` guidance cross-reference this section rather
+than duplicating it.
+
 ## Purpose
 
 This repository provides a strict baseline that teams can reuse across projects via Git submodule, with provider, tooling, and project-specific adapters layered on top.

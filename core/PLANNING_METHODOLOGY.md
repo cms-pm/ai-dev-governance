@@ -116,3 +116,8 @@ Before implementation starts, each chunk MUST have:
 - Keep active context lean and linked.
 - Archive completed phase details.
 - Keep provider-specific guidance in adapter docs, not core policy.
+- Follow the **port-of-first-resort** principle (see `README.md`
+  §Governance Principles): every agent call begins at Astaire's L0 and
+  routes outward to tentacles (L1/L2, graphify, RTK) rather than fanning
+  out in parallel. This is the canonical context-assembly shape for
+  agentic work under this governance.
