@@ -41,38 +41,60 @@ Any chair-selected board composition MUST satisfy:
 
 ## Seat Assignments
 
-**Status: UNFILLED — awaiting chair selection.**
+**Status: FILLED — awaiting chair sign-off.**
+Board size: **Lean-4** (per chair directive, 2026-04-19).
 
-The prior 7-seat one-per-lens pre-assignment has been retired. The chair, once
-approved, will select N members from BM-001..BM-022 and record them here.
+| # | Role | Member (name) | ID | Primary Lens | Secondary Lens | Weighted Avg | Rationale |
+|---|---|---|---|---|---|---|---|
+| 1 | Chair + Agentic-AI Steward | Simon Willison | BM-007 | agentic-AI-systems | — | 4.8 | Chair appointment per user directive 2026-04-19. Owns SCN-3.1 bridge spike and SCN-3.3 skeleton-promotion importer; prompt-injection corpus directly informs SCN-1.6 and SCN-3.4 security surface. |
+| 2 | Cognitive-Load + Reliability Steward | Will Larson | BM-012 | cognitive-load | reliability | 4.8 | Highest-scoring multi-lens candidate. *Staff Engineer* / *An Elegant Puzzle* corpus directly applicable to port-of-first-resort cognitive-load discipline (SCN-4.0) and to reliability of rollout cadence. |
+| 3 | Security + Operability Steward | Troy Hunt | BM-016 | security | operability | 4.4 | HIBP + practitioner web-security corpus covers the SCN-1.6 data-transmission threat surface while the operability secondary covers runbook ergonomics (SCN-3.5, SCN-4.1, SCN-4.2). |
+| 4 | Performance + Architecture Steward | Martin Thompson | BM-014 | performance | architecture | 4.2 | Mechanical-sympathy + LMAX/Aeron corpus provides the rigor needed for L0/L1/L2 latency claims (SCN-4.2) and architecture review of the routing-first topology (SCN-4.0). |
 
-| # | Member ID | Primary Lens | Secondary Lens | Notes |
-|---|---|---|---|---|
-| 1 | PENDING | — | — | — |
-| 2 | PENDING | — | — | — |
-| 3 | PENDING | — | — | — |
-| 4 | PENDING (if Lean-4) | — | — | — |
+**Why this trio (post-chair).** Larson + Hunt + Thompson is the *only* valid
+3-member partition of the remaining 6 required lenses with no redundancy, and
+it simultaneously maximises Σ(weighted-average) = **13.4** among all
+coverage-complete trios. Composition total Σ = 13.4 + Willison's 4.8 = **18.2**.
 
 ## Seat-to-SCN Responsibility Notes
 
-To be populated by the chair after seat assignments are recorded. Guidance:
-
-- SCN-1.6 / SCN-3.4 (security surface) requires a seated reviewer whose
-  lens set includes `security`, OR a recorded security-lens deferral plus a
-  named ad-hoc consultant.
-- SCN-4.0 (port-of-first-resort routing grammar) benefits from a reviewer
-  carrying both `architecture` and `cognitive-load` — e.g. BM-010, BM-018.
-- SCN-3.1 (bridge spike) benefits from a reviewer carrying
-  `agentic-AI-systems` with eval discipline — e.g. BM-021, or BM-020 for
-  routing-model critique lineage.
-- SCN-4.2 (token-budget discipline) benefits from a reviewer carrying
-  `performance` — e.g. BM-004, BM-014, BM-015, or BM-020 as secondary.
+- **Simon Willison (Chair, Agentic-AI; BM-007)** — primary reviewer of
+  SCN-3.1 (bridge spike), SCN-3.3 (skeleton-promotion importer); co-reviewer
+  of SCN-1.6 / SCN-3.4 given prompt-injection corpus overlap with the
+  security surface. Final tie-breaker on all board decisions in chair
+  capacity.
+- **Will Larson (Cognitive-Load + Reliability; BM-012)** — primary reviewer
+  of SCN-4.0 (port-of-first-resort routing grammar) on the cognitive-load
+  dimension; secondary reviewer of fail-closed state-machine posture
+  (SCN-3.1, SCN-3.3).
+- **Troy Hunt (Security + Operability; BM-016)** — primary reviewer of
+  SCN-1.6 (data-transmitting adapter amendment) and SCN-3.4 (`restricted`
+  security mode); secondary reviewer of SCN-3.5 / SCN-4.1 / SCN-4.2 runbooks
+  and SCN-2.4 release-evidence bundle.
+- **Martin Thompson (Performance + Architecture; BM-014)** — primary
+  reviewer of SCN-4.2 (token-budget discipline) and L0/L1/L2 latency claims;
+  secondary reviewer of SCN-4.0 architecture, and of any tentacle-sprawl
+  concerns raised during SCN-2.x integrations.
 
 ## Coverage Check
 
-To be re-run against the filled seat table at chair sign-off. Approval is
-blocked until all 7 required lenses are covered or a written deferral is
-recorded per invariant (1).
+| Lens | Covered By | Slot |
+|---|---|---|
+| architecture | Martin Thompson (BM-014) | secondary |
+| reliability | Will Larson (BM-012) | secondary |
+| security | Troy Hunt (BM-016) | primary |
+| performance | Martin Thompson (BM-014) | primary |
+| operability | Troy Hunt (BM-016) | secondary |
+| cognitive-load | Will Larson (BM-012) | primary |
+| agentic-AI-systems | Simon Willison (BM-007) | primary |
+
+- All 7 lenses covered: **true**.
+- Deferrals: **none**.
+- Redundancy: zero (by construction — the Lean-4 partition has exactly 7
+  lens slots for 7 required lenses).
+- Redundancy trade-off noted: a single member's absence uncovers 1–2 lenses
+  immediately. Chair retains discretion to pull an alternate from the pool
+  for any absent member on a per-review basis.
 
 ## Conflicts Re-Check
 
@@ -82,16 +104,17 @@ recorded per invariant (1).
 
 ## Chair Approval
 
-- Status: **PENDING**
-- Chair Approver: PENDING (default candidate: **cms-pm**, same approver who
-  signed the planning gate; redirect if a different chair should be
-  designated before the first sprint-critique session)
-- Approved At: PENDING (ISO-8601 UTC required at chair sign-off)
-- Conditions (if any): PENDING
-- Board-Size Decision: PENDING — chair to record Lean-3-with-deferral,
-  Lean-4, or Lean-3-triple-lens per dossier §Chair Decision Required.
+- Status: **PENDING chair sign-off** (seats filled per chair directive).
+- Chair Approver: **Simon Willison (BM-007)** (expert-informed-simulation;
+  appointed by user directive 2026-04-19). Human co-signatory required at
+  sign-off per `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` §Roles and
+  Responsibilities.
+- Human Co-Approver: PENDING (default: **cms-pm**).
+- Approved At: PENDING (ISO-8601 UTC required at sign-off).
+- Conditions (if any): PENDING.
+- Board-Size Decision: **Lean-4** (recorded by chair directive 2026-04-19).
 - Positioning Acknowledgement: PENDING — chair to affirm
-  expert-informed-simulation framing.
+  expert-informed-simulation framing at sign-off.
 
 ## Post-Approval Next Steps
 
