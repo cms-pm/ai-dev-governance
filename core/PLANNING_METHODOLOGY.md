@@ -121,3 +121,6 @@ Before implementation starts, each chunk MUST have:
   routes outward to tentacles (L1/L2, graphify, RTK) rather than fanning
   out in parallel. This is the canonical context-assembly shape for
   agentic work under this governance.
+- The Astaire CLI surface MUST be in every agent's working context at
+  all times. Canonical reference: `runbooks/ASTAIRE_ACCESS.md`. Consumer
+  bootstrap: `templates/ASTAIRE_CLI_SNIPPET.md`.

@@ -14,6 +14,11 @@ The principle is authoritative. `core/PLANNING_METHODOLOGY.md` §Context
 Management and the `templates/` guidance cross-reference this section rather
 than duplicating it.
 
+The Astaire CLI surface MUST be in every agent's working context at all times.
+See `runbooks/ASTAIRE_ACCESS.md` for the canonical surface and read-discipline
+rule, and `templates/ASTAIRE_CLI_SNIPPET.md` for the consumer-facing variant to
+paste into `AGENTS.md` / `CLAUDE.md`.
+
 ## Purpose
 
 This repository provides a strict baseline that teams can reuse across projects via Git submodule, with provider, tooling, and project-specific adapters layered on top.
