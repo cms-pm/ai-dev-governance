@@ -3,6 +3,95 @@
 Precondition: Phase 1 gate signed off; `governance.yaml` declares `tooling/rtk`
 and the graphify adapter contract is merged (SCN-1.5).
 
+SCN-A/B/C below codify the **Astaire-always imperative**: every agent operating
+under `ai-dev-governance` — whether in this repo or in downstream projects
+consuming the governance submodule — MUST treat Astaire as the port-of-first-resort
+for planning and implementation artifacts, and MUST carry the Astaire CLI surface
+in working context at all times. These chunks run before SCN-2.1 so the rule is
+enforceable by the time Astaire is extended further.
+
+---
+
+## SCN-A — Astaire CLI surface always in working context
+
+- **Scope.** Add `runbooks/ASTAIRE_ACCESS.md` with the canonical CLI surface
+  (subcommands, common flags, query/context examples). Reference it from
+  `README.md` §Governance Principles and from `core/PLANNING_METHODOLOGY.md`
+  §Context Management so it loads into every agent's startup context.
+  Add `templates/ASTAIRE_CLI_SNIPPET.md` so consumer repos can inline the
+  surface into their own `AGENTS.md` / `CLAUDE.md` during bootstrap.
+- **Acceptance IDs.** SCN-A-01, SCN-A-02.
+- **Acceptance criteria.**
+  - `runbooks/ASTAIRE_ACCESS.md` exists and lists every top-level subcommand
+    (`init`, `startup`, `status`, `scan`, `query`, `context`, `lint`, `export`,
+    `prune`, `sync`, `ingest`) with one-line purpose and a minimal example.
+  - `README.md` §Governance Principles links to the access runbook.
+  - `templates/ASTAIRE_CLI_SNIPPET.md` is ready to paste into a consumer
+    `AGENTS.md` / `CLAUDE.md` and validates against `scripts/validate_governance.sh`
+    when referenced.
+- **Validation method.** Manual review + `scripts/validate_governance.sh`.
+- **Risks.** CLI surface drifts from upstream Astaire. Mitigation: runbook
+  carries the pinned governance version band it applies to, and SCN-1.3
+  bridge-SHA exception process covers upstream bumps.
+- **Rollback.** Remove the runbook and template; revert the README/PLANNING
+  cross-references.
+- **Owner.** Methodology Steward.
+- **Risk tier.** low.
+- **Atomic PR scope.** `SCN-A`.
+
+---
+
+## SCN-B — Enforce Astaire-before-direct-Read in governance
+
+- **Scope.** Amend `core/PLANNING_METHODOLOGY.md` §Context Management and the
+  relevant `adapters/providers/` adapters (Claude, Codex) to make Astaire L0
+  the mandatory first read for any `docs/planning/**`, `docs/releases/**`, or
+  board artifact. Direct file reads permitted only when (a) Astaire has no
+  projection for the target, or (b) the read is in service of an edit. Add a
+  consistency rule in `validation/CONSISTENCY_RULES.md` asserting the provider
+  adapters carry this clause.
+- **Acceptance IDs.** SCN-B-01.
+- **Acceptance criteria.**
+  - `core/PLANNING_METHODOLOGY.md` §Context Management contains the
+    Astaire-first rule with the two narrow exceptions.
+  - Each touched provider adapter under `adapters/providers/` contains the
+    same rule, adapted to the provider's instruction format.
+  - `validation/CONSISTENCY_RULES.md` has a new rule enforcing adapter
+    carriage; `scripts/validate_governance.sh` exits non-zero if a strict-
+    baseline provider adapter omits it.
+- **Validation method.** Automated — consistency rule + validation script.
+- **Risks.** Downstream projects already have provider adapters that predate
+  this rule. Mitigation: v0.6.0 migration note covers the change; SCN-5.1
+  compatibility matrix row flags it.
+- **Rollback.** Remove the clause and the consistency rule.
+- **Owner.** Methodology Steward.
+- **Risk tier.** low.
+- **Atomic PR scope.** `SCN-B`.
+
+---
+
+## SCN-C — Consumer-facing Astaire access template
+
+- **Scope.** Ship `templates/ASTAIRE_CLI_SNIPPET.md` (produced under SCN-A)
+  with embedding instructions for consumer repos. Extend
+  `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` with a "Wire Astaire access" step
+  pointing at the template. Add a consumer acceptance check demonstrating the
+  snippet is referenced from the consumer's `AGENTS.md` / `CLAUDE.md`.
+- **Acceptance IDs.** SCN-C-01.
+- **Acceptance criteria.**
+  - Template contains copy-pasteable CLI surface + the Astaire-first rule
+    from SCN-B, scoped to the consumer's repo-local wrapper path.
+  - `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` has an "Astaire access" section
+    with pin-aware instructions.
+  - Consumer validation fixture demonstrates the snippet referenced.
+- **Validation method.** Manual review + fixture check under `validation/`.
+- **Risks.** Consumer ignores the snippet. Mitigation: strict-baseline profile
+  rejects consumers whose provider adapters lack the SCN-B rule.
+- **Rollback.** Remove template and consumer runbook section.
+- **Owner.** Methodology Steward.
+- **Risk tier.** low.
+- **Atomic PR scope.** `SCN-C`.
+
 ---
 
 ## SCN-2.1 — `governance-authoring` Astaire collection plugin
