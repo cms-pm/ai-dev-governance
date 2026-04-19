@@ -104,17 +104,16 @@ coverage-complete trios. Composition total Σ = 13.4 + Willison's 4.8 = **18.2**
 
 ## Chair Approval
 
-- Status: **PENDING chair sign-off** (seats filled per chair directive).
+- Status: **APPROVED**.
 - Chair Approver: **Simon Willison (BM-007)** (expert-informed-simulation;
-  appointed by user directive 2026-04-19). Human co-signatory required at
-  sign-off per `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` §Roles and
-  Responsibilities.
-- Human Co-Approver: PENDING (default: **cms-pm**).
-- Approved At: PENDING (ISO-8601 UTC required at sign-off).
-- Conditions (if any): PENDING.
+  appointed by user directive 2026-04-19).
+- Human Co-Approver: **cms-pm** (chris@praqsys.net).
+- Approved At: 2026-04-19T00:00:00Z.
+- Conditions: none.
 - Board-Size Decision: **Lean-4** (recorded by chair directive 2026-04-19).
-- Positioning Acknowledgement: PENDING — chair to affirm
-  expert-informed-simulation framing at sign-off.
+- Positioning Acknowledgement: **Acknowledged** — all seats filled by
+  expert-informed-simulation personas per `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md`
+  §Simulation Positioning. No named real-world individual is a participant.
 
 ## Post-Approval Next Steps
 
