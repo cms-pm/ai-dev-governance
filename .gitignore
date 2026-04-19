@@ -1,0 +1,17 @@
+.rtk/history.db
+.rtk/history.db-journal
+.rtk/history.db-wal
+.rtk/history.db-shm
+
+# editor / os
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
