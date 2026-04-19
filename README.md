@@ -67,4 +67,4 @@ Consuming repositories MAY also maintain an optional local overlay at `docs/gove
 - Required CI checks enabled
 - Releases cut only from protected `main`
 
-See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`, `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`, and `runbooks/RTK_ADOPTION_RUNBOOK.md`.
+See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`, `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`, `runbooks/SUBMODULE_PINNING.md`, and `runbooks/RTK_ADOPTION_RUNBOOK.md`.

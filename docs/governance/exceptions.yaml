@@ -1,2 +1,13 @@
 apiVersion: ai-dev-governance/v1
-exceptions: []
+exceptions:
+  - id: astaire-sha-bridge-v0.6.0
+    reason: >-
+      astaire has no upstream tag capturing the submodule-removed +
+      Apache 2.0 state we depend on. Pinning at SHA c740232 as a
+      time-boxed bridge until upstream cuts v0.3.0.
+    target: https://github.com/cms-pm/astaire/issues (tag request for v0.3.0)
+    sha: c7402321c4802e14e021d05d6457110a9190cf42
+    expires: '2026-07-19'
+    owner: cms-pm
+    openedAt: '2026-04-19'
+    governanceVersion: v0.6.0
