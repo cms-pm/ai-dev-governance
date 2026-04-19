@@ -3,6 +3,11 @@
 .rtk/history.db-wal
 .rtk/history.db-shm
 
+.astaire/memory_palace.db
+.astaire/memory_palace.db-journal
+.astaire/memory_palace.db-wal
+.astaire/memory_palace.db-shm
+
 # editor / os
 .DS_Store
 *.swp

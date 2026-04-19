@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "${script_dir}/.." && pwd)"
+astaire_dir="${repo_root}/astaire"
+db_path="${repo_root}/.astaire/memory_palace.db"
+
+cd "${astaire_dir}"
+exec uv run astaire --db "${db_path}" "$@"
