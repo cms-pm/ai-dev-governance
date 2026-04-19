@@ -4,6 +4,10 @@
 
 - Board ID: `BRD-2026-04`
 - Effective Date: 2026-04-19
+- Target Composition: **lean board** — chair selects from the 22-candidate
+  pool at `docs/planning/board/board-selection-dossier-2026-04-18.md`.
+  Default target size is 3 seats; see §Chair Decision Required in the dossier
+  for the 3-vs-4 trade-off imposed by the 7-lens / 2-lens-per-member ceiling.
 - Refresh Cadence: quarterly (next refresh target 2026-07)
 - Incident-Refresh Trigger: any severity=Critical finding involving a lens
   whose steward is newly introduced, any corpus-accessibility regression for
@@ -16,43 +20,59 @@
   `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §Simulation Positioning. No real
   individual named in the dossier is a participant.
 
+## Selection Invariants
+
+Any chair-selected board composition MUST satisfy:
+
+1. **Lens coverage.** The union of `{primary, secondary}` lens declarations
+   across seated members covers all 7 required lenses, OR a written
+   deferral is recorded for any uncovered lens (see dossier §Chair
+   Decision Required).
+2. **Eligibility.** Every seated member has `Eligible: true` in the scoring
+   table (RoleFit ≥ 4, EvidenceAccessibility ≥ 4, WeightedAverage ≥ 4.0).
+3. **Positioning acknowledgement.** The chair records explicit acceptance of
+   the expert-informed-simulation framing.
+4. **Agentic-AI presence.** At least one seated member MUST carry
+   `agentic-AI-systems` as primary or secondary, because the project's
+   core domain is agentic AI.
+5. **No conflicts.** Simulation framing removes conflict-of-interest by
+   construction; any real-world disclosure obligations remain the chair's to
+   surface.
+
 ## Seat Assignments
 
-| Seat Role | Lens | Primary Member ID | Alternate Member IDs |
-|---|---|---|---|
-| Architecture Steward | architecture | BM-001 | BM-008 |
-| Reliability Steward | reliability | BM-002 | — |
-| Security Steward | security | BM-003 | — |
-| Performance Steward | performance | BM-004 | — |
-| Operability Steward | operability | BM-005 | — |
-| Cognitive-Load Steward | cognitive-load | BM-006 | — |
-| Agentic-AI Steward | agentic-AI-systems | BM-007 | BM-009 |
+**Status: UNFILLED — awaiting chair selection.**
+
+The prior 7-seat one-per-lens pre-assignment has been retired. The chair, once
+approved, will select N members from BM-001..BM-022 and record them here.
+
+| # | Member ID | Primary Lens | Secondary Lens | Notes |
+|---|---|---|---|---|
+| 1 | PENDING | — | — | — |
+| 2 | PENDING | — | — | — |
+| 3 | PENDING | — | — | — |
+| 4 | PENDING (if Lean-4) | — | — | — |
 
 ## Seat-to-SCN Responsibility Notes
 
-- **Security Steward (BM-003)** — primary reviewer of SCN-1.6 (data-transmitting
-  adapter amendment) and SCN-3.4 (dogfood `restricted` security mode).
-- **Architecture Steward (BM-001) + Cognitive-Load Steward (BM-006)** —
-  co-owners of the SCN-4.0 routing-grammar review.
-- **Agentic-AI Steward (BM-007)** — primary reviewer of the SCN-3.1 bridge
-  spike and SCN-3.3 skeleton-promotion importer.
-- **Performance Steward (BM-004)** — primary reviewer of token-budget
-  discipline (SCN-4.2) and L0/L1/L2 latency claims.
-- **Reliability Steward (BM-002)** — primary reviewer of the
-  autonomous-delivery state-machine fail-closed posture for high-tier chunks
-  (SCN-3.1, SCN-3.3).
-- **Operability Steward (BM-005)** — primary reviewer of runbook additions
-  (SCN-3.5, SCN-4.1, SCN-4.2) and release-evidence bundle ergonomics
-  (SCN-2.4).
+To be populated by the chair after seat assignments are recorded. Guidance:
+
+- SCN-1.6 / SCN-3.4 (security surface) requires a seated reviewer whose
+  lens set includes `security`, OR a recorded security-lens deferral plus a
+  named ad-hoc consultant.
+- SCN-4.0 (port-of-first-resort routing grammar) benefits from a reviewer
+  carrying both `architecture` and `cognitive-load` — e.g. BM-010, BM-018.
+- SCN-3.1 (bridge spike) benefits from a reviewer carrying
+  `agentic-AI-systems` with eval discipline — e.g. BM-021, or BM-020 for
+  routing-model critique lineage.
+- SCN-4.2 (token-budget discipline) benefits from a reviewer carrying
+  `performance` — e.g. BM-004, BM-014, BM-015, or BM-020 as secondary.
 
 ## Coverage Check
 
-- All lenses covered: **true**.
-- Uncovered lenses: **none**.
-- Alternate coverage gaps: reliability, security, performance, operability,
-  and cognitive-load lenses ship without alternates in this cycle.
-  Mitigation: inaugural board; alternates added at the 2026-07 quarterly
-  refresh, prioritising lenses that owned high-tier SCNs during Phase 3.
+To be re-run against the filled seat table at chair sign-off. Approval is
+blocked until all 7 required lenses are covered or a written deferral is
+recorded per invariant (1).
 
 ## Conflicts Re-Check
 
@@ -68,15 +88,29 @@
   designated before the first sprint-critique session)
 - Approved At: PENDING (ISO-8601 UTC required at chair sign-off)
 - Conditions (if any): PENDING
+- Board-Size Decision: PENDING — chair to record Lean-3-with-deferral,
+  Lean-4, or Lean-3-triple-lens per dossier §Chair Decision Required.
+- Positioning Acknowledgement: PENDING — chair to affirm
+  expert-informed-simulation framing.
 
 ## Post-Approval Next Steps
 
-1. Chair records approval above with explicit acceptance of the
+1. **Chair approval recorded.** Chair selects board-size option and records
+   approval above with explicit acceptance of the
    expert-informed-simulation positioning.
-2. Methodology Steward ingests the book + primary-blog corpora listed in
-   `BM-001..BM-009.md` into `raw/` under SCN-2.3 so board simulations can
-   cite inspectable evidence.
-3. First sprint-critique packet scheduled for the week of the SCN-3.1
+2. **Member selection.** Chair picks N members from the pool following the
+   same scoring-table + lens-coverage discipline used to build the pool,
+   then records picks in §Seat Assignments. Each pick SHOULD be accompanied
+   by a 1-line rationale tying the member's declared lenses to specific
+   SCN responsibilities.
+3. **Coverage verification.** Chair re-runs §Coverage Check against the
+   filled seat table and records `PASS` or documents the deferral(s).
+4. **Seat-to-SCN mapping.** Chair populates §Seat-to-SCN Responsibility
+   Notes.
+5. **Corpus ingestion (seated only).** Methodology Steward ingests the book
+   + primary-blog corpora for **seated** members only (not the full pool)
+   into `raw/` under SCN-2.3.
+6. First sprint-critique packet scheduled for the week of the SCN-3.1
    board gate (target: pre-Phase-3 kickoff).
-4. Opportunity register initialised at
+7. Opportunity register already initialised at
    `docs/planning/board/committee-opportunity-register-phase-1-2026-04-19.md`.
