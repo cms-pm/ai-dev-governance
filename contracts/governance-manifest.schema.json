@@ -204,6 +204,33 @@
     "compatibility": {
       "type": "string",
       "enum": ["strict"]
+    },
+    "graphify": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["collectionStrategy", "securityMode", "allowlist"],
+      "properties": {
+        "collectionStrategy": {
+          "type": "string",
+          "enum": ["split", "unified"]
+        },
+        "securityMode": {
+          "type": "string",
+          "enum": ["full", "restricted", "code-only"]
+        },
+        "allowlist": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "sourceRepoTag": {
+          "type": "string",
+          "minLength": 1
+        },
+        "mcpSidecar": {
+          "type": "boolean"
+        }
+      }
     }
   },
   "$defs": {

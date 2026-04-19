@@ -1,0 +1,89 @@
+apiVersion: ai-dev-governance/v1
+governanceVersion: v0.5.2
+profile: strict-baseline
+adapters:
+  - providers/claude
+  - tooling/rtk
+evidence:
+  planningPath: docs/planning
+  validationPath: docs/validation
+  releasePath: docs/releases
+exceptions:
+  registryPath: docs/governance/exceptions.yaml
+  reviewCadenceDays: 14
+approval:
+  accountableRole: tech-lead
+  requiredReviewers: 2
+automation:
+  mode: risk-tiered
+  stateMachine:
+    - ingest
+    - plan
+    - artifact-generation
+    - implementation
+    - validation
+    - board-review
+    - gate
+    - release
+  tiers:
+    low:
+      autoMerge: true
+      requiredHumanApprovals: 0
+      boardReviewRequired: false
+    medium:
+      autoMerge: false
+      requiredHumanApprovals: 1
+      boardReviewRequired: false
+    high:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+    critical:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+  boardTriggerRules:
+    highRequiresBoard: true
+    criticalRequiresBoard: true
+  humanInterventionRules:
+    chairApprovalForHighCritical: true
+    exceptionApprovalRequired: true
+    compositionApprovalRequired: true
+boardReview:
+  enabled: true
+  packetTemplatePath: templates/BOARD_REVIEW_PACKET_TEMPLATE.md
+  meetingTemplatePath: templates/BOARD_REVIEW_MEETING_TEMPLATE.md
+  opportunityTemplatePath: templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md
+  sprintCritiqueCadenceDays: 7
+  accountabilityCadenceDays: 28
+  incidentReviewSlaHours: 24
+  criticalFindingsBlockRelease: true
+  selection:
+    requiredLenses:
+      - architecture
+      - reliability
+      - security
+      - performance
+      - operability
+      - cognitive-load
+      - agentic-AI-systems
+    minimumWeightedScore: 4.0
+    minimumRoleFitScore: 4.0
+    minimumEvidenceAccessibilityScore: 4.0
+    refreshCadence: quarterly
+    incidentTriggeredRefresh: true
+  composition:
+    rosterPath: docs/planning/board/board-composition-approval-2026-04-19.md
+    approvalRecordPath: docs/planning/board/board-composition-approval-2026-04-19.md
+    minimumAlternatesPerSeat: 1
+graphify:
+  collectionStrategy: split
+  securityMode: restricted
+  allowlist:
+    - "src/**"
+    - "docs/**"
+    - "*.md"
+  sourceRepoTag: ai-dev-governance
+  mcpSidecar: false
+updateCadence: monthly
+compatibility: strict

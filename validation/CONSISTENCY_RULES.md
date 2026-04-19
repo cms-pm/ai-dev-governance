@@ -21,6 +21,13 @@
 4. Board member/composition/finding/decision/handoff schemas must exist.
 5. Strict Claude/Codex manifests must declare `tooling/rtk`.
 6. `VERSION` must be valid SemVer without leading `v`.
+7. If a manifest declares a `graphify` object, `graphify.securityMode`
+   MUST be one of `restricted` or `code-only` UNLESS a matching entry
+   exists in `docs/governance/exceptions.yaml` authorising `full`.
+   `scripts/run_graphify.sh` enforces this at runtime (fail-closed).
+8. If `graphify` is declared, the manifest MUST also declare
+   `tooling/rtk` in `adapters` so graphify's CLI output benefits from
+   token compression.
 
 ## Release Rules
 
