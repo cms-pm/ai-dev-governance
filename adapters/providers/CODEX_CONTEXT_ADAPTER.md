@@ -11,6 +11,26 @@ Defines recommended context conventions for teams using Codex-style assistants.
 - Capture decision links in sign-offs using commit/PR references.
 - For strict baseline projects, prefer shell-capable workflows that can be routed through RTK before falling back to native internal inspection tools.
 
+## Astaire Integration (port-of-first-resort)
+
+- Strict baseline Codex consumers MUST treat Astaire as the
+  port-of-first-resort for planning and implementation artifacts.
+- The Astaire CLI surface (see `runbooks/ASTAIRE_ACCESS.md`) MUST be
+  loaded into the agent's working context at session start —
+  typically by inlining `templates/ASTAIRE_CLI_SNIPPET.md` into the
+  consumer's `AGENTS.md` or equivalent.
+- Before invoking native file-inspection tools on any
+  `docs/planning/**`, `docs/releases/**`, board artifact, or
+  governance core policy, the agent MUST first query Astaire via the
+  repo-local wrapper (for example, `.astaire/astaire query ...` or
+  `.astaire/astaire context ...`).
+- Direct native-tool reads are permitted only when Astaire has no
+  projection for the target, or when the read is in immediate service
+  of an edit on that file.
+- Release evidence for strict Codex consumers MUST include an Astaire
+  L0 snapshot and `astaire lint` health report (see
+  `core/EVIDENCE_CONTRACT.md`).
+
 ## RTK Integration
 
 - Strict baseline consumers using `providers/codex` MUST also declare `tooling/rtk`.

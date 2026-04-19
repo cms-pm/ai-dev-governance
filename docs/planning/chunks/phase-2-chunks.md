@@ -94,6 +94,70 @@ enforceable by the time Astaire is extended further.
 
 ---
 
+## SCN-D — Project bootstrap directives (new-project + retrofit)
+
+- **Scope.** A single opinionated spin-up path that leaves a new or
+  retrofitted consumer project with: ai-dev-governance, astaire, and
+  graphify submodules pinned per `COMPATIBILITY_MATRIX.md`; RTK and
+  Astaire repo-local wrappers; initialized local databases; Astaire
+  post-commit hook; `AGENTS.md`/`CLAUDE.md` carrying the Astaire CLI
+  snippet and the "When and How" block; strict-baseline `governance.yaml`;
+  first L0 projection; and an evidence bundle. Deliverables:
+  - `runbooks/PROJECT_BOOTSTRAP.md` — runbook covering new-project and
+    retrofit paths with a decision tree.
+  - `scripts/bootstrap_project.sh` — **pure bash**, idempotent, modes
+    `--new`, `--retrofit`, `--verify`. `--new` creates the full
+    directory structure (`core/` overlay stubs, `adapters/` stubs,
+    `docs/planning/**`, `docs/releases/`, `docs/governance/`). Retrofit
+    default is **dry-run with diff report**; `--force` required to
+    write. `AGENTS.md` updates use marker-comment blocks so repeat runs
+    update in place.
+  - `templates/AGENTS_BOOTSTRAP_TEMPLATE.md` — the "When and How" block
+    inlined into consumer `AGENTS.md`/`CLAUDE.md`.
+  - `scripts/validate_bootstrap.sh` — consumer-side completeness check.
+  - New rule in `validation/CONSISTENCY_RULES.md`: strict-baseline
+    consumers MUST pass `validate_bootstrap.sh` before SCN work begins.
+  - Board scaffolding is **opt-in** via `--with-board`; strict-baseline
+    emits a warning when board scaffolding is skipped.
+- **Acceptance IDs.** SCN-D-01, SCN-D-02, SCN-D-03, SCN-D-04.
+- **Acceptance criteria.**
+  - SCN-D-01: `bootstrap_project.sh --new <dir>` produces a directory
+    that passes `validate_bootstrap.sh` on first run.
+  - SCN-D-02: `bootstrap_project.sh --retrofit` defaults to dry-run and
+    emits a diff report; only `--force` writes changes. Files outside
+    the bootstrap contract are never touched.
+  - SCN-D-03: First agent session in a bootstrapped repo has the Astaire
+    CLI surface and the "When and How" block loaded in context, verified
+    by a fixture prompt snapshot under `validation/fixtures/`.
+  - SCN-D-04: Bootstrap evidence bundle at
+    `docs/releases/bootstrap/<ISO-date>-bundle.md` enumerates every
+    wire-up check with pass/fail and timestamps.
+- **Validation method.** Automated — `validate_bootstrap.sh` plus fixture
+  snapshot test; manual spot-check of a retrofitted fixture under
+  `validation/fixtures/bootstrap-retrofit/`.
+- **Risks.**
+  - R-D1: Retrofit clobbers user files. Mitigation: dry-run default,
+    explicit `--force`, marker-comment block updates.
+  - R-D2: Pinned tentacle versions drift from what bootstrap expects.
+    Mitigation: script reads `COMPATIBILITY_MATRIX.md` at runtime and
+    refuses to run on unpinned tentacles.
+  - R-D3: Consumer `AGENTS.md` conflicts with the bootstrap block.
+    Mitigation: marker comments bound the managed region; content
+    outside markers is preserved.
+  - R-D4: Board scaffolding adds noise for small projects. Mitigation:
+    opt-in flag; warning surfaced under strict-baseline.
+- **Rollback.** Remove `scripts/bootstrap_project.sh`,
+  `scripts/validate_bootstrap.sh`, `runbooks/PROJECT_BOOTSTRAP.md`,
+  `templates/AGENTS_BOOTSTRAP_TEMPLATE.md`, and the new consistency rule.
+  Existing consumer projects retain their generated files; nothing in
+  `ai-dev-governance` depends on bootstrap outputs being present.
+- **Owner.** Methodology Steward.
+- **Risk tier.** medium (consumer-facing orchestrator; can modify files
+  in a foreign repo under `--force`).
+- **Atomic PR scope.** `SCN-D`.
+
+---
+
 ## SCN-2.1 — `governance-authoring` Astaire collection plugin
 
 - **Scope.** Upstream PR to `cms-pm/astaire` adding

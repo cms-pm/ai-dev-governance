@@ -207,6 +207,17 @@ for path in manifest_paths:
 PY
 pass "Manifest RTK policy"
 
+for provider_adapter in adapters/providers/CLAUDE_CONTEXT_ADAPTER.md adapters/providers/CODEX_CONTEXT_ADAPTER.md; do
+  [[ -f "$provider_adapter" ]] || fail "Missing provider adapter: $provider_adapter"
+  rg -q "port-of-first-resort" "$provider_adapter" || fail "$provider_adapter missing port-of-first-resort clause"
+  rg -q "runbooks/ASTAIRE_ACCESS.md" "$provider_adapter" || fail "$provider_adapter must reference runbooks/ASTAIRE_ACCESS.md"
+  rg -q "Astaire" "$provider_adapter" || fail "$provider_adapter missing Astaire integration section"
+done
+rg -q "Astaire-first read discipline" core/PLANNING_METHODOLOGY.md || fail "PLANNING_METHODOLOGY must declare Astaire-first read discipline"
+[[ -f runbooks/ASTAIRE_ACCESS.md ]] || fail "runbooks/ASTAIRE_ACCESS.md must exist"
+[[ -f templates/ASTAIRE_CLI_SNIPPET.md ]] || fail "templates/ASTAIRE_CLI_SNIPPET.md must exist"
+pass "Astaire-first provider adapter carriage"
+
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"
 

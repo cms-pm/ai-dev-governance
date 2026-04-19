@@ -124,3 +124,15 @@ Before implementation starts, each chunk MUST have:
 - The Astaire CLI surface MUST be in every agent's working context at
   all times. Canonical reference: `runbooks/ASTAIRE_ACCESS.md`. Consumer
   bootstrap: `templates/ASTAIRE_CLI_SNIPPET.md`.
+- **Astaire-first read discipline.** Before reading any
+  `docs/planning/**`, `docs/releases/**`, board artifact, or governance
+  core policy, an agent MUST query Astaire first (for example,
+  `astaire query`, `astaire context`, or `astaire status`). Direct
+  file reads via native tools (`Read`, `cat`, editor open) are
+  permitted only when:
+  1. Astaire has no projection for the target (new artifacts being
+     authored), or
+  2. The read is in service of an edit the agent will immediately
+     perform with `Edit` or `Write`.
+  Strict-baseline provider adapters MUST carry this rule in their own
+  adapter documentation, adapted to the provider's instruction format.

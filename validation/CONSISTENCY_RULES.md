@@ -28,6 +28,14 @@
 8. If `graphify` is declared, the manifest MUST also declare
    `tooling/rtk` in `adapters` so graphify's CLI output benefits from
    token compression.
+9. Every strict-baseline provider adapter under `adapters/providers/`
+   MUST carry the Astaire port-of-first-resort clause and reference
+   `runbooks/ASTAIRE_ACCESS.md`. `scripts/validate_governance.sh`
+   enforces this by scanning each provider adapter for the required
+   markers.
+10. `core/PLANNING_METHODOLOGY.md` §Context Management MUST declare the
+    Astaire-first read discipline and name the two narrow exceptions
+    (no-projection targets; reads in service of an immediate edit).
 
 ## Release Rules
 
