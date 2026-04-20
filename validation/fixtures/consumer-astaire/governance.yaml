@@ -1,0 +1,76 @@
+apiVersion: ai-dev-governance/v1
+governanceVersion: v0.6.0
+profile: strict-baseline
+adapters:
+  - providers/claude
+  - tooling/rtk
+evidence:
+  planningPath: docs/planning
+  validationPath: docs/validation
+  releasePath: docs/releases
+exceptions:
+  registryPath: docs/governance/exceptions.yaml
+  reviewCadenceDays: 14
+approval:
+  accountableRole: lead-engineer
+  requiredReviewers: 1
+automation:
+  mode: risk-tiered
+  stateMachine:
+    - ingest
+    - plan
+    - artifact-generation
+    - implementation
+    - validation
+    - board-review
+    - gate
+    - release
+  tiers:
+    low:
+      autoMerge: true
+      requiredHumanApprovals: 0
+      boardReviewRequired: false
+    medium:
+      autoMerge: false
+      requiredHumanApprovals: 1
+      boardReviewRequired: false
+    high:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+    critical:
+      autoMerge: false
+      requiredHumanApprovals: 2
+      boardReviewRequired: true
+  boardTriggerRules:
+    highRequiresBoard: true
+    criticalRequiresBoard: true
+  humanInterventionRules:
+    chairApprovalForHighCritical: true
+    exceptionApprovalRequired: true
+    compositionApprovalRequired: true
+boardReview:
+  enabled: true
+  packetTemplatePath: .governance/ai-dev-governance/templates/BOARD_REVIEW_PACKET_TEMPLATE.md
+  meetingTemplatePath: .governance/ai-dev-governance/templates/BOARD_REVIEW_MEETING_TEMPLATE.md
+  opportunityTemplatePath: .governance/ai-dev-governance/templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md
+  sprintCritiqueCadenceDays: 7
+  accountabilityCadenceDays: 28
+  incidentReviewSlaHours: 24
+  criticalFindingsBlockRelease: true
+  selection:
+    requiredLenses:
+      - architecture
+      - reliability
+      - security
+    minimumWeightedScore: 4.0
+    minimumRoleFitScore: 4.0
+    minimumEvidenceAccessibilityScore: 4.0
+    refreshCadence: quarterly
+    incidentTriggeredRefresh: true
+  composition:
+    rosterPath: docs/governance/board/board-composition.yaml
+    approvalRecordPath: docs/governance/board/board-composition-approval.md
+    minimumAlternatesPerSeat: 1
+updateCadence: monthly
+compatibility: strict

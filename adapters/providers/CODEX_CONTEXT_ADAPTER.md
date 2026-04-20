@@ -28,7 +28,7 @@ Defines recommended context conventions for teams using Codex-style assistants.
   projection for the target, or when the read is in immediate service
   of an edit on that file.
 - Release evidence for strict Codex consumers MUST include an Astaire
-  L0 snapshot and `astaire lint` health report (see
+  L0 snapshot and `.astaire/astaire lint` health report (see
   `core/EVIDENCE_CONTRACT.md`).
 
 ## RTK Integration

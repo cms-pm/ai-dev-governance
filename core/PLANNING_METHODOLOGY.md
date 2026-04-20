@@ -127,7 +127,7 @@ Before implementation starts, each chunk MUST have:
 - **Astaire-first read discipline.** Before reading any
   `docs/planning/**`, `docs/releases/**`, board artifact, or governance
   core policy, an agent MUST query Astaire first (for example,
-  `astaire query`, `astaire context`, or `astaire status`). Direct
+  `.astaire/astaire query`, `.astaire/astaire context`, or `.astaire/astaire status`). Direct
   file reads via native tools (`Read`, `cat`, editor open) are
   permitted only when:
   1. Astaire has no projection for the target (new artifacts being

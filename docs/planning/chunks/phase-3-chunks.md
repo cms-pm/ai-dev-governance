@@ -45,9 +45,9 @@ blocks SCN-3.3.
   `"graphify: policy-graph available at graphify-out/ — use \`graphify query\` for path traversal"`.
 - **Acceptance IDs.** SCN-3.2-01.
 - **Acceptance criteria.**
-  - After scanning a repo containing `graphify-out/`, `astaire status` shows
+  - After scanning a repo containing `graphify-out/`, `.astaire/astaire status` shows
     the routing hint in L0 output.
-  - `astaire query -c graphify-outputs --tag source_repo=<repo>` returns the
+  - `.astaire/astaire query -c graphify-outputs --tag source_repo=<repo>` returns the
     registered artifacts.
   - Upstream Astaire tests cover both `split` and `unified`
     collectionStrategy variants.
@@ -103,10 +103,10 @@ blocks SCN-3.3.
 - **Acceptance criteria.**
   - `graphify-out/GRAPH_REPORT.md` committed.
   - `graphify-out/cache/` gitignored.
-  - `astaire query -c graphify-outputs --tag source_repo=ai-dev-governance`
+  - `.astaire/astaire query -c graphify-outputs --tag source_repo=ai-dev-governance`
     returns artifacts.
   - L0 shows a routing hint referring to the policy graph.
-- **Validation method.** Manual — inspect committed artifacts; run `astaire
+- **Validation method.** Manual — inspect committed artifacts; run `.astaire/astaire
   status` and verify routing line.
 - **Risks.** Security-mode misconfiguration leaks content (R-4). Mitigation:
   `scripts/run_graphify.sh` enforcement wrapper from SCN-1.6.

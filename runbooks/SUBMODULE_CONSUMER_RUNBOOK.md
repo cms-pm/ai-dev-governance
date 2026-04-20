@@ -64,6 +64,92 @@ git commit -m "Rollback governance submodule pin"
 - When using a local overlay, create `docs/governance/amendments/README.md` from `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md`.
 - Run `scripts/validate_governance.sh` from the consumer root when possible so optional overlay checks run against `docs/governance/amendments/`.
 
+## Wire Astaire Access
+
+Every consumer repo that pins `ai-dev-governance` MUST wire Astaire so agents
+can read planning and release artifacts via the port-of-first-resort. This
+section is pin-aware: the wrapper delegates to whichever commit of the Astaire
+submodule `git submodule` has checked out, so a version bump automatically
+picks up the new binary without touching the wrapper.
+
+### Step 1 — Create the repo-local wrapper
+
+From the consumer repo root:
+
+```bash
+mkdir -p .astaire
+cat > .astaire/astaire << 'EOF'
+#!/usr/bin/env bash
+set -euo pipefail
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+exec uv run --project "${REPO_ROOT}/.governance/ai-dev-governance/astaire" \
+  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+EOF
+chmod +x .astaire/astaire
+echo '.astaire/memory_palace.db' >> .gitignore
+```
+
+Adjust the submodule mount path if the governance submodule is not at
+`.governance/ai-dev-governance`.
+
+### Step 2 — Initialize and verify
+
+```bash
+.astaire/astaire startup --root .
+.astaire/astaire status
+```
+
+`startup` runs `init → scan → sync → status`. A successful run writes
+the first L0 projection to `.astaire/memory_palace.db`.
+
+### Step 3 — Inline the CLI snippet into AGENTS.md / CLAUDE.md
+
+Copy `templates/ASTAIRE_CLI_SNIPPET.md` (relative to the submodule
+mount) into the consumer's `AGENTS.md` or `CLAUDE.md`. The snippet
+already uses `.astaire/astaire` as the wrapper path — no substitution
+required when the wrapper lives at the default location.
+
+```bash
+cat .governance/ai-dev-governance/templates/ASTAIRE_CLI_SNIPPET.md \
+  >> AGENTS.md          # or CLAUDE.md
+```
+
+Verify by running `scripts/validate_governance.sh` from the consumer
+root; it checks that each strict-baseline provider adapter carries the
+Astaire port-of-first-resort clause.
+
+### Step 4 — Add post-commit hook (optional but recommended)
+
+Add to `.claude/settings.json` (Claude consumers):
+
+```json
+"hooks": {
+  "PostToolUse": [
+    {
+      "matcher": "Bash(git commit*)",
+      "hooks": [
+        {
+          "type": "command",
+          "command": ".astaire/astaire scan --root . 2>/dev/null || true",
+          "timeout": 10000
+        }
+      ]
+    }
+  ]
+}
+```
+
+This keeps the knowledge base current after every commit without
+blocking agent flow on hook failure.
+
+### Consumer requirements checklist
+
+- [ ] `.astaire/astaire` wrapper executable at repo root.
+- [ ] `.astaire/memory_palace.db` in `.gitignore`.
+- [ ] `AGENTS.md` / `CLAUDE.md` contains the inlined Astaire CLI snippet.
+- [ ] `.astaire/astaire startup --root .` exits zero.
+- [ ] `scripts/validate_governance.sh` passes (if present in consumer).
+
 ## Fork-Based Contribution Model (Recommended for Product Extensions)
 
 When consuming a fast-moving upstream (for example, `paperclip`) while adding product-specific behavior:

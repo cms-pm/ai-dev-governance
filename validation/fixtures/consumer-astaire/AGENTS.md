@@ -1,14 +1,9 @@
-# Astaire CLI Snippet (consumer template)
+# Agent Instructions — Example Consumer Repo
 
-Paste the section below into the consumer repo's `AGENTS.md`,
-`CLAUDE.md`, or equivalent agent-bootstrap document. Keep it at or
-near the top so every agent session loads it into working context.
-
-The wrapper path is `.astaire/astaire` at the consumer repo root by
-default — this is what `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` §Wire
-Astaire Access creates. If the consumer places the wrapper elsewhere,
-replace every occurrence of `.astaire/astaire` below with the actual
-path before pasting.
+This file demonstrates a consumer `AGENTS.md` that satisfies the SCN-C
+acceptance check: the Astaire CLI snippet (from
+`templates/ASTAIRE_CLI_SNIPPET.md`) is inlined so every agent session
+carries the port-of-first-resort surface in working context.
 
 ---
 
@@ -45,7 +40,12 @@ not on PATH and will not use the correct database.
 Hyphens inside `--fts` queries are fragile (SQLite FTS5); prefer
 phrasal forms.
 
-Full surface: see `.governance/ai-dev-governance/runbooks/ASTAIRE_ACCESS.md`
-(path depends on where the governance submodule is mounted).
+Full surface: see `.governance/ai-dev-governance/runbooks/ASTAIRE_ACCESS.md`.
 
 ---
+
+## RTK
+
+This repo uses RTK for token compression. The hook rewrites `git`,
+`uv run`, and other high-volume shell commands transparently. Run
+`rtk gain` to check savings.

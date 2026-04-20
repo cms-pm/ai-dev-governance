@@ -27,7 +27,7 @@ Defines recommended context conventions for teams using Claude-style assistants.
   projection for the target, or when the read is in immediate service
   of an `Edit` / `Write` on that file.
 - Release evidence for strict Claude consumers MUST include an
-  Astaire L0 snapshot and `astaire lint` health report (see
+  Astaire L0 snapshot and `.astaire/astaire lint` health report (see
   `core/EVIDENCE_CONTRACT.md`).
 
 ## RTK Integration

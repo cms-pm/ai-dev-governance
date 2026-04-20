@@ -146,7 +146,7 @@ stable semver tag away from the `v4` branch tip.
 | B4 | Release bundle includes an L0 snapshot and lint health report alongside RTK evidence. | 0.1 | 0 | 0.3 | 2 | 5 |
 | C3 | `graphify hook install` runs post-commit; `graphify-out/` committed (excluding `cache/`). | 0.1 | 0.5 | 0.4 | 3 | 5 |
 | D1 | Graph insights enter board packets via template amendment only; no core policy change. | 0.15 | 0.5 | 0.6 | 4 | 4 |
-| D2 | Chunk planning, board pre-reads, and implementation handoff all use `astaire context` + `graphify query` under a shared token budget. | 0.15 | 0.5 | 0.6 | 4 | 4 |
+| D2 | Chunk planning, board pre-reads, and implementation handoff all use `.astaire/astaire context` + `graphify query` under a shared token budget. | 0.15 | 0.5 | 0.6 | 4 | 4 |
 | D3 | Structural/graph lens fits under the existing domain-specific lens allowance; no core-policy amendment required. | 0.1 | 0 | 0.4 | 3 | 5 |
 | E1 | `governance.yaml`, `.rtk/` wrapper, and `docs/releases/rtk/` bundle satisfy the RTK adapter contract for this repo. | 0.05 | 0 | 0.5 | 3 | 5 |
 | E2 | Standard RTK hook rewrites cover `uv run astaire` and `graphify` shell invocations; no custom rules required. | 0.1 | 0.5 | 0.3 | 3 | 4 |

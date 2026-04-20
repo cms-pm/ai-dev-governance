@@ -43,7 +43,7 @@ Precondition: SCN-3.3 promoted and L0 surfaces a routing hint.
 - **Acceptance criteria.**
   - Template contains the new section with required subsection headers.
   - Runbook shows the command sequence to populate the section
-    (`astaire context --tag board-packet=<id>` + `graphify query` snippets).
+    (`.astaire/astaire context --tag board-packet=<id>` + `graphify query` snippets).
   - Existing board packet examples in `worked/` or `validation/` still match
     the template or are explicitly marked as pre-amendment.
 - **Validation method.** Manual — diff review; runbook dry-run.
@@ -59,8 +59,8 @@ Precondition: SCN-3.3 promoted and L0 surfaces a routing hint.
 ## SCN-4.2 — Chunk-context assembler pattern
 
 - **Scope.** Document a standard recipe in `runbooks/BOARD_REVIEW_OPERATIONS.md`
-  and the Astaire adapter guide: agents begin with `astaire startup` + L0,
-  call `astaire context --tag chunk=<SCN>` for chunk-level assembly, and shell
+  and the Astaire adapter guide: agents begin with `.astaire/astaire startup` + L0,
+  call `.astaire/astaire context --tag chunk=<SCN>` for chunk-level assembly, and shell
   to `graphify query "..."` when L0 routes them there — all within a shared
   token budget that aligns with `core/PLANNING_METHODOLOGY.md` §Context
   Management.
