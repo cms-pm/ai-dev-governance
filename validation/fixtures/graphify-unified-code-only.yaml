@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.5.2
+governanceVersion: v0.6.0
 profile: strict-baseline
 adapters:
   - providers/claude
@@ -87,5 +87,13 @@ graphify:
     - "**/*.md"
   sourceRepoTag: ai-dev-governance
   mcpSidecar: true
+  promotionThreshold: "p90"
+  promotionFloor: 3
+  promotionCeiling: 100
+  autoTune: false
+  pinnedNodes: []
+  inferredEdgeThreshold: null
+  crossRepoAuthority: []
+  annotateApprovalStatus: false
 updateCadence: monthly
 compatibility: strict

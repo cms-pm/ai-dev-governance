@@ -11,6 +11,26 @@ Graphify sits behind Astaire's L0 per the **port-of-first-resort**
 principle: agents never call graphify directly; they reach it when L0
 routes a structural query to it.
 
+## Routing Contract
+
+L0 routing hints are authoritative only when they use the canonical route form:
+
+```text
+route: tentacle=<name>; target=<addr>; budget=<tokens>; returns=<shape>; reason=<slug>
+```
+
+Canonical tentacle names:
+
+- `astaire.l1`
+- `astaire.l2`
+- `graphify.report`
+- `graphify.query`
+- `graphify.mcp`
+- `rtk.shell`
+
+Free-text explanatory prose may follow the route line, but consumers MUST parse
+the `route:` payload as the machine-stable hand-off contract.
+
 ## Applicability
 
 - Strict-baseline consumers that use graphify to index this repo or any
@@ -28,6 +48,13 @@ routes a structural query to it.
   in SCN-1.6). Never invoke the upstream `graphify` CLI directly.
 - Wire graphify outputs to land in Astaire under the collection namespace
   declared by `graphify.collectionStrategy` (see below).
+- Supported local fallback bootstrap path:
+  - `uv venv .venv`
+  - `.venv/bin/python -m pip install -e ./graphify`
+  - `scripts/run_graphify.sh --preflight`
+- If the repo needs semantic document/image extraction instead of the local
+  structural fallback, set `GRAPHIFY` to an external runner that supports that
+  path and keep `scripts/run_graphify.sh` as the fail-closed entrypoint.
 
 ## Collection Strategies
 
@@ -70,10 +97,33 @@ entry. This is enforced in SCN-1.6.
 Graphify ships an MCP stdio server that lets an agent query the graph
 interactively. Enable by setting `graphify.mcpSidecar: true`. When enabled:
 
-- The runbook at `runbooks/GRAPHIFY_MCP_SIDECAR.md` (to be added in
-  SCN-3.5) MUST be the canonical operations reference.
+- The runbook at `runbooks/GRAPHIFY_MCP_RUNBOOK.md` MUST be the canonical
+  operations reference.
 - MCP queries MUST route through Astaire L0 first; the sidecar is a
   tentacle, not a bypass.
+
+## Skeleton Promotion Knobs
+
+When consumers import graphify structure into Astaire's claim store, the
+manifest MAY also declare:
+
+- `graphify.promotionThreshold`
+- `graphify.promotionFloor`
+- `graphify.promotionCeiling`
+- `graphify.autoTune`
+- `graphify.pinnedNodes`
+- `graphify.inferredEdgeThreshold`
+- `graphify.crossRepoAuthority`
+- `graphify.annotateApprovalStatus`
+
+Guidance:
+
+- Keep `promotionThreshold` at `p90` unless the consumer has its own benchmark evidence.
+- Keep `autoTune: false` unless the consumer actively monitors L0 token drift.
+- `AMBIGUOUS` edges remain excluded at all times.
+- Recommended `inferredEdgeThreshold` floor: `0.85`.
+- Values below `0.80` SHOULD trigger a warning in `scripts/validate_graphify.sh`.
+- When `annotateApprovalStatus: true`, pair it with a fresh contract registry check in CI.
 
 ## Release Evidence
 
@@ -83,6 +133,8 @@ release bundles for repos using graphify MUST include:
 - `graphify.securityMode` (verbatim from manifest).
 - `graphify.allowlistHash` — SHA-256 of the sorted `allowlist`.
 - `graphify` CLI version + commit SHA (from the pinned submodule).
+- execution mode truthfulness — explicitly state whether the release used a
+  semantic external runner or the local structural fallback.
 - A sample L0 projection showing at least one `source_repo`-tagged node
   to demonstrate the invariant is observed.
 
@@ -100,6 +152,8 @@ an exception entry.
 - Declare the `graphify` object in `governance.yaml`.
 - Register `scripts/run_graphify.sh` in the release-evidence path declared
   by `evidence.releasePath`.
+- Register `scripts/validate_graphify.sh` in the release-validation flow when
+  graphify promotion is enabled.
 - Downstream consumers of the graph (e.g. Astaire L0 projections, board
   pre-read packets) MUST cite `graphify.sourceRepoTag` when rendering
   graph-derived claims.

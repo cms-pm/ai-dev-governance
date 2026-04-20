@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.5.2
+governanceVersion: v0.6.0
 profile: strict-baseline
 adapters:
   - providers/claude
@@ -48,3 +48,11 @@ graphify:
     - "src/**"
     - "secrets/**"
   sourceRepoTag: ai-dev-governance
+  promotionThreshold: "p90"
+  promotionFloor: 3
+  promotionCeiling: 100
+  autoTune: false
+  pinnedNodes: []
+  inferredEdgeThreshold: null
+  crossRepoAuthority: []
+  annotateApprovalStatus: false

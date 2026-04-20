@@ -2,6 +2,30 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.6.0] - 2026-04-19
+
+### Added
+- Graphify manifest contract support for promotion/import knobs:
+  - `promotionThreshold`
+  - `promotionFloor`
+  - `promotionCeiling`
+  - `autoTune`
+  - `pinnedNodes`
+  - `inferredEdgeThreshold`
+  - `crossRepoAuthority`
+  - `annotateApprovalStatus`
+- Graphify validation script: `scripts/validate_graphify.sh`.
+- Repo-local RTK wrapper at `scripts/rtk-local.sh`.
+- Graphify MCP operations runbook: `runbooks/GRAPHIFY_MCP_RUNBOOK.md`.
+- Routing grammar documentation for canonical `route:` hand-off lines.
+
+### Changed
+- Promoted the root governance manifest to `v0.6.0` and enabled graphify dogfood configuration in this repo.
+- Updated graphify adapter guidance to define the routing contract, promotion knobs, and inferred-edge safety floor.
+- Updated board packet and board review operations docs to include structural context assembly.
+- Updated release and migration guidance for graphify-enabled Astaire routing and validation.
+- Normalized RTK repo-local references away from stale wrapper names toward `scripts/rtk-local.sh`.
+
 ## [0.5.2] - 2026-04-07
 
 ### Added

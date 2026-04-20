@@ -77,3 +77,23 @@ If upgrading from v0.5.1:
 2. When project-specific tightening is needed, place it in `docs/governance/amendments/` in the consumer repository rather than modifying the shared submodule.
 3. Add `docs/governance/amendments/README.md` using `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md` when the overlay is present.
 4. Run the validator from the consumer root, or set `GOVERNANCE_CONSUMER_ROOT`, so optional overlay checks can execute.
+
+## v0.6.0 Graphify + Astaire Routing Integration
+
+If upgrading from v0.5.x:
+
+1. Update `governanceVersion` to `v0.6.0`.
+2. Add the `graphify` manifest block if the consumer uses graphify.
+3. Set `collectionStrategy`, `securityMode`, `allowlist`, `sourceRepoTag`, and `mcpSidecar`.
+4. If the consumer promotes graph structure into Astaire, also set:
+   - `promotionThreshold`
+   - `promotionFloor`
+   - `promotionCeiling`
+   - `autoTune`
+   - `pinnedNodes`
+   - `inferredEdgeThreshold`
+   - `crossRepoAuthority`
+   - `annotateApprovalStatus`
+5. Replace free-text graphify routing assumptions with canonical `route:` parsing.
+6. Add `scripts/validate_graphify.sh` to release and CI validation when graphify promotion is enabled.
+7. Prefer `scripts/rtk-local.sh` over legacy repo-local wrapper names for RTK evidence capture.

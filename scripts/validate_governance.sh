@@ -39,6 +39,7 @@ required_files=(
   "runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md"
   "runbooks/SUBMODULE_CONSUMER_RUNBOOK.md"
   "runbooks/RTK_ADOPTION_RUNBOOK.md"
+  "runbooks/GRAPHIFY_MCP_RUNBOOK.md"
   "runbooks/COMPATIBILITY_MATRIX.md"
   "adapters/tooling/RTK_CONTEXT_ADAPTER.md"
   "templates/BOARD_SELECTION_DOSSIER_TEMPLATE.md"
@@ -52,7 +53,9 @@ required_files=(
   "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
   "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
   "scripts/validate_chunk_scope.sh"
+  "scripts/validate_graphify.sh"
   "scripts/validate_astaire_wiring.sh"
+  "scripts/rtk-local.sh"
   "templates/ASTAIRE_CLI_SNIPPET.md"
   "runbooks/ASTAIRE_ACCESS.md"
   "CLAUDE.md"
@@ -157,6 +160,11 @@ rg -q "RTK_LOCAL_WRAPPER_TEMPLATE.sh" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md || 
 rg -q "scripts/rtk-local.sh" templates/RTK_INSTRUCTIONS_TEMPLATE.md || fail "RTK instructions template must mention repo-local wrapper"
 rg -q "scripts/rtk-local.sh" templates/AGENTS_RTK_SNIPPET_TEMPLATE.md || fail "AGENTS template must mention repo-local wrapper"
 pass "RTK documentation consistency"
+
+rg -q "route: tentacle=" adapters/tooling/GRAPHIFY_CONTEXT_ADAPTER.md || fail "Graphify adapter must define the canonical route grammar"
+rg -q "inferredEdgeThreshold" adapters/tooling/GRAPHIFY_CONTEXT_ADAPTER.md || fail "Graphify adapter must document inferredEdgeThreshold"
+rg -q "0.85" adapters/tooling/GRAPHIFY_CONTEXT_ADAPTER.md || fail "Graphify adapter must recommend the inferred edge floor"
+pass "Graphify routing and threshold documentation"
 
 python3 - "$version" <<'PY' || fail "Manifest RTK policy checks failed"
 import json

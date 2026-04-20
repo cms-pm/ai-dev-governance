@@ -229,6 +229,51 @@
         },
         "mcpSidecar": {
           "type": "boolean"
+        },
+        "promotionThreshold": {
+          "type": "string",
+          "pattern": "^(p(80|85|90|95)|absolute:[0-9]+)$"
+        },
+        "promotionFloor": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "promotionCeiling": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "autoTune": {
+          "type": "boolean"
+        },
+        "pinnedNodes": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "inferredEdgeThreshold": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "crossRepoAuthority": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["repo", "namespaces"],
+            "properties": {
+              "repo": {"type": "string", "minLength": 1},
+              "namespaces": {
+                "type": "array",
+                "items": {"type": "string", "minLength": 1},
+                "minItems": 1,
+                "uniqueItems": true
+              }
+            }
+          }
+        },
+        "annotateApprovalStatus": {
+          "type": "boolean"
         }
       }
     }

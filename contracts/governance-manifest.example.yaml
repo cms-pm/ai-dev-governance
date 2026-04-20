@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.5.2
+governanceVersion: v0.6.0
 profile: strict-baseline+embedded
 adapters:
   - providers/codex
@@ -77,5 +77,26 @@ boardReview:
     rosterPath: docs/governance/board/board-composition.yaml
     approvalRecordPath: docs/governance/board/board-composition-approval.md
     minimumAlternatesPerSeat: 1
+graphify:
+  collectionStrategy: split
+  securityMode: restricted
+  allowlist:
+    - "core/**/*.md"
+    - "adapters/**/*.md"
+    - "runbooks/**/*.md"
+    - "templates/**/*.md"
+    - "README.md"
+    - "astaire/src/**/*.py"
+    - "astaire/tests/**/*.py"
+  sourceRepoTag: ai-dev-governance
+  mcpSidecar: false
+  promotionThreshold: "p90"
+  promotionFloor: 3
+  promotionCeiling: 100
+  autoTune: false
+  pinnedNodes: []
+  inferredEdgeThreshold: null
+  crossRepoAuthority: []
+  annotateApprovalStatus: false
 updateCadence: monthly
 compatibility: strict
