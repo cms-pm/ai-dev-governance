@@ -1,6 +1,6 @@
 # AI Dev Governance
 
-`ai-dev-governance` is a standalone, internal governance repository for AI-assisted software development.
+`ai-dev-governance` is a reusable governance baseline for AI-assisted software development.
 
 ## Governance Principles
 
@@ -22,6 +22,43 @@ paste into `AGENTS.md` / `CLAUDE.md`.
 ## Purpose
 
 This repository provides a strict baseline that teams can reuse across projects via Git submodule, with provider, tooling, and project-specific adapters layered on top.
+
+## Release Branch Model
+
+The consumer-facing release branch is intentionally a tabula rasa baseline.
+It keeps the reusable governance product and removes the source repository's
+own delivery record.
+
+What stays in the release branch:
+
+- `core/`, `contracts/`, `runbooks/`, `templates/`, `scripts/`, `validation/`
+- provider/tooling adapters
+- nested tentacle submodules such as `astaire/` and `graphify/`
+- versioning, changelog, migration, and compatibility documents
+
+What does not ship in the release branch:
+
+- this repository's own `docs/planning/`
+- this repository's own `docs/releases/`
+- this repository's own `docs/validation/`
+- local dogfood inputs such as `raw/`
+- generated graph artifacts such as `graphify-out/`
+
+Use `scripts/prepare_release_branch.sh --apply` when cutting a consumer-facing
+release branch from a development branch that still contains source-repo
+artifacts.
+
+## Integrated Stack
+
+- **Astaire** is the broker of context. It keeps durable memory in SQLite,
+  answers cheap questions at L0, and routes deeper requests instead of sending
+  agents straight to raw files.
+- **RTK** is the token-discipline layer. Shell-visible inspection, search, git,
+  lint, and release workflows should flow through RTK-backed paths when
+  possible.
+- **graphify** adds structural-operational understanding. It plugs into
+  Astaire as an explicit structural tentacle for planning, refactoring, feature
+  work, and bug hunting.
 
 ## Repository Layout
 
@@ -53,6 +90,17 @@ Consuming repositories MAY also maintain an optional local overlay at `docs/gove
 5. For portable repo-local RTK tracking, use `templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh` with `.rtk/history.db` ignored from version control.
 6. If project-specific governance tightening is needed, add an optional local overlay at `docs/governance/amendments/` in the consuming repo.
 7. Validate governance with `scripts/validate_governance.sh` from the consumer repo root when possible so optional overlay checks can run too.
+
+Use recursive submodule init when bootstrapping because tentacles such as
+`astaire/` and `graphify/` are nested under this governance repo and therefore
+arrive as sub-sub-modules inside the consuming project.
+
+When the consuming repo enables graphify, the intended flow is:
+
+1. Run `scripts/run_graphify.sh` instead of invoking graphify directly.
+2. Validate the graph posture with `scripts/validate_graphify.sh`.
+3. Import the structural slice into Astaire through `.astaire/astaire graphify-import --root .`.
+4. Let agents start from Astaire L0 and follow the emitted `route:` lines rather than reading graph artifacts ad hoc.
 
 ## Required Core Policies
 

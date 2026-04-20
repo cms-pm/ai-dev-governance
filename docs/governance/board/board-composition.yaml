@@ -1,0 +1,5 @@
+status: placeholder
+note: |
+  Consumers should replace this file with their own project-local board
+  composition record in the product repository, not inside the governance
+  submodule.

@@ -7,15 +7,20 @@ git submodule add <PRIVATE_GIT_URL>/ai-dev-governance.git .governance/ai-dev-gov
 git submodule update --init --recursive
 ```
 
+Use `--recursive` from the start. Astaire is already nested under the
+governance repo, and future tentacles may be added the same way, so consumers
+should treat the governance module as a parent of sub-sub-modules rather than a
+flat payload.
+
 ## Pin to Release Tag
 
 ```bash
 cd .governance/ai-dev-governance
 git fetch --tags
-git checkout v0.5.2
+git checkout v0.6.0
 cd -
 git add .governance/ai-dev-governance
-git commit -m "Pin governance submodule to v0.5.2"
+git commit -m "Pin governance submodule to v0.6.0"
 ```
 
 ## Scheduled Bump
@@ -63,6 +68,9 @@ git commit -m "Rollback governance submodule pin"
 - If the consumer needs stricter project-local interpretation, place it in `docs/governance/amendments/` instead of editing the shared submodule.
 - When using a local overlay, create `docs/governance/amendments/README.md` from `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md`.
 - Run `scripts/validate_governance.sh` from the consumer root when possible so optional overlay checks run against `docs/governance/amendments/`.
+- Expect the pinned release branch/tag to be a clean baseline. Consumer-local
+  planning packets, release evidence, validation logs, and board records belong
+  in the product repository, not in the governance submodule.
 
 ## Wire Astaire Access
 
@@ -82,11 +90,19 @@ cat > .astaire/astaire << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
+UV_CACHE_DIR_DEFAULT="${REPO_ROOT}/.astaire/.uv-cache"
+if ! command -v uv >/dev/null 2>&1; then
+  echo "[astaire-wrapper] FAIL: 'uv' is required but was not found on PATH." >&2
+  exit 127
+fi
+mkdir -p "${UV_CACHE_DIR_DEFAULT}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${UV_CACHE_DIR_DEFAULT}}"
 exec uv run --project "${REPO_ROOT}/.governance/ai-dev-governance/astaire" \
   astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
 EOF
 chmod +x .astaire/astaire
 echo '.astaire/memory_palace.db' >> .gitignore
+echo '.astaire/.uv-cache/' >> .gitignore
 ```
 
 Adjust the submodule mount path if the governance submodule is not at
@@ -100,7 +116,9 @@ Adjust the submodule mount path if the governance submodule is not at
 ```
 
 `startup` runs `init → scan → sync → status`. A successful run writes
-the first L0 projection to `.astaire/memory_palace.db`.
+the first L0 projection to `.astaire/memory_palace.db`. The wrapper
+also creates a repo-local `uv` cache at `.astaire/.uv-cache/` unless
+`UV_CACHE_DIR` is already set.
 
 ### Step 3 — Inline the CLI snippet into AGENTS.md / CLAUDE.md
 
@@ -146,6 +164,7 @@ blocking agent flow on hook failure.
 
 - [ ] `.astaire/astaire` wrapper executable at repo root.
 - [ ] `.astaire/memory_palace.db` in `.gitignore`.
+- [ ] `.astaire/.uv-cache/` in `.gitignore`.
 - [ ] `AGENTS.md` / `CLAUDE.md` contains the inlined Astaire CLI snippet.
 - [ ] `.astaire/astaire startup --root .` exits zero.
 - [ ] `scripts/validate_governance.sh` passes (if present in consumer).
