@@ -466,20 +466,38 @@ if [[ "$MODE" == "retrofit" ]]; then
     info "governance.yaml already exists — not overwritten"
   fi
 
-  # AGENTS.md / CLAUDE.md: update or create bootstrap block
+  # Bootstrap block — write to provider-appropriate file
   AGENT_FILE=""
-  for f in AGENTS.md CLAUDE.md; do
-    [[ -f "$f" ]] && { AGENT_FILE="$f"; break; }
-  done
-  if [[ -z "$AGENT_FILE" ]]; then
+  if [[ -f "governance.yaml" ]] && grep -q "providers/claude" governance.yaml; then
+    AGENT_FILE="CLAUDE.md"
+  elif [[ -f "governance.yaml" ]] && grep -q "providers/codex" governance.yaml; then
     AGENT_FILE="AGENTS.md"
+  else
+    for f in AGENTS.md CLAUDE.md; do
+      [[ -f "$f" ]] && { AGENT_FILE="$f"; break; }
+    done
+    [[ -n "$AGENT_FILE" ]] || AGENT_FILE="AGENTS.md"
   fi
   update_bootstrap_block "$AGENT_FILE"
+  if [[ -f "governance.yaml" ]] && grep -q "providers/codex" governance.yaml && \
+     grep -q "providers/claude" governance.yaml; then
+    update_bootstrap_block "AGENTS.md"
+  fi
 
   echo ""
   if [[ "$DRIFT_FOUND" == true ]] && [[ "$FORCE" == false ]]; then
     info "Drift detected. Re-run with --force to apply."
   elif [[ "$FORCE" == true ]]; then
+    BOOTSTRAP_ASTAIRE_STATUS="PENDING"
+    if [[ -x ".astaire/astaire" ]]; then
+      info "Running .astaire/astaire startup --root ."
+      if .astaire/astaire startup --root . 2>&1 | grep -v "^INFO"; then
+        BOOTSTRAP_ASTAIRE_STATUS="PASS"
+      else
+        BOOTSTRAP_ASTAIRE_STATUS="FAIL"
+        fail "Astaire bootstrap failed. Resolve wrapper/runtime issues before treating retrofit as complete."
+      fi
+    fi
     write_evidence_bundle
     info "Retrofit complete. Run 'scripts/validate_bootstrap.sh' to verify."
   else
