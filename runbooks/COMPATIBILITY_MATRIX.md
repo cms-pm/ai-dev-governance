@@ -2,7 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required | Tentacle Pins |
 |--------------------|------------------------|--------------------|---------------|
-| v0.6.0 (planned)   | strict                 | Yes (adds `graphify` manifest object with securityMode/collectionStrategy/allowlist; strict Claude/Codex consumers wire Astaire L0 as port-of-first-resort; bridge-SHA exception required for astaire until upstream v0.3.0 tag) | `astaire` @ `c740232` (bridge-SHA, exception `astaire-sha-bridge-v0.6.0`, expires 2026-07-19); `graphify` @ `v1.0.0` (`0a31c08`) |
+| v0.6.0 (planned)   | strict                 | Yes (adds `graphify` manifest object with securityMode/collectionStrategy/allowlist; strict Claude/Codex consumers wire Astaire L0 as port-of-first-resort) | `astaire` @ `v0.2.1` (`1199246`); `graphify` @ `v1.0.0` (`0a31c08`) |
 | v0.5.x             | strict                 | Yes (strict Claude/Codex consumers must add `tooling/rtk`, retain RTK evidence, may adopt the repo-local RTK wrapper pattern from v0.5.1 onward, and may use consumer-local overlays from v0.5.2 onward) | — |
 | v0.4.x             | strict                 | Yes (adopt chunk-scope CI gate and atomic SCN scope policy) | — |
 | v0.3.x             | strict                 | Yes (add `automation`, `boardReview.selection`, and `boardReview.composition` in strict baseline manifests) | — |

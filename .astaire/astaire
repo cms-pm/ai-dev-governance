@@ -5,6 +5,20 @@ script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 repo_root="$(cd "${script_dir}/.." && pwd)"
 astaire_dir="${repo_root}/astaire"
 db_path="${repo_root}/.astaire/memory_palace.db"
+caller_cwd="$(pwd)"
+
+# Rewrite any relative --root argument to an absolute path resolved from the
+# caller's CWD, before we cd into the astaire subdir for uv run.
+args=()
+prev=""
+for arg in "$@"; do
+  if [[ "$prev" == "--root" && "$arg" != /* ]]; then
+    args+=("$(cd "${caller_cwd}/${arg}" 2>/dev/null && pwd || echo "${caller_cwd}/${arg}")")
+  else
+    args+=("$arg")
+  fi
+  prev="$arg"
+done
 
 cd "${astaire_dir}"
-exec uv run astaire --db "${db_path}" "$@"
+exec uv run astaire --db "${db_path}" "${args[@]}"
