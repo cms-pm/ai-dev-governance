@@ -75,19 +75,45 @@ enforceable by the time Astaire is extended further.
 - **Scope.** Ship `templates/ASTAIRE_CLI_SNIPPET.md` (produced under SCN-A)
   with embedding instructions for consumer repos. Extend
   `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` with a "Wire Astaire access" step
-  pointing at the template. Add a consumer acceptance check demonstrating the
-  snippet is referenced from the consumer's `AGENTS.md` / `CLAUDE.md`.
-- **Acceptance IDs.** SCN-C-01.
+  pointing at the template. Add `scripts/validate_astaire_wiring.sh` — a
+  provider-aware script that inspects any repo (consumer or governance source)
+  for a correctly wired Astaire session surface. The governance repo is
+  **consumer-zero**: it MUST pass the script before SCN-C is considered done.
+  For Claude consumers the expected bootstrap file is `CLAUDE.md`; for Codex
+  consumers `AGENTS.md`; detected from `governance.yaml` adapters when present,
+  falling back to "at least one of the two" when no manifest exists at the root.
+- **Acceptance IDs.** SCN-C-01, SCN-C-02, SCN-C-03.
 - **Acceptance criteria.**
-  - Template contains copy-pasteable CLI surface + the Astaire-first rule
-    from SCN-B, scoped to the consumer's repo-local wrapper path.
-  - `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` has an "Astaire access" section
-    with pin-aware instructions.
-  - Consumer validation fixture demonstrates the snippet referenced.
-- **Validation method.** Manual review + fixture check under `validation/`.
-- **Risks.** Consumer ignores the snippet. Mitigation: strict-baseline profile
-  rejects consumers whose provider adapters lack the SCN-B rule.
-- **Rollback.** Remove template and consumer runbook section.
+  - SCN-C-01: Template contains copy-pasteable CLI surface + the Astaire-first
+    rule from SCN-B, scoped to the consumer's repo-local wrapper path.
+    `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` has an "Astaire access" section
+    with pin-aware instructions. Consumer validation fixture under
+    `validation/fixtures/consumer-astaire/` demonstrates the snippet referenced.
+  - SCN-C-02: `scripts/validate_astaire_wiring.sh` exists and is executable.
+    It checks: (a) `.astaire/astaire` wrapper is executable; (b) the correct
+    bootstrap file(s) — `CLAUDE.md` for `providers/claude`,
+    `AGENTS.md` for `providers/codex`, at least one when no manifest — contain
+    the `.astaire/astaire` invocation marker; (c) `.gitignore` excludes
+    `memory_palace.db`. Exits non-zero on any failure with a [FAIL] line naming
+    the fix. `validate_governance.sh` lists the script as a required file.
+  - SCN-C-03: Running `scripts/validate_astaire_wiring.sh` from the governance
+    repo root exits zero. The governance repo `CLAUDE.md` carries the Astaire
+    CLI snippet (adapted: wrapper path identical, "full surface" link points to
+    `runbooks/ASTAIRE_ACCESS.md` directly rather than the consumer submodule
+    path). This is the canonical live fixture; the static fixture under
+    `validation/fixtures/consumer-astaire/AGENTS.md` remains as a Codex-path
+    reference example.
+- **Validation method.** Automated — `scripts/validate_astaire_wiring.sh` run
+  from the governance repo root exits zero; CI can run it for any consumer
+  that sources the script from the submodule.
+- **Risks.** Consumer ignores the snippet (R-C1). Mitigation: strict-baseline
+  profile rejects consumers whose provider adapters lack the SCN-B rule; the
+  script provides a runnable gate. Bootstrap file absent on fresh clone (R-C2):
+  script exits non-zero immediately and names the missing file and the fix.
+  Provider detection wrong when no governance.yaml (R-C3): fallback accepts
+  either CLAUDE.md or AGENTS.md so the script never false-fails a valid setup.
+- **Rollback.** Remove `scripts/validate_astaire_wiring.sh`, `CLAUDE.md`, and
+  the consumer runbook section. Static fixture under `validation/` is inert.
 - **Owner.** Methodology Steward.
 - **Risk tier.** low.
 - **Atomic PR scope.** `SCN-C`.
@@ -193,7 +219,7 @@ enforceable by the time Astaire is extended further.
 - **Acceptance IDs.** SCN-2.2-01.
 - **Acceptance criteria.**
   - Hook fires on prompt submission and writes a log line confirming
-    `astaire startup` ran.
+    `.astaire/astaire startup` ran.
   - Post-commit scan picks up a new planning artifact within one session.
   - Timeouts set to 10000ms so hooks never block agent flow.
 - **Validation method.** Manual — trigger a session, inspect hook log; commit
@@ -235,7 +261,7 @@ enforceable by the time Astaire is extended further.
 
 - **Scope.** Update `runbooks/RELEASE_PROCESS.md` and `core/EVIDENCE_CONTRACT.md`
   (if SCN-1.6 has not already added this field) to require an L0 snapshot and
-  `astaire lint` health report in each release bundle. Add a release script
+  `.astaire/astaire lint` health report in each release bundle. Add a release script
   target that emits both.
 - **Acceptance IDs.** SCN-2.4-01.
 - **Acceptance criteria.**

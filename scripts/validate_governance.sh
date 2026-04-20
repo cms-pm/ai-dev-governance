@@ -52,6 +52,10 @@ required_files=(
   "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
   "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
   "scripts/validate_chunk_scope.sh"
+  "scripts/validate_astaire_wiring.sh"
+  "templates/ASTAIRE_CLI_SNIPPET.md"
+  "runbooks/ASTAIRE_ACCESS.md"
+  "CLAUDE.md"
   "validation/CONSISTENCY_RULES.md"
 )
 
@@ -59,6 +63,10 @@ for f in "${required_files[@]}"; do
   [[ -f "$f" ]] || fail "Missing required file: $f"
 done
 pass "Required files present"
+
+bash "$ROOT_DIR/scripts/validate_astaire_wiring.sh" --root "$ROOT_DIR" \
+  || fail "Astaire wiring check failed (run scripts/validate_astaire_wiring.sh for details)"
+pass "Astaire wiring (governance source self-check)"
 
 version="$(tr -d '[:space:]' < VERSION)"
 [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || fail "VERSION is not SemVer (expected x.y.z)"
