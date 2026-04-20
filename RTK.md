@@ -1,0 +1,16 @@
+# RTK Local Instructions
+
+- Prefer shell-first workflows for broad repo exploration, git inspection, test
+  runs, linting, and container status.
+- Use RTK-backed commands such as `rtk ls`, `rtk read`, `rtk grep`, `rtk git status`,
+  `rtk git diff`, `rtk pytest`, and `rtk docker ps` when the shell path is
+  available.
+- Prefer `scripts/rtk-local.sh` when collecting RTK evidence or when repo-local
+  tracking matters; it sets `RTK_DB_PATH` to `./.rtk/history.db`.
+- Keep native internal inspection tools for narrow targeted lookups, not for
+  bulk exploration.
+- For Codex consumers, verify local reinforcement with
+  `scripts/rtk-local.sh init --show --codex`.
+- Preserve RTK evidence for release readiness: `rtk init --show --codex`,
+  `rtk gain`, `rtk discover`, and one live `rtk gain --history` proof after a
+  repo-local RTK command when repo-local tracking is enabled.

@@ -6,6 +6,15 @@ repo_root="$(cd "${script_dir}/.." && pwd)"
 astaire_dir="${repo_root}/astaire"
 db_path="${repo_root}/.astaire/memory_palace.db"
 caller_cwd="$(pwd)"
+uv_cache_dir_default="${repo_root}/.astaire/.uv-cache"
+
+if ! command -v uv >/dev/null 2>&1; then
+  echo "[astaire-wrapper] FAIL: 'uv' is required but was not found on PATH." >&2
+  exit 127
+fi
+
+mkdir -p "${uv_cache_dir_default}"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${uv_cache_dir_default}}"
 
 # Rewrite any relative --root argument to an absolute path resolved from the
 # caller's CWD, before we cd into the astaire subdir for uv run.

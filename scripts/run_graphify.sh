@@ -15,41 +15,72 @@ set -euo pipefail
 die() { echo "[run_graphify] FAIL: $*" >&2; exit 1; }
 info() { echo "[run_graphify] $*" >&2; }
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+CALLER_ROOT="${GRAPHIFY_ROOT:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+ROOT_DIR="${SCRIPT_ROOT}"
+if [[ -f "${CALLER_ROOT}/governance.yaml" ]]; then
+  ROOT_DIR="${CALLER_ROOT}"
+fi
 MANIFEST="${GOVERNANCE_MANIFEST:-${ROOT_DIR}/governance.yaml}"
-EXCEPTIONS="${GOVERNANCE_EXCEPTIONS:-${ROOT_DIR}/docs/governance/exceptions.yaml}"
+PREFLIGHT=false
+
+if [[ "${1:-}" == "--preflight" ]]; then
+  PREFLIGHT=true
+  shift
+fi
 
 [[ -f "$MANIFEST" ]] || die "manifest not found: $MANIFEST"
+CONTEXT_JSON="$(
+  python3 "${ROOT_DIR}/scripts/export_governance_context.py" \
+    --root "${ROOT_DIR}" \
+    --manifest "${MANIFEST}"
+)"
 
-# Naive YAML extractor for the graphify block. Keeps the wrapper
-# dependency-free (no python/yq requirement at runtime).
-extract_scalar() {
+extract_context_scalar() {
   local key="$1"
-  awk -v k="$key" '
-    /^graphify:/ { in_g=1; next }
-    in_g && /^[^[:space:]]/ { in_g=0 }
-    in_g && $1 == k":" { sub(/^[[:space:]]*[^:]+:[[:space:]]*/,""); print; exit }
-  ' "$MANIFEST"
+  GOVERNANCE_CONTEXT_JSON="$CONTEXT_JSON" python3 - "$key" <<'PY'
+import json
+import os
+import sys
+
+graphify = json.loads(os.environ["GOVERNANCE_CONTEXT_JSON"]).get("graphify", {})
+value = graphify.get(sys.argv[1], "")
+if value is None:
+    value = ""
+if isinstance(value, bool):
+    print("true" if value else "false")
+else:
+    print(value)
+PY
 }
 
-extract_allowlist() {
-  awk '
-    /^graphify:/ { in_g=1; next }
-    in_g && /^[^[:space:]]/ { in_g=0 }
-    in_g && /^[[:space:]]+allowlist:/ { in_a=1; next }
-    in_a && /^[[:space:]]+-[[:space:]]*/ {
-      sub(/^[[:space:]]+-[[:space:]]*/,"")
-      gsub(/"/,"")
-      print
-      next
-    }
-    in_a && /^[[:space:]]+[a-zA-Z]/ { in_a=0 }
-  ' "$MANIFEST"
+extract_context_list() {
+  local key="$1"
+  GOVERNANCE_CONTEXT_JSON="$CONTEXT_JSON" python3 - "$key" <<'PY'
+import json
+import os
+import sys
+
+graphify = json.loads(os.environ["GOVERNANCE_CONTEXT_JSON"]).get("graphify", {})
+for item in graphify.get(sys.argv[1], []):
+    print(item)
+PY
 }
 
-MODE="$(extract_scalar securityMode)"
-STRATEGY="$(extract_scalar collectionStrategy)"
-SOURCE_REPO_TAG="$(extract_scalar sourceRepoTag)"
+EXCEPTIONS="$(
+  GOVERNANCE_CONTEXT_JSON="$CONTEXT_JSON" python3 - <<'PY'
+import json
+import os
+
+context = json.loads(os.environ["GOVERNANCE_CONTEXT_JSON"])
+print(context.get("exceptionsRegistryPath") or "")
+PY
+)"
+EXCEPTIONS="${GOVERNANCE_EXCEPTIONS:-${EXCEPTIONS:-${ROOT_DIR}/docs/governance/exceptions.yaml}}"
+
+MODE="$(extract_context_scalar securityMode)"
+STRATEGY="$(extract_context_scalar collectionStrategy)"
+SOURCE_REPO_TAG="$(extract_context_scalar sourceRepoTag)"
 [[ -n "$MODE" ]] || die "graphify.securityMode not set in $MANIFEST"
 [[ -n "$STRATEGY" ]] || die "graphify.collectionStrategy not set in $MANIFEST"
 
@@ -67,7 +98,7 @@ DENYLIST=(
   "**/*.kdbx"
 )
 
-mapfile -t ALLOWLIST < <(extract_allowlist)
+mapfile -t ALLOWLIST < <(extract_context_list allowlist)
 [[ ${#ALLOWLIST[@]} -gt 0 ]] || die "graphify.allowlist empty"
 
 # Fail-closed: full mode requires an exception entry matching graphify.full.
@@ -127,6 +158,289 @@ esac
 
 [[ -n "$SOURCE_REPO_TAG" ]] && GRAPHIFY_FLAGS+=(--source-repo "$SOURCE_REPO_TAG")
 
+resolve_external_graphify_runner() {
+  if [[ -n "${GRAPHIFY:-}" ]]; then
+    [[ ! -d "${GRAPHIFY}" ]] || die "GRAPHIFY override points to a directory: ${GRAPHIFY}"
+    if [[ -x "${GRAPHIFY}" ]]; then
+      GRAPHIFY_RUNNER=("${GRAPHIFY}")
+      return
+    fi
+    if command -v "${GRAPHIFY}" >/dev/null 2>&1; then
+      GRAPHIFY_RUNNER=("$(command -v "${GRAPHIFY}")")
+      return
+    fi
+    die "GRAPHIFY override is not executable or not found on PATH: ${GRAPHIFY}"
+  fi
+}
+
+local_code_only_fallback() {
+  local target="${1:-.}"
+  local python_bin="python3"
+  if [[ -x "${ROOT_DIR}/.venv/bin/python" ]]; then
+    python_bin="${ROOT_DIR}/.venv/bin/python"
+  fi
+  ROOT_DIR="$ROOT_DIR" \
+  GRAPHIFY_TARGET="$target" \
+  GRAPHIFY_MODE="$MODE" \
+  GRAPHIFY_SOURCE_REPO_TAG="${SOURCE_REPO_TAG:-}" \
+  GRAPHIFY_ALLOWLIST="$(printf '%s\n' "${ALLOWLIST[@]}")" \
+  "${python_bin}" - <<'PY'
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+from datetime import datetime, timezone
+from pathlib import Path, PurePosixPath
+
+
+def fail(message: str) -> None:
+    raise SystemExit(f"[run_graphify] FAIL: {message}")
+
+
+root = Path(os.environ["ROOT_DIR"]).resolve()
+target = Path(os.environ["GRAPHIFY_TARGET"]).resolve()
+mode = os.environ["GRAPHIFY_MODE"]
+allowlist = [line for line in os.environ.get("GRAPHIFY_ALLOWLIST", "").splitlines() if line]
+source_repo = os.environ.get("GRAPHIFY_SOURCE_REPO_TAG") or root.name
+
+if mode == "full":
+    fail("securityMode=full requires an external semantic graphify runner; set GRAPHIFY to an executable that supports semantic extraction")
+
+if not target.exists():
+    fail(f"target path does not exist: {target}")
+
+try:
+    import sys
+    sys.path.insert(0, str(root / "graphify"))
+    from graphify.detect import detect
+except Exception as exc:  # pragma: no cover - exercised via shell
+    fail(
+        "local graphify module is unavailable: "
+        f"{exc}. Supported fix path: `uv venv .venv && .venv/bin/python -m pip install -e ./graphify` "
+        "from the repo root, or set GRAPHIFY to a semantic external runner."
+    )
+
+
+def is_allowed(path: Path) -> bool:
+    try:
+        rel = path.resolve().relative_to(root).as_posix()
+    except ValueError:
+        return False
+    if not allowlist:
+        return True
+    pure = PurePosixPath(rel)
+    return any(pure.match(pattern) for pattern in allowlist)
+
+
+detection = detect(target)
+code_files = [
+    Path(path_str)
+    for path_str in detection.get("files", {}).get("code", [])
+    if is_allowed(Path(path_str))
+]
+
+if not code_files:
+    fail(
+        "no allowlisted code files matched the current manifest. The local shell fallback can only build code graphs; "
+        "docs, papers, and images require the Claude /graphify skill path or another semantic extractor."
+    )
+
+try:
+    from graphify.extract import extract
+    from graphify.build import build_from_json
+    import networkx as nx
+    from networkx.readwrite import json_graph
+except Exception as exc:  # pragma: no cover - exercised via shell
+    fail(
+        "graphify runtime dependencies are missing for local fallback: "
+        f"{exc}. Supported fix path: `uv venv .venv && .venv/bin/python -m pip install -e ./graphify` "
+        "from the repo root."
+    )
+
+result = extract(code_files)
+graph = build_from_json(result)
+components = list(nx.connected_components(graph))
+communities = {idx: sorted(component) for idx, component in enumerate(components)}
+
+degree_rows = sorted(
+    (
+        {
+            "id": node_id,
+            "label": graph.nodes[node_id].get("label", node_id),
+            "degree": int(graph.degree(node_id)),
+            "source_file": graph.nodes[node_id].get("source_file", ""),
+        }
+        for node_id in graph.nodes
+    ),
+    key=lambda row: (-row["degree"], row["id"]),
+)
+top_gods = degree_rows[: min(10, len(degree_rows))]
+
+bridges = []
+for node_id in (nx.articulation_points(graph) if graph.number_of_nodes() else []):
+    bridges.append(
+        {
+            "id": node_id,
+            "label": graph.nodes[node_id].get("label", node_id),
+            "degree": int(graph.degree(node_id)),
+        }
+    )
+bridges = sorted(bridges, key=lambda row: (-row["degree"], row["id"]))[:5]
+
+filtered_detection = {
+    "files": {"code": [str(path) for path in code_files], "document": [], "paper": [], "image": []},
+    "total_files": len(code_files),
+    "total_words": sum(len(path.read_text(errors="ignore").split()) for path in code_files),
+    "needs_graph": True,
+    "warning": None,
+    "skipped_sensitive": detection.get("skipped_sensitive", []),
+}
+
+out_dir = root / "graphify-out"
+out_dir.mkdir(parents=True, exist_ok=True)
+report_lines = [
+    "# Graph Report",
+    "",
+    f"Generated from local shell fallback for `{target}`.",
+    "",
+    "## Summary",
+    "",
+    f"- Nodes: {graph.number_of_nodes()}",
+    f"- Edges: {graph.number_of_edges()}",
+    f"- Communities: {len(communities)}",
+    f"- Source repo: {source_repo}",
+    f"- Extraction mode: code-only local fallback",
+    "",
+    "## God Nodes",
+    "",
+]
+if top_gods:
+    report_lines.extend(
+        f"- `{row['label']}` (`{row['id']}`): degree {row['degree']}, source `{row['source_file'] or '-'}`"
+        for row in top_gods
+    )
+else:
+    report_lines.append("- (none)")
+
+report_lines.extend(["", "## Surprising Connections", ""])
+if bridges:
+    report_lines.extend(
+        f"- `{row['label']}` (`{row['id']}`) is an articulation point with degree {row['degree']}"
+        for row in bridges
+    )
+else:
+    report_lines.append("- (none)")
+
+report_lines.extend(["", "## Notes", "", "- Semantic document/image extraction was not run in this fallback mode."])
+(out_dir / "GRAPH_REPORT.md").write_text("\n".join(report_lines) + "\n", encoding="utf-8")
+
+node_community = {node_id: cid for cid, members in communities.items() for node_id in members}
+data = json_graph.node_link_data(graph, edges="links")
+for node in data["nodes"]:
+    node["community"] = node_community.get(node["id"])
+
+digest = hashlib.sha256()
+for path in sorted(code_files):
+    digest.update(path.resolve().relative_to(root).as_posix().encode("utf-8"))
+    digest.update(path.read_bytes())
+
+data["source_repo"] = source_repo
+data["graph_version"] = digest.hexdigest()[:16]
+data["graph_schema_version"] = "graphify-local-shell-v1"
+data["run_date"] = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+
+(out_dir / "graph.json").write_text(json.dumps(data, indent=2), encoding="utf-8")
+print(f"[run_graphify] local fallback wrote {out_dir / 'graph.json'} and {out_dir / 'GRAPH_REPORT.md'}")
+PY
+}
+
+local_code_only_preflight() {
+  local target="${1:-.}"
+  local python_bin="python3"
+  if [[ -x "${ROOT_DIR}/.venv/bin/python" ]]; then
+    python_bin="${ROOT_DIR}/.venv/bin/python"
+  fi
+  ROOT_DIR="$ROOT_DIR" \
+  GRAPHIFY_TARGET="$target" \
+  GRAPHIFY_MODE="$MODE" \
+  GRAPHIFY_SOURCE_REPO_TAG="${SOURCE_REPO_TAG:-}" \
+  GRAPHIFY_ALLOWLIST="$(printf '%s\n' "${ALLOWLIST[@]}")" \
+  "${python_bin}" - <<'PY'
+from __future__ import annotations
+
+import os
+from pathlib import Path, PurePosixPath
+
+
+def fail(message: str) -> None:
+    raise SystemExit(f"[run_graphify] FAIL: {message}")
+
+
+root = Path(os.environ["ROOT_DIR"]).resolve()
+target = Path(os.environ["GRAPHIFY_TARGET"]).resolve()
+mode = os.environ["GRAPHIFY_MODE"]
+allowlist = [line for line in os.environ.get("GRAPHIFY_ALLOWLIST", "").splitlines() if line]
+
+if mode == "full":
+    fail("securityMode=full requires an external semantic graphify runner; set GRAPHIFY to an executable that supports semantic extraction")
+
+if not target.exists():
+    fail(f"target path does not exist: {target}")
+
+try:
+    import sys
+    sys.path.insert(0, str(root / "graphify"))
+    from graphify.detect import detect
+except Exception as exc:  # pragma: no cover - exercised via shell
+    fail(
+        "local graphify module is unavailable: "
+        f"{exc}. Supported fix path: `uv venv .venv && .venv/bin/python -m pip install -e ./graphify` "
+        "from the repo root, or set GRAPHIFY to a semantic external runner."
+    )
+
+
+def is_allowed(path: Path) -> bool:
+    try:
+        rel = path.resolve().relative_to(root).as_posix()
+    except ValueError:
+        return False
+    if not allowlist:
+        return True
+    pure = PurePosixPath(rel)
+    return any(pure.match(pattern) for pattern in allowlist)
+
+
+detection = detect(target)
+code_files = [
+    Path(path_str)
+    for path_str in detection.get("files", {}).get("code", [])
+    if is_allowed(Path(path_str))
+]
+if not code_files:
+    fail(
+        "no allowlisted code files matched the current manifest. The local shell fallback can only build code graphs; "
+        "docs, papers, and images require the Claude /graphify skill path or another semantic extractor."
+    )
+
+try:
+    from graphify.extract import extract  # noqa: F401
+    from graphify.build import build_from_json  # noqa: F401
+    import networkx  # noqa: F401
+except Exception as exc:  # pragma: no cover - exercised via shell
+    fail(
+        "graphify runtime dependencies are missing for local fallback: "
+        f"{exc}. Supported fix path: `uv venv .venv && .venv/bin/python -m pip install -e ./graphify` "
+        "from the repo root."
+    )
+
+print(
+    "[run_graphify] PASS: local structural fallback is available "
+    f"for {len(code_files)} allowlisted code file(s) under {target}"
+)
+PY
+}
+
 # Release-evidence echo (captured by the release pipeline or evidence bundler).
 cat <<EOF
 graphify.securityMode: $MODE
@@ -135,5 +449,20 @@ graphify.allowlistHash: $ALLOWLIST_HASH
 graphify.sourceRepoTag: ${SOURCE_REPO_TAG:-<unset>}
 EOF
 
-# If the user supplied extra flags, append them. Upstream graphify invocation:
-exec "${GRAPHIFY:-graphify}" "${GRAPHIFY_FLAGS[@]}" "$@"
+declare -a GRAPHIFY_RUNNER=()
+resolve_external_graphify_runner
+
+if [[ "$PREFLIGHT" == true ]]; then
+  if [[ ${#GRAPHIFY_RUNNER[@]} -gt 0 ]]; then
+    echo "[run_graphify] PASS: external graphify runner resolved to ${GRAPHIFY_RUNNER[0]}"
+    exit 0
+  fi
+  local_code_only_preflight "${1:-.}"
+  exit 0
+fi
+
+if [[ ${#GRAPHIFY_RUNNER[@]} -gt 0 ]]; then
+  exec "${GRAPHIFY_RUNNER[@]}" "${GRAPHIFY_FLAGS[@]}" "$@"
+fi
+
+local_code_only_fallback "${1:-.}"

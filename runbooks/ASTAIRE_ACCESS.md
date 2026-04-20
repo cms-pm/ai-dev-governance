@@ -27,8 +27,10 @@ tentacles (L1/L2, graphify, RTK) rather than fanning out in parallel.
 
 The canonical wrapper is `.astaire/astaire` at the repo root. It sets
 `--db` to `./.astaire/memory_palace.db` so the database lives outside
-the submodule pin. Downstream consumers drop a matching wrapper at the
-same path via `templates/ASTAIRE_CLI_SNIPPET.md`.
+the submodule pin, and it defaults `UV_CACHE_DIR` to
+`./.astaire/.uv-cache` so restricted environments do not depend on
+write access to `~/.cache/uv`. Downstream consumers drop a matching
+wrapper at the same path via `templates/ASTAIRE_CLI_SNIPPET.md`.
 
 ```bash
 .astaire/astaire --help
