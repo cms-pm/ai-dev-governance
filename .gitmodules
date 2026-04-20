@@ -1,8 +1,6 @@
 [submodule "astaire"]
 	path = astaire
 	url = https://github.com/cms-pm/astaire
-	# Bridge-SHA pin: c7402321c4802e14e021d05d6457110a9190cf42
-	# See docs/governance/exceptions.yaml#astaire-sha-bridge-v0.6.0
 [submodule "graphify"]
 	path = graphify
 	url = https://github.com/safishamsi/graphify.git
