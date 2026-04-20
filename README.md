@@ -118,6 +118,8 @@ When the consuming repo enables graphify, the intended flow is:
 - Default branch protected
 - CODEOWNERS enforced
 - Required CI checks enabled
-- Releases cut only from protected `main`
+- Source-repo development lands on protected `main`
+- Consumer-facing releases are cut from the dedicated `consumer/bootstrap-*`
+  branch or the matching SemVer tag, not from `main`
 
 See `runbooks/RELEASE_PROCESS.md`, `runbooks/BOARD_REVIEW_OPERATIONS.md`, `runbooks/AUTONOMOUS_DELIVERY_OPERATIONS.md`, `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`, `runbooks/SUBMODULE_PINNING.md`, and `runbooks/RTK_ADOPTION_RUNBOOK.md`.

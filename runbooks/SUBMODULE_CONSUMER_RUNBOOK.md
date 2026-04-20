@@ -23,6 +23,21 @@ git add .governance/ai-dev-governance
 git commit -m "Pin governance submodule to v0.6.0"
 ```
 
+Canonical consumer bootstrap branch for this release:
+
+```bash
+cd .governance/ai-dev-governance
+git fetch origin
+git checkout consumer/bootstrap-v0.6.0
+cd -
+git add .governance/ai-dev-governance
+git commit -m "Pin governance submodule to consumer/bootstrap-v0.6.0"
+```
+
+Consumers should prefer the SemVer tag for stable pins. The
+`consumer/bootstrap-*` branch exists as the human-readable bootstrap surface
+that the corresponding GitHub release targets.
+
 ## Scheduled Bump
 
 ```bash

@@ -58,12 +58,16 @@ validation logs, dogfood raw inputs, or generated graph outputs.
     scripts/rehearse_v0_6_0_release.sh <version>
     ```
 13. Update `CHANGELOG.md`
-14. Create annotated tag and release notes
+14. For consumer-facing releases, create the dedicated `consumer/bootstrap-*`
+    branch from the validated tabula-rasa branch state
+15. Create annotated tag and release notes from the consumer bootstrap branch
 
 ## Release Branch Expectations
 
 - Consumer-facing release branches are clean baselines, not source-repo
   diaries.
+- Consumer-facing GitHub releases should target the dedicated
+  `consumer/bootstrap-*` branch that points at the validated clean baseline.
 - Consumer repos create their own `docs/planning/`, `docs/releases/`,
   `docs/validation/`, and `docs/governance/board/` artifacts outside the
   governance submodule.
