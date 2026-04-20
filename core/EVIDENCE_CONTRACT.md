@@ -80,6 +80,10 @@ Each release MUST include:
   - `graphify.allowlistHash` — SHA-256 of the sorted allowlist
   - graphify CLI version + pinned commit SHA
   - a sample Astaire L0 projection demonstrating the `source_repo` invariant is observed
+- Astaire knowledge-base evidence (mandatory from v0.6.0 onward):
+  - L0 snapshot captured at release tag cut: `docs/releases/<version>/l0-snapshot.md`
+  - Health report with zero blocking findings: `docs/releases/<version>/health-report.md`
+  - Both artifacts emitted by `scripts/emit_release_evidence.sh <version>`
 
 ## Format
 

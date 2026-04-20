@@ -1,0 +1,27 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".astaire/astaire startup --root . 2>/dev/null || true",
+            "timeout": 10000
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash(git commit*)",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".astaire/astaire scan --root . 2>/dev/null || true",
+            "timeout": 10000
+          }
+        ]
+      }
+    ]
+  }
+}
