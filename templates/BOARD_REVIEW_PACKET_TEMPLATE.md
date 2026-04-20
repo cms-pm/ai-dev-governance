@@ -47,6 +47,31 @@ sourceRiskTierSummary:
 2. `<question>`
 3. `<question>`
 
+## Structural Context
+
+### God Nodes
+
+- `<node + why it matters>`
+
+### Surprising Connections
+
+- `<connection + ranked rationale>`
+
+### AMBIGUOUS-Edge Backlog
+
+- `<edge + why it remains unresolved>`
+
+### Open Contradictions
+
+- `<contradiction + impact>`
+
+## Immediate Implementation Directives
+
+- `PR scope:` `<one behavior per PR or one repo-local workstream>`
+- `File ownership:` `<paths the implementation should touch>`
+- `Validation:` `<tests/evidence required before the action is considered closed>`
+- `Release impact:` `<blocking|non-blocking|waivable with chair approval>`
+
 ## Links
 
 - Risk log: `<path>`
