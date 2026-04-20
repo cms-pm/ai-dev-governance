@@ -15,6 +15,7 @@ fi
 
 mkdir -p "${uv_cache_dir_default}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${uv_cache_dir_default}}"
+export PYTHONPATH="${astaire_dir}:${PYTHONPATH:-}"
 
 # Rewrite any relative --root argument to an absolute path resolved from the
 # caller's CWD, before we cd into the astaire subdir for uv run.
@@ -30,4 +31,5 @@ for arg in "$@"; do
 done
 
 cd "${astaire_dir}"
-exec uv run astaire --db "${db_path}" "${args[@]}"
+exec uv run --no-project --with tiktoken python -m src.cli \
+  --db "${db_path}" "${args[@]}"

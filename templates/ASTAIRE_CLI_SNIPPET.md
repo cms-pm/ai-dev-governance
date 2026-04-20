@@ -21,10 +21,11 @@ permitted when (a) Astaire has no projection for the target, or
 
 **CLI location:** `.astaire/astaire` (repo root). Always invoke with
 this full path — the wrapper sets `--db` to `.astaire/memory_palace.db`
-and routes to the pinned submodule. It also defaults `UV_CACHE_DIR` to
-`.astaire/.uv-cache` so restricted environments do not need write
-access to `~/.cache/uv`. Never invoke bare `astaire`; it is not on PATH
-and will not use the correct database.
+and routes to the pinned submodule source tree. It also defaults
+`UV_CACHE_DIR` to `.astaire/.uv-cache` so restricted environments do
+not need write access to `~/.cache/uv` or an editable-build round trip.
+Never invoke bare `astaire`; it is not on PATH and will not use the
+correct database.
 
 ```bash
 .astaire/astaire --help

@@ -168,8 +168,10 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 mkdir -p "${UV_CACHE_DIR_DEFAULT}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${UV_CACHE_DIR_DEFAULT}}"
-exec uv run --project "${REPO_ROOT}/${GOVERNANCE_MOUNT}/astaire" \
-  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+export PYTHONPATH="${REPO_ROOT}/${GOVERNANCE_MOUNT}/astaire:${PYTHONPATH:-}"
+cd "${REPO_ROOT}/${GOVERNANCE_MOUNT}/astaire"
+exec uv run --no-project --with tiktoken python -m src.cli \
+  --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
 WRAPPER
     chmod +x "$wrapper"
     info "Created .astaire/astaire wrapper"

@@ -112,8 +112,10 @@ if ! command -v uv >/dev/null 2>&1; then
 fi
 mkdir -p "${UV_CACHE_DIR_DEFAULT}"
 export UV_CACHE_DIR="${UV_CACHE_DIR:-${UV_CACHE_DIR_DEFAULT}}"
-exec uv run --project "${REPO_ROOT}/.governance/ai-dev-governance/astaire" \
-  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+export PYTHONPATH="${REPO_ROOT}/.governance/ai-dev-governance/astaire:${PYTHONPATH:-}"
+cd "${REPO_ROOT}/.governance/ai-dev-governance/astaire"
+exec uv run --no-project --with tiktoken python -m src.cli \
+  --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
 EOF
 chmod +x .astaire/astaire
 echo '.astaire/memory_palace.db' >> .gitignore

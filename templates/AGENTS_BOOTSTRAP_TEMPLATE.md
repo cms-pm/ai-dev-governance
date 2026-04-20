@@ -18,7 +18,8 @@ the next bootstrap run will overwrite it.
 
 **Where:** `.astaire/astaire` at repo root. This wrapper sets `--db`
 to `.astaire/memory_palace.db`, defaults `UV_CACHE_DIR` to
-`.astaire/.uv-cache`, and delegates to the pinned submodule.
+`.astaire/.uv-cache`, and runs the pinned Astaire submodule directly
+from source with `uv`.
 **Never** invoke bare `astaire` — it is not on PATH and will use the
 wrong database.
 
