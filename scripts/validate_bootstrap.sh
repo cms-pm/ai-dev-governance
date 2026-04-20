@@ -12,6 +12,10 @@ if [[ ! -d "$GOVERNANCE_MOUNT" && -f "VERSION" && -d "scripts" && -d "templates"
   IS_GOVERNANCE_SOURCE=true
   GOVERNANCE_MOUNT="."
 fi
+IS_TABULA_RASA_RELEASE=false
+if [[ -f "docs/README.md" ]] && grep -q "intentionally excludes the source repository's own planning" "docs/README.md"; then
+  IS_TABULA_RASA_RELEASE=true
+fi
 
 fail() { echo "[FAIL] $1" >&2; FAILURES=$((FAILURES + 1)); }
 pass() { echo "[PASS] $1"; }
@@ -84,10 +88,29 @@ else
 fi
 
 # ── 5. Directory structure ──────────────────────────────────────────────────
-for d in docs/planning docs/releases docs/governance; do
-  [[ -d "$d" ]] || fail "Missing directory: $d"
-done
-pass "Required directory structure present"
+if [[ "$IS_TABULA_RASA_RELEASE" == true ]]; then
+  for d in docs docs/governance docs/governance/board docs/governance/amendments; do
+    [[ -d "$d" ]] || fail "Missing release-branch directory: $d"
+  done
+  for f in \
+    docs/README.md \
+    docs/governance/board/README.md \
+    docs/governance/board/board-composition.yaml \
+    docs/governance/board/board-composition-approval.md \
+    docs/governance/amendments/README.md \
+    docs/governance/exceptions.yaml; do
+    [[ -f "$f" ]] || fail "Missing release-branch placeholder: $f"
+  done
+  for path in docs/planning docs/releases docs/validation raw graphify-out; do
+    [[ ! -e "$path" ]] || fail "Release branch should not ship source-repo artifact path: $path"
+  done
+  pass "Tabula-rasa release branch structure present"
+else
+  for d in docs/planning docs/releases docs/governance; do
+    [[ -d "$d" ]] || fail "Missing directory: $d"
+  done
+  pass "Required directory structure present"
+fi
 
 # ── 6. Governance submodule ─────────────────────────────────────────────────
 if [[ -d "$GOVERNANCE_MOUNT" ]]; then
