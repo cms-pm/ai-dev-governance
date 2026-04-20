@@ -42,11 +42,12 @@ Parallel tracks:
 
 - **Foundations parallel:** SCN-1.2, SCN-1.3, SCN-1.4, SCN-1.7.
 - **Astaire parallel:** SCN-2.2, SCN-2.3, SCN-2.4.
-- **Graphify parallel:** SCN-3.2, SCN-3.4, SCN-3.5 (against mocks until
-  SCN-3.1 adopts a bridge shape).
+- **Graphify parallel:** SCN-3.2, SCN-3.4, SCN-3.5 — now unblocked. SCN-3.1
+  bridge shape adopted 2026-04-20 (Variant iii, curated skeleton promotion).
+  Implementation may proceed against the full adopted knob surface.
 - **Integration parallel:** SCN-4.2.
-- **Board-composition pre-staging:** runs now, in parallel with Phase 1
-  execution, per recommendation (1)+(3).
+- **Board-composition pre-staging:** complete — composition approved 2026-04-19;
+  SCN-3.1 board gate run 2026-04-20.
 
 ## Risk-tier summary
 
@@ -78,4 +79,28 @@ Already satisfied:
 Pending:
 
 - [ ] Human approver sign-off recorded in `docs/planning/signoffs.md`.
-- [ ] Board composition approval (pre-staging active in parallel).
+- [x] Board composition approval — completed 2026-04-19.
+
+## SCN-3.1 gate status (as of 2026-04-20)
+
+- [x] Bridge strategy adopted: Variant (iii) curated skeleton promotion.
+- [x] Threshold adopted: `p90`, floor 3, ceiling 100, `autoTune` opt-in.
+- [x] Node selection: degree centrality + `pinnedNodes` escape hatch.
+- [x] Edge admission: EXTRACTED always; AMBIGUOUS never; INFERRED via `inferredEdgeThreshold` (opt-in).
+- [x] Cross-repo conflicts: `crossRepoAuthority` priority list; merge-with-provenance default.
+- [x] Governance annotation: `annotateApprovalStatus` optional, default off.
+- [x] SCN-3.3 unblocked.
+- [ ] Human sign-off commit on `docs/planning/signoffs.md` (ratifies this gate).
+
+## SCN-3.3 expanded implementation surface (board-adopted 2026-04-20)
+
+In addition to the core importer, SCN-3.3 must deliver:
+
+| Item | Requirement |
+|---|---|
+| Manifest knobs | `promotionThreshold`, `promotionFloor`, `promotionCeiling`, `autoTune`, `pinnedNodes`, `inferredEdgeThreshold`, `crossRepoAuthority`, `annotateApprovalStatus` wired into the governance manifest schema |
+| `validate_graphify.sh` | Lint: stale `pinnedNodes`; stale `crossRepoAuthority` patterns; `annotateApprovalStatus` registry freshness; `inferredEdgeThreshold` floor warning (< 0.80) |
+| Per-graph L1 cache | Scoped to `graph_version:<hash>`; required to bound L0-regeneration latency |
+| Release evidence | Must log `graphify.promotionThreshold` value, `inferredEdgeThreshold` value (or null), `autoTune` state, and promoted claim count |
+
+Opportunities OPP-002, OPP-004, OPP-005 from the opportunity register are in scope for SCN-3.3.

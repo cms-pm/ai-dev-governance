@@ -17,9 +17,9 @@ per `governance.yaml` (SCN-1.1).
 | SCN-2.2-01 | SCN-2.2 | `.claude/settings.json` | `docs/validation/scn-2.2/hook-trigger.log` | pending |
 | SCN-2.3-01 | SCN-2.3 | `raw/`, `db/memory_palace.db` | `docs/validation/scn-2.3/first-ingest.log` | pending |
 | SCN-2.4-01 | SCN-2.4 | `runbooks/RELEASE_PROCESS.md`, `docs/releases/` | `docs/releases/v0.6.0/evidence-bundle.md` | pending |
-| SCN-3.1-01 | SCN-3.1 | `docs/planning/pool_questions/phase-3-graphify-spike.md` | board packet + ADR | pending |
+| SCN-3.1-01 | SCN-3.1 | `docs/planning/pool_questions/phase-3-graphify-spike.md`, `docs/planning/board/committee-review-packet-2026-04-20.md` | Board adopted 2026-04-20; all 7 decisions recorded in packet. Pending human sign-off commit. | board-adopted |
 | SCN-3.2-01 | SCN-3.2 | upstream: `astaire/src/collections/graphify_outputs.py` | `docs/validation/scn-3.2/l0-routing-hint.log` | pending |
-| SCN-3.3-01 | SCN-3.3 | upstream: `astaire/src/ingest_graphify.py` | `docs/validation/scn-3.3/skeleton-promotion.log` | pending |
+| SCN-3.3-01 | SCN-3.3 | upstream: `astaire/src/ingest_graphify.py`; manifest knobs: `promotionThreshold`, `promotionFloor`, `promotionCeiling`, `autoTune`, `pinnedNodes`, `inferredEdgeThreshold`, `crossRepoAuthority`, `annotateApprovalStatus`; `scripts/validate_graphify.sh` (stale-pin + pattern lint) | `docs/validation/scn-3.3/skeleton-promotion.log` | pending — unblocked by SCN-3.1 board gate |
 | SCN-3.4-01 | SCN-3.4 | `.gitignore`, `graphify-out/` | `docs/validation/scn-3.4/dogfood-graph.md` | pending |
 | SCN-3.5-01 | SCN-3.5 | `runbooks/GRAPHIFY_MCP_RUNBOOK.md` | `docs/validation/scn-3.5/mcp-handshake.log` | pending |
 | SCN-4.0-01 | SCN-4.0 | `adapters/tooling/GRAPHIFY_CONTEXT_ADAPTER.md`, routing grammar fixture | `docs/validation/scn-4.0/routing-parser.log` | pending |
