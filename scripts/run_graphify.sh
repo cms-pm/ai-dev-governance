@@ -21,6 +21,23 @@ EXCEPTIONS="${GOVERNANCE_EXCEPTIONS:-${ROOT_DIR}/docs/governance/exceptions.yaml
 
 [[ -f "$MANIFEST" ]] || die "manifest not found: $MANIFEST"
 
+# ADG-BOOTSTRAP-05 — Python compatibility preflight. Graphify's dep stack is
+# tested against 3.10–3.13; 3.14 breaks the heavy path (numba / llvmlite).
+# Soft guard: override with GRAPHIFY_ALLOW_UNTESTED_PYTHON=1 when intentionally
+# experimenting. See runbooks/COMPATIBILITY_MATRIX.md > Python Runtime.
+PYTHON_BIN="${GRAPHIFY_PYTHON:-python3}"
+if command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  PY_VER="$("$PYTHON_BIN" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")' 2>/dev/null || true)"
+  if [[ -n "$PY_VER" && "${GRAPHIFY_ALLOW_UNTESTED_PYTHON:-0}" != "1" ]]; then
+    case "$PY_VER" in
+      3.10|3.11|3.12|3.13) : ;;
+      *)
+        die "graphify tested on Python 3.10–3.13, got ${PY_VER}. Use a dedicated 3.12 venv (e.g. .graphify-venv) or set GRAPHIFY_ALLOW_UNTESTED_PYTHON=1 to bypass. See runbooks/COMPATIBILITY_MATRIX.md > Python Runtime."
+        ;;
+    esac
+  fi
+fi
+
 # Naive YAML extractor for the graphify block. Keeps the wrapper
 # dependency-free (no python/yq requirement at runtime).
 extract_scalar() {
