@@ -28,6 +28,27 @@
 11. Update `CHANGELOG.md`
 12. Create annotated tag and release notes
 
+## Graphify Lightweight Fallback Install
+
+The default graphify install lists `graspologic` as a top-level dependency,
+which pulls in `numba` / `llvmlite` and requires a system LLVM toolchain.
+The restricted / structural fallback path used for governance graph
+generation does not exercise community detection, so consumers can skip
+the heavy stack:
+
+```bash
+scripts/install_graphify_fallback.sh [venv-python]
+```
+
+This installs the minimal runtime subset (`networkx` + tree-sitter bindings)
+and then installs graphify from source with `--no-deps`. `graspologic` is
+left out; calling the community-detection path will raise ImportError.
+
+A permanent fix — moving `graspologic` into an opt-in `[cluster]` extra —
+needs to land in the upstream graphify project
+(`https://github.com/safishamsi/graphify`). Track the corresponding upstream
+contribution and re-pin the submodule once it ships.
+
 ## Required Release Artifacts
 
 - Changelog entry
