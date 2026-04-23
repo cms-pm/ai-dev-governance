@@ -29,6 +29,36 @@ for f in raw/articles/*.md raw/notes/*.md; do
 done
 ```
 
+## Deep-tree registration (consumer repos)
+
+`.astaire/astaire startup --root .` performs a shallow scan of the default
+collection paths. Consumer repos with deep governance trees
+(`docs/planning/phase-*/chunks/`, `docs/validation/**`, `docs/governance/**`,
+`docs/releases/**`) need an explicit recursive registration pass to get the
+full corpus into the knowledge base.
+
+Copy the template helper into the consumer repo and invoke it after
+`startup`:
+
+```bash
+cp .governance/ai-dev-governance/templates/astaire_register_canonical_docs.py \
+   scripts/astaire_register_canonical_docs.py
+
+UV_CACHE_DIR=.astaire/.uv-cache \
+PYTHONPATH=.governance/ai-dev-governance/astaire \
+uv run --no-project --with tiktoken \
+  python scripts/astaire_register_canonical_docs.py
+```
+
+The helper uses typed classifiers (chunk-plan, validation-evidence,
+governance-artifact, board-artifact, release-evidence) so the result is
+explicit rather than a blind recursive ingest. Edit `CANONICAL_TREES` in
+the helper to match your repo's actual tree shape.
+
+A first-class `register-canonical` subcommand in Astaire itself is the
+longer-term fix — track the astaire upstream PR and drop this helper once
+the repo re-pins to a release that carries it.
+
 ## Regeneration steps
 
 If `memory_palace.db` is corrupted or you want a clean slate:
