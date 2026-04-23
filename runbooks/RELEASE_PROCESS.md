@@ -28,6 +28,28 @@
 11. Update `CHANGELOG.md`
 12. Create annotated tag and release notes
 
+## Graphify Install Paths
+
+The release and evidence steps above invoke `graphify` via
+`scripts/run_graphify.sh`. If `graphify` is not on `PATH`, install from
+source using the path that matches your consumer layout:
+
+- **Monorepo / authoring checkout** (this repo, or any checkout where the
+  governance source tree is the repo root):
+  ```bash
+  pip install -e ./graphify
+  ```
+- **Submodule consumer** (graphify lives inside the pinned governance
+  submodule at `.governance/ai-dev-governance/graphify`):
+  ```bash
+  pip install -e ./.governance/ai-dev-governance/graphify
+  ```
+- **Optional heavy extras** (Leiden / community detection only):
+  `pip install -e '<path>[cluster]'`.
+
+`scripts/run_graphify.sh` emits both paths in its "graphify not on PATH"
+failure message; follow the one that matches the layout.
+
 ## Required Release Artifacts
 
 - Changelog entry
