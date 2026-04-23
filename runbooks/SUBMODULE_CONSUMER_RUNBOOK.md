@@ -81,9 +81,30 @@ mkdir -p .astaire
 cat > .astaire/astaire << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
-REPO_ROOT="$(git rev-parse --show-toplevel)"
-exec uv run --project "${REPO_ROOT}/.governance/ai-dev-governance/astaire" \
-  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+
+script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+repo_root="$(cd "${script_dir}/.." && pwd)"
+astaire_dir="${repo_root}/.governance/ai-dev-governance/astaire"
+db_path="${repo_root}/.astaire/memory_palace.db"
+caller_cwd="$(pwd)"
+
+# Rewrite any relative --root argument to an absolute path resolved from the
+# caller's CWD so repo-relative commands (e.g. `--root .`) remain correct
+# regardless of where the underlying CLI resolves its own CWD.
+args=()
+prev=""
+for arg in "$@"; do
+  if [[ "$prev" == "--root" && "$arg" != /* ]]; then
+    args+=("$(cd "${caller_cwd}/${arg}" 2>/dev/null && pwd || echo "${caller_cwd}/${arg}")")
+  else
+    args+=("$arg")
+  fi
+  prev="$arg"
+done
+
+export PYTHONPATH="${astaire_dir}:${PYTHONPATH:-}"
+exec uv run --no-project --with tiktoken python -m src.cli \
+  --db "${db_path}" "${args[@]}"
 EOF
 chmod +x .astaire/astaire
 echo '.astaire/memory_palace.db' >> .gitignore
@@ -91,6 +112,12 @@ echo '.astaire/memory_palace.db' >> .gitignore
 
 Adjust the submodule mount path if the governance submodule is not at
 `.governance/ai-dev-governance`.
+
+The wrapper deliberately avoids `cd`ing into the Astaire submodule before
+exec. A `cd` would make `--root .` resolve to the submodule directory rather
+than the consumer repo root, breaking repo-relative commands. Relative
+`--root` arguments are rewritten to absolute paths before exec so callers
+can invoke the wrapper from any subdirectory.
 
 ### Step 2 — Initialize and verify
 
