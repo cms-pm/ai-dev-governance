@@ -15,7 +15,11 @@ set -euo pipefail
 die() { echo "[run_graphify] FAIL: $*" >&2; exit 1; }
 info() { echo "[run_graphify] $*" >&2; }
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve the consumer repo root. For submodule consumers the script lives at
+# .governance/ai-dev-governance/scripts/run_graphify.sh; git-toplevel gives the
+# product repo. Fall back to the script-relative parent for non-git checkouts.
+ROOT_DIR="${GOVERNANCE_ROOT:-$(git -C "$(pwd)" rev-parse --show-toplevel 2>/dev/null || cd "${SCRIPT_DIR}/.." && pwd)}"
 MANIFEST="${GOVERNANCE_MANIFEST:-${ROOT_DIR}/governance.yaml}"
 EXCEPTIONS="${GOVERNANCE_EXCEPTIONS:-${ROOT_DIR}/docs/governance/exceptions.yaml}"
 
