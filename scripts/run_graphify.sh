@@ -169,4 +169,16 @@ graphify.sourceRepoTag: ${SOURCE_REPO_TAG:-<unset>}
 EOF
 
 # If the user supplied extra flags, append them. Upstream graphify invocation:
-exec "${GRAPHIFY:-graphify}" "${GRAPHIFY_FLAGS[@]}" "$@"
+GRAPHIFY_BIN="${GRAPHIFY:-graphify}"
+if ! command -v "$GRAPHIFY_BIN" >/dev/null 2>&1; then
+  cat >&2 <<MSG
+[run_graphify] FAIL: '${GRAPHIFY_BIN}' not found on PATH.
+Install from source at the path that matches your consumer layout:
+  monorepo / authoring:   pip install -e ./graphify
+  submodule consumer:     pip install -e ./.governance/ai-dev-governance/graphify
+Optional heavy extras (Leiden / clustering): append '[cluster]' to the path.
+See runbooks/RELEASE_PROCESS.md > Graphify Install Paths.
+MSG
+  exit 1
+fi
+exec "$GRAPHIFY_BIN" "${GRAPHIFY_FLAGS[@]}" "$@"
