@@ -68,9 +68,9 @@ git commit -m "Rollback governance submodule pin"
 
 Every consumer repo that pins `ai-dev-governance` MUST wire Astaire so agents
 can read planning and release artifacts via the port-of-first-resort. This
-section is pin-aware: the wrapper delegates to whichever commit of the Astaire
-submodule `git submodule` has checked out, so a version bump automatically
-picks up the new binary without touching the wrapper.
+section is pin-aware: the wrapper bootstraps a shared repo-local venv from
+whichever commit of the Astaire submodule `git submodule` has checked out, then
+reuses that installed entrypoint for steady-state calls.
 
 ### Step 1 — Create the repo-local wrapper
 
@@ -82,8 +82,25 @@ cat > .astaire/astaire << 'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-exec uv run --project "${REPO_ROOT}/.governance/ai-dev-governance/astaire" \
-  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+UV_CACHE_DIR_DEFAULT="${REPO_ROOT}/.astaire/.uv-cache"
+UV_PROJECT_ENVIRONMENT_DEFAULT="${REPO_ROOT}/.astaire/.venv"
+ASTAIRE_PROJECT_ROOT="${REPO_ROOT}/.governance/ai-dev-governance/astaire"
+ASTAIRE_DB="${REPO_ROOT}/.astaire/memory_palace.db"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${UV_CACHE_DIR_DEFAULT}}"
+export UV_PROJECT_ENVIRONMENT="${UV_PROJECT_ENVIRONMENT:-${UV_PROJECT_ENVIRONMENT_DEFAULT}}"
+ASTAIRE_BIN="${ASTAIRE_BIN:-${UV_PROJECT_ENVIRONMENT}/bin/astaire}"
+
+if [[ -x "${ASTAIRE_BIN}" ]]; then
+  exec "${ASTAIRE_BIN}" --db "${ASTAIRE_DB}" "$@"
+fi
+
+mkdir -p "${UV_CACHE_DIR}" "${UV_PROJECT_ENVIRONMENT}"
+uv sync --project "${ASTAIRE_PROJECT_ROOT}" \
+  --directory "${ASTAIRE_PROJECT_ROOT}" \
+  --frozen \
+  --no-dev
+
+exec "${ASTAIRE_BIN}" --db "${ASTAIRE_DB}" "$@"
 EOF
 chmod +x .astaire/astaire
 echo '.astaire/memory_palace.db' >> .gitignore
@@ -91,6 +108,9 @@ echo '.astaire/memory_palace.db' >> .gitignore
 
 Adjust the submodule mount path if the governance submodule is not at
 `.governance/ai-dev-governance`.
+
+This avoids a networked `uv run` resolve path on every Astaire invocation.
+`uv sync` runs only as a bootstrap fallback when `.astaire/.venv` is missing.
 
 ### Step 2 — Initialize and verify
 

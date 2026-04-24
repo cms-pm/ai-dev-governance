@@ -21,7 +21,9 @@ This content was already here before retrofit. It is preserved verbatim.
 ### Astaire — port-of-first-resort (MANDATORY)
 
 **Where:** `.astaire/astaire` at repo root. This wrapper sets `--db`
-to `.astaire/memory_palace.db` and delegates to the pinned submodule.
+to `.astaire/memory_palace.db`, reuses the shared `.astaire/.venv`
+entrypoint when present, and only bootstraps with `uv sync` if that
+venv is missing.
 **Never** invoke bare `astaire` — it is not on PATH and will use the
 wrong database.
 
