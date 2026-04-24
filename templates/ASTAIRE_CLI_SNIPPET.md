@@ -20,9 +20,10 @@ permitted when (a) Astaire has no projection for the target, or
 (b) the read is in service of an edit.
 
 **CLI location:** `.astaire/astaire` (repo root). Always invoke with
-this full path — the wrapper sets `--db` to `.astaire/memory_palace.db`
-and routes to the pinned submodule. Never invoke bare `astaire`; it is
-not on PATH and will not use the correct database.
+this full path — the wrapper sets `--db` to `.astaire/memory_palace.db`,
+reuses the shared `.astaire/.venv` entrypoint, and only falls back to
+`uv sync` bootstrap when that venv is missing. Never invoke bare
+`astaire`; it is not on PATH and will not use the correct database.
 
 ```bash
 .astaire/astaire --help
