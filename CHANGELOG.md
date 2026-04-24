@@ -2,6 +2,42 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.6.1] - 2026-04-24
+
+### Added
+- Graphify lightweight fallback installer: `scripts/install_graphify_fallback.sh`.
+- Release guidance for monorepo vs submodule-consumer graphify install paths.
+
+### Changed
+- Restored the governance release metadata to the `v0.6.x` line after the `v0.6.0` tag drift.
+- Updated the consumer Astaire bootstrap wrapper to reuse the shared `.astaire/.venv` entrypoint in steady state and fall back to `uv sync --frozen --no-dev` only when bootstrap is needed.
+- Updated consumer bootstrap templates and runbooks to describe the shared-venv Astaire contract accurately.
+- Improved `scripts/run_graphify.sh` failure output so missing graphify installs point to the correct monorepo or submodule path.
+
+## [0.6.0] - 2026-04-19
+
+### Added
+- Graphify manifest contract support for promotion/import knobs:
+  - `promotionThreshold`
+  - `promotionFloor`
+  - `promotionCeiling`
+  - `autoTune`
+  - `pinnedNodes`
+  - `inferredEdgeThreshold`
+  - `crossRepoAuthority`
+  - `annotateApprovalStatus`
+- Graphify validation script: `scripts/validate_graphify.sh`.
+- Repo-local RTK wrapper at `scripts/rtk-local.sh`.
+- Graphify MCP operations runbook: `runbooks/GRAPHIFY_MCP_RUNBOOK.md`.
+- Routing grammar documentation for canonical `route:` hand-off lines.
+
+### Changed
+- Promoted the root governance manifest to `v0.6.0` and enabled graphify dogfood configuration in this repo.
+- Updated graphify adapter guidance to define the routing contract, promotion knobs, and inferred-edge safety floor.
+- Updated board packet and board review operations docs to include structural context assembly.
+- Updated release and migration guidance for graphify-enabled Astaire routing and validation.
+- Normalized RTK repo-local references away from stale wrapper names toward `scripts/rtk-local.sh`.
+
 ## [0.5.2] - 2026-04-07
 
 ### Added

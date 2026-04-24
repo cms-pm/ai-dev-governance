@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.5.2
+governanceVersion: v0.6.1
 profile: strict-baseline+embedded
 adapters:
   - providers/claude
