@@ -9,6 +9,18 @@
 | v0.2.x             | strict                 | Yes (add `boardReview` to manifest for strict baseline consumers) | — |
 | v0.1.x             | strict                 | No                 | — |
 
+## Python Runtime (graphify / Astaire)
+
+| Component | Declared range (pyproject) | Tested range | Notes |
+|-----------|----------------------------|--------------|-------|
+| graphify  | `>=3.10`                   | 3.11, 3.12   | 3.14 breaks the heavy dep stack (`graspologic` → `gensim`/`numba`/`llvmlite`). Use a dedicated 3.12 venv (`.graphify-venv`) if the repo's primary `.venv` is on 3.13+. |
+| Astaire   | `>=3.10`                   | 3.11, 3.12   | Default consumer wrapper runs via `uv run`; pin interpreter explicitly with `UV_PYTHON=3.12` if the system interpreter is outside the tested range. |
+
+`scripts/run_graphify.sh` preflights the interpreter and fails loudly when it
+is outside the tested range — this is a soft guard that can be overridden with
+`GRAPHIFY_ALLOW_UNTESTED_PYTHON=1` when you need to experiment on a newer
+Python release.
+
 ## Rules
 
 - Minor and patch versions are backward compatible unless explicitly declared otherwise.
