@@ -70,6 +70,18 @@ DENYLIST=(
 mapfile -t ALLOWLIST < <(extract_allowlist)
 [[ ${#ALLOWLIST[@]} -gt 0 ]] || die "graphify.allowlist empty"
 
+# ADG-BOOTSTRAP-06 — reject brace-glob syntax. The underlying matcher is
+# fnmatch-style (`*`, `**`, `?`) and does not expand `{a,b}` alternations;
+# leaving them in place silently under-matches. Fail loudly so consumers
+# expand to explicit per-extension entries instead.
+for entry in "${ALLOWLIST[@]}"; do
+  case "$entry" in
+    *"{"*"}"*)
+      die "allowlist entry contains unsupported brace glob: '${entry}'. Expand to explicit entries (e.g. '**/*.c' and '**/*.h' instead of '**/*.{c,h}'). See contracts/governance-manifest.example.yaml > graphify.allowlist for supported grammar."
+      ;;
+  esac
+done
+
 # Fail-closed: full mode requires an exception entry matching graphify.full.
 if [[ "$MODE" == "full" ]]; then
   if ! grep -qE '^\s*-\s+(id:|name:).*graphify[._-]full' "$EXCEPTIONS" 2>/dev/null; then

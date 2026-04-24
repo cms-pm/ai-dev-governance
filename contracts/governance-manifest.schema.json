@@ -220,7 +220,12 @@
         },
         "allowlist": {
           "type": "array",
-          "items": {"type": "string", "minLength": 1},
+          "description": "Path-glob allowlist for graphify. Grammar: fnmatch-style `*`, `**`, `?`. Brace alternations (`{a,b}`) are NOT supported — expand to explicit entries (e.g. `**/*.c` and `**/*.h` instead of `**/*.{c,h}`).",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "not": {"pattern": "[{}]"}
+          },
           "uniqueItems": true
         },
         "sourceRepoTag": {
