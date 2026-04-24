@@ -15,11 +15,32 @@ set -euo pipefail
 die() { echo "[run_graphify] FAIL: $*" >&2; exit 1; }
 info() { echo "[run_graphify] $*" >&2; }
 
-ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Resolve the consumer repo root. For submodule consumers the script lives at
+# .governance/ai-dev-governance/scripts/run_graphify.sh; git-toplevel gives the
+# product repo. Fall back to the script-relative parent for non-git checkouts.
+ROOT_DIR="${GOVERNANCE_ROOT:-$(git -C "$(pwd)" rev-parse --show-toplevel 2>/dev/null || cd "${SCRIPT_DIR}/.." && pwd)}"
 MANIFEST="${GOVERNANCE_MANIFEST:-${ROOT_DIR}/governance.yaml}"
 EXCEPTIONS="${GOVERNANCE_EXCEPTIONS:-${ROOT_DIR}/docs/governance/exceptions.yaml}"
 
 [[ -f "$MANIFEST" ]] || die "manifest not found: $MANIFEST"
+
+# ADG-BOOTSTRAP-05 — Python compatibility preflight. Graphify's dep stack is
+# tested against 3.10–3.13; 3.14 breaks the heavy path (numba / llvmlite).
+# Soft guard: override with GRAPHIFY_ALLOW_UNTESTED_PYTHON=1 when intentionally
+# experimenting. See runbooks/COMPATIBILITY_MATRIX.md > Python Runtime.
+PYTHON_BIN="${GRAPHIFY_PYTHON:-python3}"
+if command -v "$PYTHON_BIN" >/dev/null 2>&1; then
+  PY_VER="$("$PYTHON_BIN" -c 'import sys; print(f"{sys.version_info[0]}.{sys.version_info[1]}")' 2>/dev/null || true)"
+  if [[ -n "$PY_VER" && "${GRAPHIFY_ALLOW_UNTESTED_PYTHON:-0}" != "1" ]]; then
+    case "$PY_VER" in
+      3.10|3.11|3.12|3.13) : ;;
+      *)
+        die "graphify tested on Python 3.10–3.13, got ${PY_VER}. Use a dedicated 3.12 venv (e.g. .graphify-venv) or set GRAPHIFY_ALLOW_UNTESTED_PYTHON=1 to bypass. See runbooks/COMPATIBILITY_MATRIX.md > Python Runtime."
+        ;;
+    esac
+  fi
+fi
 
 # Naive YAML extractor for the graphify block. Keeps the wrapper
 # dependency-free (no python/yq requirement at runtime).
@@ -69,6 +90,18 @@ DENYLIST=(
 
 mapfile -t ALLOWLIST < <(extract_allowlist)
 [[ ${#ALLOWLIST[@]} -gt 0 ]] || die "graphify.allowlist empty"
+
+# ADG-BOOTSTRAP-06 — reject brace-glob syntax. The underlying matcher is
+# fnmatch-style (`*`, `**`, `?`) and does not expand `{a,b}` alternations;
+# leaving them in place silently under-matches. Fail loudly so consumers
+# expand to explicit per-extension entries instead.
+for entry in "${ALLOWLIST[@]}"; do
+  case "$entry" in
+    *"{"*"}"*)
+      die "allowlist entry contains unsupported brace glob: '${entry}'. Expand to explicit entries (e.g. '**/*.c' and '**/*.h' instead of '**/*.{c,h}'). See contracts/governance-manifest.example.yaml > graphify.allowlist for supported grammar."
+      ;;
+  esac
+done
 
 # Fail-closed: full mode requires an exception entry matching graphify.full.
 if [[ "$MODE" == "full" ]]; then

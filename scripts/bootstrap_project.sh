@@ -161,8 +161,25 @@ write_astaire_wrapper() {
 set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 GOVERNANCE_MOUNT="${GOVERNANCE_MOUNT:-.governance/ai-dev-governance}"
-exec uv run --project "${REPO_ROOT}/${GOVERNANCE_MOUNT}/astaire" \
-  astaire --db "${REPO_ROOT}/.astaire/memory_palace.db" "$@"
+UV_CACHE_DIR_DEFAULT="${REPO_ROOT}/.astaire/.uv-cache"
+UV_PROJECT_ENVIRONMENT_DEFAULT="${REPO_ROOT}/.astaire/.venv"
+ASTAIRE_PROJECT_ROOT="${REPO_ROOT}/${GOVERNANCE_MOUNT}/astaire"
+ASTAIRE_DB="${REPO_ROOT}/.astaire/memory_palace.db"
+export UV_CACHE_DIR="${UV_CACHE_DIR:-${UV_CACHE_DIR_DEFAULT}}"
+export UV_PROJECT_ENVIRONMENT="${UV_PROJECT_ENVIRONMENT:-${UV_PROJECT_ENVIRONMENT_DEFAULT}}"
+ASTAIRE_BIN="${ASTAIRE_BIN:-${UV_PROJECT_ENVIRONMENT}/bin/astaire}"
+
+if [[ -x "${ASTAIRE_BIN}" ]]; then
+  exec "${ASTAIRE_BIN}" --db "${ASTAIRE_DB}" "$@"
+fi
+
+mkdir -p "${UV_CACHE_DIR}" "${UV_PROJECT_ENVIRONMENT}"
+uv sync --project "${ASTAIRE_PROJECT_ROOT}" \
+  --directory "${ASTAIRE_PROJECT_ROOT}" \
+  --frozen \
+  --no-dev
+
+exec "${ASTAIRE_BIN}" --db "${ASTAIRE_DB}" "$@"
 WRAPPER
     chmod +x "$wrapper"
     info "Created .astaire/astaire wrapper"

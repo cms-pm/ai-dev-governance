@@ -79,3 +79,20 @@ boardReview:
     minimumAlternatesPerSeat: 1
 updateCadence: monthly
 compatibility: strict
+# Graphify block (v0.6.0+). Drives scripts/run_graphify.sh.
+# NOTE: `allowlist` grammar is fnmatch-style (`*`, `**`, `?`). Brace
+# alternations like `**/*.{c,h}` are NOT expanded and will be rejected by
+# the validator. Write out each extension explicitly.
+graphify:
+  collectionStrategy: split
+  securityMode: restricted
+  sourceRepoTag: example-product
+  allowlist:
+    - "src/**/*.py"
+    - "src/**/*.md"
+    - "lib/**/*.c"
+    - "lib/**/*.cc"
+    - "lib/**/*.cpp"
+    - "lib/**/*.h"
+    - "lib/**/*.hpp"
+    - "docs/**/*.md"
