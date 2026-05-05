@@ -86,6 +86,23 @@ Evidence MUST be stored in declared paths and include:
 - AI assistance MAY draft tests and criteria.
 - AI-only approvals are prohibited for merge/release gates.
 
+## Contract Test Hygiene
+
+- A scenario with ratified acceptance criteria MUST NOT be gated by
+  `skipUnless` (Python), `--gtest_filter` exclusions (C++), or
+  equivalent silent-skip mechanisms.
+- Scenarios pending implementation MUST use the runner's explicit
+  expected-fail surface (`expectedFailure` in unittest, `DISABLED_`
+  prefix in GoogleTest, `xfail` in pytest) so CI reports an explicit
+  state distinguishable from skipped, passing, and failing.
+- Removal of an expected-fail marker MUST be a reviewable diff event;
+  it MUST NOT be coupled to unrelated implementation changes in the
+  same commit.
+- Source-shape proxies (substring/regex scans of implementation source)
+  MAY be used to detect implementation arrival but MUST NOT gate
+  assertions: assertions run unconditionally and produce a real
+  pass/fail.
+
 ## Tooling
 
 This policy is tool-agnostic. Projects choose frameworks and runners through adapters while preserving core policy requirements.
