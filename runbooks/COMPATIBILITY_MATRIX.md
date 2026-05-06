@@ -2,6 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required | Tentacle Pins |
 |--------------------|------------------------|--------------------|---------------|
+| v0.7.2             | strict                 | No (patch over v0.7.0 — bumps the bundled Astaire submodule to v0.4.1 to fix a `KeyError: 'doc_type'` crash in `astaire scan` when the new scenario-ledger or scenario-predicate plugins register documents) | `astaire` @ `v0.4.1` (`6524ea1`); `graphify` @ `v1.0.0` (`0a31c08`) |
 | v0.7.0             | strict                 | Yes (adds Scenario Status Vocabulary in `core/EVIDENCE_CONTRACT.md`, the HiL/SiL Predicate Router adapter at `adapters/tooling/HIL_SIL_PREDICATE_ROUTER.md`, and the Scenario Ledger Runbook at `runbooks/SCENARIO_LEDGER_RUNBOOK.md`; bumps Astaire pin to v0.4.0 to consume the new scenario-predicate and scenario-ledger collection plugins) | `astaire` @ `v0.4.0` (`d244699`); `graphify` @ `v1.0.0` (`0a31c08`) |
 | v0.6.1             | strict                 | Yes (adds `graphify` manifest object with promotion/import knobs, routing grammar, validation script, strict Astaire L0 routing, the consumer bootstrap release branch model, and the shared-venv Astaire wrapper/bootstrap contract) | `astaire` @ `v0.3.1` (`0699b33`); `graphify` @ `v1.0.0` (`0a31c08`) |
 | v0.5.x             | strict                 | Yes (strict Claude/Codex consumers must add `tooling/rtk`, retain RTK evidence, may adopt the repo-local RTK wrapper pattern from v0.5.1 onward, and may use consumer-local overlays from v0.5.2 onward) | — |
