@@ -85,6 +85,22 @@ Each release MUST include:
   - Health report with zero blocking findings: `docs/releases/<version>/health-report.md`
   - Both artifacts emitted by `scripts/emit_release_evidence.sh <version>`
 
+## Scenario Status Vocabulary
+
+Acceptance-item `pass/fail status` MUST resolve to one of:
+
+- `not-started`  — no test exists yet
+- `expected-fail` — test exists, implementation pending (tombstone)
+- `passing`       — test exists and passes against current implementation
+- `failing`       — test exists and fails against current implementation
+- `waived`        — covered by an exception/waiver under
+                    `core/EXCEPTIONS_AND_WAIVERS.md`
+
+`skipped` is not a valid terminal state for a scenario with ratified
+acceptance criteria. Runners MAY produce `skipped` as an intermediate
+state (for example, an environment-unavailable HiL probe) but evidence
+records MUST resolve to one of the values above before sign-off.
+
 ## Format
 
 Evidence MAY be stored as markdown, JSON, or YAML if required fields are present and machine-readable summaries are available.
