@@ -2,6 +2,11 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.7.3] - 2026-05-07
+
+### Changed
+- Bumped the bundled Astaire submodule to `v0.4.2` so consumer startup can repair legacy `source.source_type` taxonomy constraints without failing on existing foreign-key dependents.
+
 ## [0.6.1] - 2026-04-24
 
 ### Added
