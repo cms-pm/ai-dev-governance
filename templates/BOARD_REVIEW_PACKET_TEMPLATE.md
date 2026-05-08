@@ -33,6 +33,8 @@ sourceRiskTierSummary:
 4. Validation traceability status and latest evidence highlights.
 5. Runtime/operations health summary and incident report.
 6. Prior action closure report.
+7. Implementation complexity evidence for production-code changes, including
+   complexity scores and exception IDs.
 
 ## Gate Snapshot
 
@@ -40,6 +42,7 @@ sourceRiskTierSummary:
 - Open high findings: `<count>`
 - Release blocker status: `<blocked|not blocked>`
 - Active exceptions affecting board actions: `<ids or none>`
+- Implementation complexity blocker status: `<blocked|not blocked|not applicable>`
 
 ## Pre-Read Questions
 

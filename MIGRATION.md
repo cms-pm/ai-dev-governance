@@ -77,3 +77,19 @@ If upgrading from v0.5.1:
 2. When project-specific tightening is needed, place it in `docs/governance/amendments/` in the consumer repository rather than modifying the shared submodule.
 3. Add `docs/governance/amendments/README.md` using `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md` when the overlay is present.
 4. Run the validator from the consumer root, or set `GOVERNANCE_CONSUMER_ROOT`, so optional overlay checks can execute.
+
+## v0.7.4 Code Implementation Complexity Governance
+
+If upgrading from v0.7.3 or earlier:
+
+1. Add `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` to the required
+   strict-baseline policy set.
+2. For production-code changes, add implementation complexity evidence to the
+   implementation handoff artifact or link an equivalent artifact.
+3. Record component ownership, naming and placement review, mutable-state
+   ownership, resource ownership, state/task declarations, public surface,
+   line-count evidence, complexity scores, and exception IDs.
+4. Use consumer overlays for product-specific placement rules; do not encode
+   product paths in the shared ADG baseline.
+5. Update release readiness checks to confirm production-code changes include
+   implementation complexity evidence or a documented not-applicable rationale.

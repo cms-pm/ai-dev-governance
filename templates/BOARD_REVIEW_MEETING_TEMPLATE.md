@@ -146,7 +146,26 @@ List exact files to update from this meeting:
   "riskDeltaPaths": ["docs/planning/phase-1-risks.md"],
   "traceabilityPath": "docs/validation/traceability.md",
   "owner": "...",
-  "status": "ready"
+  "status": "ready",
+  "implementationComplexity": {
+    "applicability": "applicable",
+    "componentOwners": ["<module-or-file>"],
+    "namingReview": "<duplicate-name scan and naming rationale>",
+    "placementReview": "<domain ownership and path rationale>",
+    "mutableStateOwners": ["<state owner or none>"],
+    "resourceOwners": ["<resource owner or none>"],
+    "stateMachines": ["<state machine or no state machine>"],
+    "taskLoops": ["<task/service loop or no task loop>"],
+    "publicSurface": ["<public function/type/callback or none>"],
+    "lineCountEvidencePath": "<path>",
+    "diagramEvidencePaths": ["<path or none>"],
+    "complexityScores": {
+      "changeAmplification": 1,
+      "cognitiveLoad": 1,
+      "unknownUnknowns": 1
+    },
+    "exceptionIds": []
+  }
 }
 ```
 

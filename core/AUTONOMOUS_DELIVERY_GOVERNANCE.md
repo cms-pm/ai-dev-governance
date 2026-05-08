@@ -27,6 +27,7 @@ Execution MUST stop when any of the following are true:
 
 - Required planning or TDR artifacts are missing.
 - Validation checks fail.
+- Required implementation-complexity evidence is missing for production code.
 - Required board artifacts are missing for high/critical work.
 - Open critical board findings exist without approved exception.
 - Required human approvals are missing for the assigned risk tier.
@@ -59,8 +60,14 @@ Minimum required structured artifacts:
 - Board findings
 - Board decisions
 - Implementation handoff packet
+- Implementation complexity note for production code
 - Risk-tier assignment record
 - Validation status summary
+
+Implementation complexity evidence MUST follow
+`core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` and include ownership,
+naming/placement, line-count, state/task, and complexity-rubric findings when
+production code changes.
 
 ## Release Gating
 

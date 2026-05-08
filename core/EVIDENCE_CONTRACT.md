@@ -61,6 +61,22 @@ Each state transition MUST include:
 - transition outcome (`pass|fail|blocked`)
 - blocker reason (if not pass)
 
+## Implementation Complexity Evidence
+
+Each production-code implementation MUST include:
+
+- component owner and placement rationale
+- naming review result, including duplicate or near-duplicate module scan
+- mutable state owners
+- resource owners
+- state-machine declaration or explicit "no state machine" statement
+- task/service-loop declaration or explicit "no task loop" statement
+- public surface summary
+- line-count evidence for touched production files
+- change-amplification, cognitive-load, and unknown-unknown scores
+- exception IDs for any hard-cap or forbidden-pattern violation
+- diagram references when state or task topology changes
+
 ## Release Evidence
 
 Each release MUST include:
@@ -71,6 +87,7 @@ Each release MUST include:
 - exception status summary
 - required checks summary
 - board critical closure summary
+- implementation complexity summary for production-code changes
 - RTK setup verification and usage summary for strict Claude/Codex consumers:
   - Claude Code: `rtk init --show`, `rtk gain`, and `rtk discover`
   - Codex: `rtk init --show --codex`, `rtk gain`, and `rtk discover`

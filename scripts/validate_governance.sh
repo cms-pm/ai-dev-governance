@@ -23,6 +23,7 @@ required_files=(
   "core/AI_ASSISTED_TDR_METHODOLOGY.md"
   "core/GIT_BRANCH_STRATEGY.md"
   "core/AUTONOMOUS_DELIVERY_GOVERNANCE.md"
+  "core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md"
   "core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md"
   "core/EXCEPTIONS_AND_WAIVERS.md"
   "core/SECURITY_CONTROLS.md"
@@ -104,6 +105,17 @@ rg -q "Automation State Machine" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail 
 rg -q "Deterministic Stop Rules" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Autonomous stop rules missing"
 rg -q "Risk-Tiered Autonomy" core/AUTONOMOUS_DELIVERY_GOVERNANCE.md || fail "Risk-tier autonomy section missing"
 pass "Autonomous delivery consistency"
+
+rg -q "Code Implementation Complexity Governance" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code implementation complexity core policy missing title"
+rg -q "Change amplification" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing change-amplification rubric"
+rg -q "Cognitive load" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing cognitive-load rubric"
+rg -q "Unknown unknowns" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing unknown-unknown rubric"
+rg -q "Component Size Limits" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing component size limits"
+rg -q "Naming Rules" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing naming rules"
+rg -q "Component Placement Rules" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md || fail "Code complexity policy missing placement rules"
+rg -q "implementationComplexity" contracts/implementation-handoff.schema.json || fail "Implementation handoff schema missing implementationComplexity"
+rg -q "Code implementation complexity governance is mandatory" adapters/profiles/STRICT_BASELINE.md || fail "Strict baseline must require code complexity governance"
+pass "Code implementation complexity consistency"
 
 required_manifest_keys=(
   "apiVersion:"

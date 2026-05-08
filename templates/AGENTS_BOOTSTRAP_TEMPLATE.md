@@ -79,6 +79,12 @@ rtk discover          # find missed opportunities
 - Release evidence: `docs/releases/**`
 - Governance manifest: `governance.yaml`
 - Amendments/overlays: `docs/governance/amendments/`
+- Production code complexity policy:
+  `.governance/ai-dev-governance/core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+  Before nontrivial production-code edits, declare component ownership,
+  naming/placement, mutable state, resources, state/task topology, public API,
+  line counts, and the change-amplification/cognitive-load/unknown-unknown
+  scores required by that policy.
 - Validation: `scripts/validate_bootstrap.sh` (consumer completeness)
   and `.governance/ai-dev-governance/scripts/validate_governance.sh`
 

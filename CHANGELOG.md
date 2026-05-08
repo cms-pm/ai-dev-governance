@@ -2,6 +2,22 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [0.7.4] - 2026-05-08
+
+### Added
+- Core code implementation complexity governance:
+  `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`.
+- Implementation complexity evidence fields in the implementation handoff
+  schema and board meeting template.
+- Validator checks for strict-baseline code complexity policy carriage.
+
+### Changed
+- Strict baseline now requires code implementation complexity governance for
+  production code changes.
+- Autonomous delivery, TDR, evidence, exception, and operations guidance now
+  fail closed when required production-code complexity evidence is missing.
+- Manifest examples and validation fixtures were refreshed to `v0.7.4`.
+
 ## [0.7.3] - 2026-05-07
 
 ### Changed

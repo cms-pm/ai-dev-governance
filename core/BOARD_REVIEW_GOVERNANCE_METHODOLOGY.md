@@ -190,6 +190,9 @@ Default paths are project-defined via governance manifest evidence fields.
 - Planning: adopted outcomes feed phase/chunk planning and ambiguity closure.
 - TDR: adopted outcomes requiring behavior change MUST map to acceptance criteria IDs.
 - Autonomous delivery: board artifacts gate high/critical transitions.
+- Code implementation complexity: adopted implementation actions SHOULD carry
+  component ownership, naming/placement, state/task, and complexity-rubric
+  evidence in the handoff artifact.
 - Git/Release: unresolved critical findings block release unless approved exception exists.
 - Evidence contract: board review evidence MUST be complete and auditable.
 

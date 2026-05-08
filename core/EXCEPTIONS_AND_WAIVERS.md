@@ -25,6 +25,8 @@ Every exception request MUST include:
 - Expired exceptions automatically fail governance checks.
 - Exceptions MAY not remove accountable human approval requirements.
 - Exceptions for security controls require security approver sign-off.
+- Exceptions for code-complexity hard caps or forbidden patterns MUST include
+  a retirement plan and may not be permanent.
 
 ## Storage
 

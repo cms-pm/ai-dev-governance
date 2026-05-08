@@ -12,6 +12,9 @@
 8. Autonomous delivery policy must define state machine and deterministic stop rules.
 9. Board policy must define expert-agent selection criteria and scoring rubric.
 10. Git strategy and branch protection must require chunk-scope enforcement.
+11. Strict baseline code implementation MUST define component ownership,
+    naming/placement review, line-count evidence, and complexity scores for
+    production code changes.
 
 ## Contract Rules
 
@@ -49,6 +52,10 @@
     wrapper, gitignore entries, `governance.yaml` keys, bootstrap block in
     `AGENTS.md`/`CLAUDE.md`, required directory structure, and submodule
     initialization.
+
+13. Implementation handoff records MAY carry an `implementationComplexity`
+    object. When production code changes, that object or an equivalent linked
+    artifact MUST satisfy `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`.
 
 ## Release Rules
 

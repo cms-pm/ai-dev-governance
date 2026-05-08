@@ -13,6 +13,7 @@ Operational playbook for running risk-tiered autonomous implementation with mini
 - Governance manifest with `automation` configured
 - Planning artifacts with risk-tier assignment
 - TDR artifacts with acceptance IDs
+- Implementation complexity note for production code changes
 - Board review artifacts for high/critical tiers
 
 ## Tier Operations
@@ -28,6 +29,7 @@ Stop and fail closed when:
 
 - required artifacts missing,
 - validation checks fail,
+- required implementation complexity evidence is missing,
 - required signoffs missing,
 - unresolved critical board findings exist without approved exception.
 
@@ -36,4 +38,5 @@ Stop and fail closed when:
 - board finding records
 - board decision records
 - implementation handoff record
+- implementation complexity record
 - transition status log per state

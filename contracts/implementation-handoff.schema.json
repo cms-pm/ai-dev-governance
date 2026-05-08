@@ -59,6 +59,91 @@
     },
     "traceabilityPath": {"type": "string", "minLength": 1},
     "owner": {"type": "string", "minLength": 1},
-    "status": {"type": "string", "enum": ["draft", "ready", "executing", "closed"]}
+    "status": {"type": "string", "enum": ["draft", "ready", "executing", "closed"]},
+    "implementationComplexity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["applicability"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {"applicability": {"const": "applicable"}}
+          },
+          "then": {
+            "required": [
+              "componentOwners",
+              "namingReview",
+              "placementReview",
+              "complexityScores"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {"applicability": {"const": "not-applicable"}}
+          },
+          "then": {
+            "required": ["notApplicableReason"]
+          }
+        }
+      ],
+      "properties": {
+        "applicability": {"type": "string", "enum": ["applicable", "not-applicable"]},
+        "notApplicableReason": {"type": "string", "minLength": 1},
+        "componentOwners": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "namingReview": {"type": "string", "minLength": 1},
+        "placementReview": {"type": "string", "minLength": 1},
+        "mutableStateOwners": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "resourceOwners": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "stateMachines": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "taskLoops": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "publicSurface": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "lineCountEvidencePath": {"type": "string", "minLength": 1},
+        "diagramEvidencePaths": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        },
+        "complexityScores": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["changeAmplification", "cognitiveLoad", "unknownUnknowns"],
+          "properties": {
+            "changeAmplification": {"type": "integer", "minimum": 0, "maximum": 3},
+            "cognitiveLoad": {"type": "integer", "minimum": 0, "maximum": 3},
+            "unknownUnknowns": {"type": "integer", "minimum": 0, "maximum": 3}
+          }
+        },
+        "exceptionIds": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "uniqueItems": true
+        }
+      }
+    }
   }
 }

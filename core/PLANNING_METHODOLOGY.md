@@ -108,6 +108,7 @@ Before implementation starts, each chunk MUST have:
 - Defined validation method (manual or automated)
 - Risks and rollback approach
 - Ownership and review assignment
+- Implementation-complexity applicability and evidence destination
 - Risk tier and automation path
 - Declared atomic PR scope target (`SCN-*` or chunk SCN prefix)
 

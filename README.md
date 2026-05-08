@@ -130,6 +130,7 @@ Consuming repositories MAY also maintain an optional local overlay at `docs/gove
 - Test-driven requirements and evidence: `core/AI_ASSISTED_TDR_METHODOLOGY.md`
 - Branching and release controls: `core/GIT_BRANCH_STRATEGY.md`
 - Autonomous delivery state machine and risk-tier policy: `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md`
+- Code implementation complexity controls: `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
 - Board review governance, expert-agent selection, and integration lane: `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`
 - Exceptions and waivers: `core/EXCEPTIONS_AND_WAIVERS.md`
 - AI-assisted security controls: `core/SECURITY_CONTROLS.md`

@@ -68,6 +68,8 @@ If behavior depends on hardware characteristics, acceptance criteria MUST includ
 ## Automation Integration
 
 - Implementation handoff records MUST include acceptance mappings, risk-tier assignment, and gate expectations.
+- Production-code handoff records MUST include implementation-complexity
+  evidence or point to the artifact that contains it.
 - High/critical tiers MUST include board review linkage IDs before transition to gate state.
 
 ## Evidence Requirements
