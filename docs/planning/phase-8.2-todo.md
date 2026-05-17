@@ -41,26 +41,31 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 
 ## Complexity core amendment — SCN-8.2.2 (critical, board review)
 
-- [ ] Insert §Power of 10 Discipline (Universal) between §Mandatory
+- [x] Insert §Power of 10 Discipline (Universal) between §Mandatory
       Design Invariants and §Naming Rules — SCN-8.2.2-01
-- [ ] Footnote in §Component Size Limits documenting P10 ~60-line
+- [x] Footnote in §Component Size Limits documenting P10 ~60-line
       ancestor — SCN-8.2.2-01
-- [ ] Extend §Forbidden Patterns Without Human Exception (recursion,
+- [x] Extend §Forbidden Patterns Without Human Exception (recursion,
       unbounded loops, dynamic allocation post-init, unchecked
-      returns) — SCN-8.2.2-01
-- [ ] Extend §Required Validation Evidence (analyzer floor +
+      returns) — SCN-8.2.2-01 (rule 8 preprocessor clause added
+      alongside the four)
+- [x] Extend §Required Validation Evidence (analyzer floor +
       manifest-declared analyzer) — SCN-8.2.2-01
-- [ ] Add row to §Required Pre-Implementation Checklist
+- [x] Add row to §Required Pre-Implementation Checklist
       (Return-value and parameter validation) — SCN-8.2.2-01
-- [ ] Cross-link to CockpitVM Embedded Style at section end —
-      SCN-8.2.2-01
-- [ ] Verify `grep -niE "nasa|jpl|goddard"` returns 0 — SCN-8.2.2-01
-- [ ] Verify `grep -n "Power of 10"` returns ≥ 1 hit per universal
-      rule — SCN-8.2.2-01
-- [ ] Verify `grep -n "25 LOC"` still shows the existing cap —
-      SCN-8.2.2-01
-- [ ] `scripts/validate_governance.sh` exits 0 — SCN-8.2.2-01
-- [ ] Re-run `.astaire/astaire scan --root .` — SCN-8.2.2-01
+- [x] Cross-link to CockpitVM Embedded Style at section end —
+      SCN-8.2.2-01 (cross-link lives in §Power of 10 Discipline
+      preamble + closing paragraph; pointer/preprocessor/allocator
+      elaborations routed to the embedded style)
+- [x] Verify `grep -niE "nasa|jpl|goddard"` returns 0 — SCN-8.2.2-01
+- [x] Verify `grep -n "Power of 10"` returns ≥ 1 hit per universal
+      rule — SCN-8.2.2-01 (rules 1, 2, 3, 5, 7, 8, 10 all present;
+      rule 4 cited in §Component Size Limits footnote)
+- [x] Verify `grep -n "25 LOC"` still shows the existing cap —
+      SCN-8.2.2-01 (line 203)
+- [x] `scripts/validate_governance.sh` exits 0 — SCN-8.2.2-01
+- [x] Re-run `.astaire/astaire scan --root .` — SCN-8.2.2-01
+      (drift surfaced; resolved with `sync`; lint returns 0/0)
 
 ## CockpitVM Embedded Style — SCN-8.2.3 (high, board review)
 

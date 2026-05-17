@@ -64,6 +64,76 @@ Agents MUST preserve these invariants:
 11. Names reveal ownership, action, and abstraction level.
 12. Component placement expresses domain ownership, not historical convenience.
 
+## Power of 10 Discipline (Universal)
+
+This section adds a language-agnostic per-function discipline drawn from
+the Power of 10 rules. The clauses here are universal; C/C++-specific
+elaborations (pointer use, preprocessor specifics, allocator patterns,
+`goto`/`setjmp`) live in the CockpitVM Embedded Style at
+`adapters/profiles/CockpitVM_Embedded_Style.md` and apply only when the
+governance manifest declares the embedded profile.
+
+Rules 4 (function size) and 6 (smallest scope) are not restated here:
+rule 4 is subsumed by §Component Size Limits (which is stricter than the
+Power of 10 ~60-line guideline), and rule 6 is subsumed by §Mandatory
+Design Invariants #1 and the §Forbidden Patterns clause prohibiting new
+file-scope mutable globals in orchestration files. Rule 9 (pointer use)
+is C/C++-specific and lives only in the CockpitVM Embedded Style.
+
+Universal clauses:
+
+- **Restricted control flow (Power of 10, rule 1).** Agents MUST NOT
+  introduce direct or indirect recursion in production code without a
+  human-approved exception. Indirect recursion includes mutual recursion
+  across modules.
+- **Bounded loops (Power of 10, rule 2).** Agents MUST NOT introduce
+  loops without a statically demonstrable upper bound. Equivalent forms
+  (e.g. an event-loop body with a short-circuit timeout) satisfy the
+  rule when the bound is part of the loop construct, not an external
+  invariant.
+- **No dynamic allocation in the steady state (Power of 10, rule 3).**
+  Agents MUST NOT introduce dynamic memory allocation in the steady
+  state of production code. "Steady state" means the period after
+  initialization completes; allocation during init is permitted when
+  the lifetime is bounded by a clearly named owner (per §Mandatory
+  Design Invariants #2). Languages with mandatory dynamic allocation
+  (e.g. Python, Java) MAY satisfy this rule by documenting an
+  allocation budget per execution root.
+- **Assertion density (Power of 10, rule 5).** Agents SHOULD include at
+  least two assertions per nontrivial function added or touched in
+  production code. Assertions document preconditions, postconditions,
+  and invariants — not error handling at the boundary. Trivial
+  getters/setters and one-line wrappers are exempt. This clause is a
+  `SHOULD`, not a `MUST`, and applies only to new or touched code (per
+  §Component Size Limits Grandfathering).
+- **Return-value and parameter checks (Power of 10, rule 7).** Agents
+  MUST check the return value of every non-void function call in
+  production code, or MUST explicitly cast to `(void)` with a one-line
+  comment stating the rationale. Agents MUST validate parameters at
+  every public boundary in production code.
+- **Restricted preprocessor and metaprogramming (Power of 10, rule 8).**
+  Agents MUST NOT use preprocessor or macro features beyond file
+  inclusion, simple object-like definitions, and language-idiomatic
+  guards. Token pasting, recursive macros, computed includes, and
+  conditional-compilation gates that hide alternative code paths from
+  review require a human-approved exception.
+- **All warnings + static analysis (Power of 10, rule 10).** Validation
+  evidence for production changes MUST include a clean compile under
+  all-warnings (language-idiomatic equivalent of `-Wall -Wextra -Werror`
+  for C/C++, `RUSTFLAGS="-D warnings"` for Rust, equivalent linter
+  strict mode for dynamic languages) and at least one static analyzer
+  reporting zero findings on touched files. The analyzer choice MUST be
+  declared in the governance manifest. See §Required Validation Evidence
+  for the canonical evidence list.
+
+Cross-reference: §Forbidden Patterns Without Human Exception restates
+rules 1, 2, 3, 7, and 8 in negative form; §Required Validation Evidence
+restates rule 10 alongside the analyzer-capability floor; §Required
+Pre-Implementation Checklist carries the rule-7 evidence row. The
+embedded elaborations (pointer use, preprocessor specifics, allocator
+patterns, `goto`/`setjmp`) live in
+`adapters/profiles/CockpitVM_Embedded_Style.md`.
+
 ## Naming Rules
 
 Agents MUST apply these rules before creating or moving production components:
@@ -130,7 +200,7 @@ human-approved exception exists.
 | Header or public API file | 120 LOC | 180 LOC | Public types and API only. No broad global context objects. |
 | State-machine implementation | 350 LOC | 450 LOC | One machine, events, guards, actions, and transition table/SMF. |
 | Task or service-loop implementation | 220 LOC | 300 LOC | One execution root plus its private helpers. |
-| Function | 25 LOC | 40 LOC | Longer functions require a cohesion note and review evidence. |
+| Function | 25 LOC | 40 LOC | Longer functions require a cohesion note and review evidence. See footnote on Power of 10 rule 4. |
 | Public dependency struct | 8 fields | 12 fields | Larger structs must split by role. |
 | Command dispatch table | 20 commands | 30 commands | Larger command surfaces require grouping and generated/listed docs. |
 
@@ -141,6 +211,13 @@ Grandfathering:
   or add an exception request with a retirement plan.
 - Agents MUST NOT add new behavior to an over-cap orchestration file unless the
   change is wiring required for extraction.
+
+Footnote — Power of 10 rule 4. The function-length cap of 25 / 40 LOC is
+stricter than the Power of 10 rule 4 guideline (~60 LOC, "one printed
+page"). The stricter cap better serves the change-amplification
+invariant declared in §Core Principle. Power of 10 rule 4 is documented
+here as the looser ancestor, not as an alternative permitted by
+exception.
 
 ## Required Pre-Implementation Checklist
 
@@ -165,6 +242,11 @@ a brief implementation note containing:
   code.
 - Unknown-unknown probe: hidden coupling that might surprise a future
   maintainer and where it is made explicit.
+- Return-value and parameter validation: list any non-void call sites in
+  the change that intentionally discard their return (each with a `(void)`
+  cast and one-line rationale), and list any public boundary functions
+  introduced or modified together with the parameter validation they
+  perform. (Power of 10, rule 7.)
 
 ## Required Validation Evidence
 
@@ -180,6 +262,14 @@ Before closeout, the agent MUST provide:
 - Build/test evidence appropriate to risk tier.
 - Explicit list of any warning-threshold or hard-cap violations.
 - Human-approved exception ID for each hard-cap violation.
+- Clean compile under all-warnings (language-idiomatic equivalent of
+  `-Wall -Wextra -Werror` for C/C++, `RUSTFLAGS="-D warnings"` for
+  Rust, equivalent linter strict mode for dynamic languages) and at
+  least one static analyzer reporting zero findings on touched files.
+  The analyzer choice MUST be declared in the governance manifest. The
+  analyzer's minimum capability is detection of: recursion, unbounded
+  loops, dynamic allocation in the steady state, and unchecked non-void
+  returns. (Power of 10, rule 10.)
 
 ## Forbidden Patterns Without Human Exception
 
@@ -201,6 +291,20 @@ exception:
 - Silent build-variant warnings classified only from memory instead of a
   durable artifact.
 - State names that are declared but never transitioned to.
+- Direct or indirect recursion in production code (Power of 10, rule 1).
+- Loops without a statically demonstrable upper bound (Power of 10,
+  rule 2).
+- Dynamic memory allocation in the steady state after initialization
+  completes (Power of 10, rule 3).
+- Non-void function calls whose return value is neither checked nor
+  explicitly discarded with a `(void)` cast and one-line rationale; or
+  public boundary functions that omit parameter validation (Power of 10,
+  rule 7).
+- Preprocessor or macro features beyond file inclusion, simple
+  object-like definitions, and language-idiomatic guards — including
+  token pasting, recursive macros, computed includes, and
+  conditional-compilation gates that hide alternative code paths from
+  review (Power of 10, rule 8).
 
 ## Complexity Review Rubric
 
