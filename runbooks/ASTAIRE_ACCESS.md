@@ -61,6 +61,8 @@ Flags shared across subcommands: `--db <path>` (the wrapper sets this),
   (note: hyphens inside FTS terms are fragile — prefer phrases or
   unhyphenated forms).
 - **"Assemble context for work in phase N."** → `context --tag phase=<n> --budget <n>`.
+- **"Which HiL/SiL test cards exist?"** → `query -t test-card` (filter with `--tag paradigm=hil` / `--tag paradigm=sil-qemu`).
+- **"Show me the canonical playbook for a card."** → `context --tag id=<card-slug> --budget 3000`. Cards live under `tests/cards/` in consumer repos that opt into the Phase 8.1 test tooling registry; their schema is documented at `tests/cards/_schema/test-card.v1.md`.
 
 ## FTS Caveat
 
