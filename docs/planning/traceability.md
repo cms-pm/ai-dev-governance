@@ -32,13 +32,13 @@ per `governance.yaml` (SCN-1.1).
 | SCN-8.2.0-04 | SCN-8.2.0 | `docs/planning/phase-8.2-todo.md` | — | pending |
 | SCN-8.2.0-05 | SCN-8.2.0 | `.astaire/memory_palace.db` (Phase 8.2 ingest) | Astaire context/query/lint logs | pending |
 | SCN-8.2.1-01 | SCN-8.2.1 | `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` | memo on disk; agency-string grep zero outside §Sources; Astaire lint 0/0 | drafted |
-| SCN-8.2.2-01 | SCN-8.2.2 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | — | pending |
+| SCN-8.2.2-01 | SCN-8.2.2 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | Board adopted 2026-05-17 in `docs/planning/board/committee-virtual-meeting-scn-8-2-2-p10-adoption-2026-05-17.md`; packet outcome recorded in `docs/planning/board/committee-review-packet-2026-05-17-scn-8-2-2.md`. | board-adopted |
 | SCN-8.2.3-01 | SCN-8.2.3 | `adapters/profiles/CockpitVM_Embedded_Style.md` | — | pending |
 | SCN-8.2.4-01 | SCN-8.2.4 | `adapters/profiles/EMBEDDED_PROFILE.md` | — | pending |
 | SCN-8.2.4-02 | SCN-8.2.4 | `validation/` (rule path TBC) | — | pending |
 | SCN-8.2.4-03 | SCN-8.2.4 | CI workflow (path TBC) | — | pending |
 | SCN-8.2.5-01 | SCN-8.2.5 | `docs/planning/board/` (packet path TBC) | — | pending |
-| SCN-8.2.6-01 | SCN-8.2.6 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | grep `5d47359` / `Cross-Phase In-Flight Coordination` / `chunk-8.1.[0-3]` returns expected hits | pending |
-| SCN-8.2.6-02 | SCN-8.2.6 | `docs/planning/phase-8.2-risks.md` (R-8.2-05 + Cross-Phase Risk References appendix) | grep `R-8.2-05` / `Cross-Phase Risk References` returns expected hits | pending |
-| SCN-8.2.6-03 | SCN-8.2.6 | `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md` (OPP-8.2-001) | file exists; opportunity status `Adopted`; closure pointer to SCN-8.2.6 commit | pending |
-| SCN-8.2.6-04 | SCN-8.2.6 | `docs/planning/phase-8.2-todo.md`, `docs/planning/traceability.md` | all SCN-8.2.6 checkboxes ticked with evidence annotations; this row present | pending |
+| SCN-8.2.6-01 | SCN-8.2.6 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | Commit `01d3f00`; grep `5d47359` / `Cross-Phase In-Flight Coordination` / `chunk-8.1.[0-3]` returns expected hits | closed |
+| SCN-8.2.6-02 | SCN-8.2.6 | `docs/planning/phase-8.2-risks.md` (R-8.2-05 + Cross-Phase Risk References appendix) | Commit `01d3f00`; grep `R-8.2-05` / `Cross-Phase Risk References` returns expected hits | closed |
+| SCN-8.2.6-03 | SCN-8.2.6 | `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md` (OPP-8.2-001) | Commit `01d3f00`; opportunity status `closed`; meeting record `docs/planning/board/committee-virtual-meeting-scn-8-2-2-p10-adoption-2026-05-17.md` | closed |
+| SCN-8.2.6-04 | SCN-8.2.6 | `docs/planning/phase-8.2-todo.md`, `docs/planning/traceability.md` | Commit `01d3f00`; all SCN-8.2.6 checkboxes ticked with evidence annotations; this row present | closed |

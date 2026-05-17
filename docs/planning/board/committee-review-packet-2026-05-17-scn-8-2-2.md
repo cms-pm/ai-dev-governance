@@ -142,6 +142,9 @@ that gates every downstream production-code change. Reviewers MUST:
 ## Links
 
 - Amendment commit: `5d47359`
+- Meeting record:
+  `docs/planning/board/committee-virtual-meeting-scn-8-2-2-p10-adoption-2026-05-17.md`
+- Board-authored mitigation commit: `01d3f00` (SCN-8.2.6)
 - Amended policy: `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
 - Evaluation memo: `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md`
 - Chunk plan: `docs/planning/chunks/phase-8.2-chunks.md`
@@ -163,3 +166,24 @@ at SCN-8.2.5 per the chunk plan.
 surfaces silent-coupling that warrants a joint 8.1/8.2 packet before
 adoption. `Rejected` outcomes MUST cite the specific clause and the
 alternative factoring proposed — bare rejection is out of order.
+
+## Board Session Outcome
+
+- Meeting ID: `MTG-0002`
+- Meeting alias: `SCN-8.2.2-board-review-2026-05-17`
+- Session chair: Will Larson (BM-012, expert-informed simulation)
+- Outcome: **Adopted**
+- Scope decision: **Go** for SCN-8.2.2. SCN-8.2.3 and SCN-8.2.4 may proceed.
+- Gate boundary: final Phase 8.2 sign-off remains bundled at SCN-8.2.5.
+- Critical blockers after session: 0.
+- High findings after session: 0 open. Q4 produced OPP-8.2-001, closed by
+  SCN-8.2.6 commit `01d3f00`.
+- Residual tracked risks: R-8.2-02 (analyzer capability audit follow-up) and
+  R-8.2-05 (reciprocal Phase 8.1 risk-log closure criterion).
+
+Decision summary:
+
+1. `DEC-0001` adopted the SCN-8.2.2 Power of 10 universal discipline
+   amendment as a standalone critical-tier gate.
+2. `DEC-0002` adopted the Q4 cross-phase mitigation; implementation landed
+   as SCN-8.2.6 at `01d3f00`.
