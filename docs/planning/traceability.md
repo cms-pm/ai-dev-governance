@@ -31,7 +31,7 @@ per `governance.yaml` (SCN-1.1).
 | SCN-8.2.0-03 | SCN-8.2.0 | `docs/planning/phase-8.2-risks.md` | — | pending |
 | SCN-8.2.0-04 | SCN-8.2.0 | `docs/planning/phase-8.2-todo.md` | — | pending |
 | SCN-8.2.0-05 | SCN-8.2.0 | `.astaire/memory_palace.db` (Phase 8.2 ingest) | Astaire context/query/lint logs | pending |
-| SCN-8.2.1-01 | SCN-8.2.1 | `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` | — | pending |
+| SCN-8.2.1-01 | SCN-8.2.1 | `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` | memo on disk; agency-string grep zero outside §Sources; Astaire lint 0/0 | drafted |
 | SCN-8.2.2-01 | SCN-8.2.2 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | — | pending |
 | SCN-8.2.3-01 | SCN-8.2.3 | `adapters/profiles/CockpitVM_Embedded_Style.md` | — | pending |
 | SCN-8.2.4-01 | SCN-8.2.4 | `adapters/profiles/EMBEDDED_PROFILE.md` | — | pending |

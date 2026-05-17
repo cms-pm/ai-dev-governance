@@ -29,12 +29,15 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 
 ## Evaluation memo — SCN-8.2.1
 
-- [ ] Author `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md`
+- [x] Author `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md`
       with scope + ten-rule matrix + LOC-cap memo + YAML gap walk +
       recommendation + Sources footer — SCN-8.2.1-01
-- [ ] Confirm `grep -niE "nasa|jpl|goddard"` matches only inside Sources
-      footer — SCN-8.2.1-01
-- [ ] Re-run `.astaire/astaire scan --root .` and `lint` — SCN-8.2.1-01
+- [x] Confirm `grep -niE "nasa|jpl|goddard"` matches only inside Sources
+      footer — SCN-8.2.1-01 (memo body neutralized; grep returns zero
+      hits anywhere outside the Sources footer at §6; raw-filename and
+      pattern-verbatim residuals scrubbed)
+- [x] Re-run `.astaire/astaire scan --root .` and `lint` — SCN-8.2.1-01
+      (lint 0/0; memo NOT auto-registered — see follow-up below)
 
 ## Complexity core amendment — SCN-8.2.2 (critical, board review)
 
@@ -103,3 +106,7 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 - Upstream Astaire enhancement: support fractional `phase` tags (e.g.
   `phase=8.2`) so sub-phases are first-class. Discovered during
   SCN-8.2.0; current workaround is integer phase + sub-phase in title.
+- Upstream Astaire enhancement: add `docs/planning/evaluations/` to the
+  `ai_dev_governance` collection plugin's path-to-type table (suggested
+  type: `evaluation`). Discovered during SCN-8.2.1; current workaround
+  is file-system discoverability only.
