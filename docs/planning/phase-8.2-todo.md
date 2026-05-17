@@ -103,6 +103,46 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
       closed bundle — SCN-8.2.5-01
 - [ ] Update this TO-DO to mark phase closed — SCN-8.2.5-01
 
+## Cross-phase coordination + grandfathering — SCN-8.2.6 (high, board review, board-authored)
+
+Board-authored under OPP-8.2-001 from the SCN-8.2.2 review packet Q4.
+MUST land before SCN-8.2.5 sign-off.
+
+- [x] Extend `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+      §Grandfathering with new §Cross-Phase In-Flight Coordination
+      sub-clause anchored to SHA `5d47359`; name Phase 8.1 cohort
+      `chunk-8.1.0-*`..`chunk-8.1.3-*` illustratively — SCN-8.2.6-01
+- [x] Add `R-8.2-05` row to `docs/planning/phase-8.2-risks.md` Open
+      Risks; add "Cross-Phase Risk References" appendix — SCN-8.2.6-02
+- [x] Create
+      `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md`
+      with OPP-8.2-001 recording board origin — SCN-8.2.6-03
+- [x] Append SCN-8.2.6 rows to `docs/planning/traceability.md` and
+      tick this section in `docs/planning/phase-8.2-todo.md` —
+      SCN-8.2.6-04
+- [x] `grep -n "5d47359" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+      returns ≥ 1 hit — SCN-8.2.6-01 (3 hits: lines 217, 221, 224)
+- [x] `grep -n "Cross-Phase In-Flight Coordination" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+      returns exactly 1 hit — SCN-8.2.6-01 (line 215)
+- [x] `grep -nE "chunk-8\.1\.[0-3]" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+      returns ≥ 1 hit — SCN-8.2.6-01 (line 226)
+- [x] `grep -n "R-8.2-05" docs/planning/phase-8.2-risks.md` returns
+      ≥ 1 hit — SCN-8.2.6-02 (open-risks row + appendix row +
+      rollback note)
+- [x] `grep -n "Cross-Phase Risk References" docs/planning/phase-8.2-risks.md`
+      returns exactly 1 hit (the appendix heading) plus 1 cross-
+      reference in the SCN-8.2.6 rollback note — SCN-8.2.6-02
+- [x] `grep -niE "nasa|jpl|goddard"` against the modified files
+      returns 0 — SCN-8.2.6-01..04 (only matches are inside grep-
+      command strings within existing acceptance criteria, not
+      agency references)
+- [x] `scripts/validate_governance.sh` exits 0 — SCN-8.2.6-01..04
+      (all 17 checks PASS)
+- [x] `.astaire/astaire scan --root . && .astaire/astaire sync &&
+      .astaire/astaire lint` returns 0/0 — SCN-8.2.6-01..04
+      (opportunity register registered as board-packet; 0 warnings,
+      0 errors after sync)
+
 ## Follow-ups (deferred past Phase 8.2)
 
 - Static-analyzer capability auditing schema in governance manifest

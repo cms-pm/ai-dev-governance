@@ -212,6 +212,25 @@ Grandfathering:
 - Agents MUST NOT add new behavior to an over-cap orchestration file unless the
   change is wiring required for extraction.
 
+Cross-Phase In-Flight Coordination (added by SCN-8.2.6):
+
+- The SCN-8.2.2 adoption commit (`5d47359`) is the **bar-shift anchor** for
+  the Power of 10 universal clauses introduced in §Power of 10 Discipline,
+  §Forbidden Patterns Without Human Exception, §Required Validation Evidence,
+  and §Required Pre-Implementation Checklist.
+- Production code on any branch whose merge base predates `5d47359` is
+  grandfathered from the SCN-8.2.2 clauses listed above until that file is
+  next touched on or after the adoption commit. First touch on or after
+  `5d47359` triggers full compliance for the touched file under the
+  existing "touching means complying" rule above.
+- The Phase 8.1 branch cohort (`chunk-8.1.0-*` through `chunk-8.1.3-*` at
+  drafting time) is the concrete in-flight cohort covered by this clause
+  on adoption. The cohort enumeration is illustrative; the normative test
+  is the merge-base SHA, not the branch name.
+- Code that cannot meet the bar after touch MUST file a time-bound
+  exception per `core/EXCEPTIONS_AND_WAIVERS.md` with a retirement plan.
+  This clause MUST NOT be used to bypass the exception process.
+
 Footnote — Power of 10 rule 4. The function-length cap of 25 / 40 LOC is
 stricter than the Power of 10 rule 4 guideline (~60 LOC, "one printed
 page"). The stricter cap better serves the change-amplification

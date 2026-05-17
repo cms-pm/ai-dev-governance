@@ -248,3 +248,70 @@ Sources footer.
 - **Owner.** Chairperson.
 - **Risk tier.** **critical**. Board review mandatory.
 - **Atomic PR scope.** `SCN-8.2.5`.
+
+---
+
+## SCN-8.2.6 — Cross-phase coordination + grandfathering (board-authored)
+
+- **Provenance.** Board-authored under
+  `OPP-8.2-001` (see
+  `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md`).
+  Adopted at the SCN-8.2.2 board review (packet
+  `docs/planning/board/committee-review-packet-2026-05-17-scn-8-2-2.md`,
+  Q4) to close the Phase 8.1 / Phase 8.2 coordination gap. MUST land
+  before SCN-8.2.5 sign-off.
+- **Scope.**
+  - Extend `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+    §Component Size Limits Grandfathering with a new
+    §Cross-Phase In-Flight Coordination clause anchoring the Power of
+    10 bar-shift to SCN-8.2.2 adoption commit `5d47359` and
+    grandfathering production code on branches whose merge base
+    predates that SHA until next post-adoption touch. Names Phase 8.1
+    cohort `chunk-8.1.0-*`..`chunk-8.1.3-*` illustratively.
+  - Add `R-8.2-05` to `docs/planning/phase-8.2-risks.md` Open Risks
+    table tracking the in-flight cohort.
+  - Add a "Cross-Phase Risk References" appendix to
+    `docs/planning/phase-8.2-risks.md` formalising the bidirectional
+    cross-reference protocol so future phases inherit it.
+  - Create the opportunity register file
+    `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md`
+    with OPP-8.2-001 recording the board origin.
+  - Update `docs/planning/phase-8.2-todo.md` and
+    `docs/planning/traceability.md` with SCN-8.2.6 rows.
+- **Acceptance IDs.** SCN-8.2.6-01 (core clause), SCN-8.2.6-02
+  (R-8.2-05 + appendix), SCN-8.2.6-03 (opportunity register),
+  SCN-8.2.6-04 (TO-DO + traceability).
+- **Acceptance criteria.**
+  - `grep -n "5d47359" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+    returns ≥ 1 hit inside the §Grandfathering subsection.
+  - `grep -n "Cross-Phase In-Flight Coordination" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+    returns exactly 1 hit (the new sub-clause heading).
+  - `grep -nE "chunk-8\.1\.[0-3]" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
+    returns ≥ 1 hit (illustrative cohort named).
+  - `grep -n "R-8.2-05" docs/planning/phase-8.2-risks.md` returns ≥ 1
+    hit in the Open Risks table.
+  - `grep -n "Cross-Phase Risk References" docs/planning/phase-8.2-risks.md`
+    returns exactly 1 hit (the new appendix heading).
+  - `grep -niE "nasa|jpl|goddard"` against the modified files returns 0.
+  - `scripts/validate_governance.sh` exits 0.
+  - `.astaire/astaire scan --root . && .astaire/astaire sync && .astaire/astaire lint`
+    returns 0 warnings, 0 errors.
+  - All four SCN-8.2.6 checkboxes in `docs/planning/phase-8.2-todo.md`
+    ticked with evidence annotations.
+- **Validation method.** Automated — grep invariants +
+  `scripts/validate_governance.sh` + Astaire lint. Manual — board
+  sign-off recorded in the SCN-8.2.2 packet Outcome section.
+- **Risks.** Phase 8.1 owners decline to author the reciprocal risk
+  entry (mitigation: R-8.2-05 stays open and surfaces at every
+  sprint critique; escalation path is the Chairperson). The bar-shift
+  anchor SHA changes if SCN-8.2.2 is amended (mitigation: this chunk
+  MUST be re-validated after any SCN-8.2.2 history rewrite, and the
+  SHA in the clause MUST be updated accordingly).
+- **Rollback.** Revert the chunk's single commit. The
+  §Cross-Phase In-Flight Coordination clause excises cleanly; R-8.2-05
+  and the appendix disappear with it; opportunity register file
+  removed by the same revert.
+- **Owner.** Accountable Delivery Lead.
+- **Risk tier.** **high**. Board review mandatory (modifies a
+  normative core policy and gates SCN-8.2.5 sign-off).
+- **Atomic PR scope.** `SCN-8.2.6`.

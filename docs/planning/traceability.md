@@ -38,3 +38,7 @@ per `governance.yaml` (SCN-1.1).
 | SCN-8.2.4-02 | SCN-8.2.4 | `validation/` (rule path TBC) | — | pending |
 | SCN-8.2.4-03 | SCN-8.2.4 | CI workflow (path TBC) | — | pending |
 | SCN-8.2.5-01 | SCN-8.2.5 | `docs/planning/board/` (packet path TBC) | — | pending |
+| SCN-8.2.6-01 | SCN-8.2.6 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | grep `5d47359` / `Cross-Phase In-Flight Coordination` / `chunk-8.1.[0-3]` returns expected hits | pending |
+| SCN-8.2.6-02 | SCN-8.2.6 | `docs/planning/phase-8.2-risks.md` (R-8.2-05 + Cross-Phase Risk References appendix) | grep `R-8.2-05` / `Cross-Phase Risk References` returns expected hits | pending |
+| SCN-8.2.6-03 | SCN-8.2.6 | `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md` (OPP-8.2-001) | file exists; opportunity status `Adopted`; closure pointer to SCN-8.2.6 commit | pending |
+| SCN-8.2.6-04 | SCN-8.2.6 | `docs/planning/phase-8.2-todo.md`, `docs/planning/traceability.md` | all SCN-8.2.6 checkboxes ticked with evidence annotations; this row present | pending |
