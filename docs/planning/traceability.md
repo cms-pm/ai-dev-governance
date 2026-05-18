@@ -33,7 +33,7 @@ per `governance.yaml` (SCN-1.1).
 | SCN-8.2.0-05 | SCN-8.2.0 | `.astaire/memory_palace.db` (Phase 8.2 ingest) | Astaire context/query/lint logs | pending |
 | SCN-8.2.1-01 | SCN-8.2.1 | `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` | memo on disk; agency-string grep zero outside §Sources; Astaire lint 0/0 | drafted |
 | SCN-8.2.2-01 | SCN-8.2.2 | `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` | Board adopted 2026-05-17 in `docs/planning/board/committee-virtual-meeting-scn-8-2-2-p10-adoption-2026-05-17.md`; packet outcome recorded in `docs/planning/board/committee-review-packet-2026-05-17-scn-8-2-2.md`. | board-adopted |
-| SCN-8.2.3-01 | SCN-8.2.3 | `adapters/profiles/CockpitVM_Embedded_Style.md` | — | pending |
+| SCN-8.2.3-01 | SCN-8.2.3 | `adapters/profiles/CockpitVM_Embedded_Style.md` | File on disk with all 11 section groups; pointer rule (P10 #9) present here and absent from `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`; `grep -niE "nasa\|jpl\|goddard"` and `grep -n "raw/"` both return 0; `scripts/validate_governance.sh` exits 0 (17/17 PASS); `.astaire/astaire lint` 0/0. Astaire auto-registration deferred to follow-up (`adapters/profiles/` not in `governance_authoring` plugin path-to-type table). | drafted |
 | SCN-8.2.4-01 | SCN-8.2.4 | `adapters/profiles/EMBEDDED_PROFILE.md` | — | pending |
 | SCN-8.2.4-02 | SCN-8.2.4 | `validation/` (rule path TBC) | — | pending |
 | SCN-8.2.4-03 | SCN-8.2.4 | CI workflow (path TBC) | — | pending |

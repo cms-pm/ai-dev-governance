@@ -69,13 +69,27 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 
 ## CockpitVM Embedded Style — SCN-8.2.3 (high, board review)
 
-- [ ] Create `adapters/profiles/CockpitVM_Embedded_Style.md` with all
-      eleven section groups — SCN-8.2.3-01
-- [ ] Pointer rule (P10 #9) lives here, not in core — SCN-8.2.3-01
-- [ ] `grep -niE "nasa|jpl|goddard"` returns 0 — SCN-8.2.3-01
-- [ ] `grep -n "raw/"` returns 0 — SCN-8.2.3-01
-- [ ] `scripts/validate_governance.sh` exits 0 — SCN-8.2.3-01
-- [ ] Re-run `.astaire/astaire scan --root .` — SCN-8.2.3-01
+- [x] Create `adapters/profiles/CockpitVM_Embedded_Style.md` with all
+      eleven section groups — SCN-8.2.3-01 (preamble + lineage line;
+      ABI boundary; allowed C++ features; forbidden C++ features;
+      determinism requirements with cross-links to core §Power of 10
+      rules 1/2/3/7; required type-safety patterns under
+      `cockpit::core::`; pointer-use rule §; verification checklist;
+      tooling integration with analyzer capability floor; header /
+      implementation organization; Sources footer with Holzmann 2006
+      BibTeX entry only)
+- [x] Pointer rule (P10 #9) lives here, not in core — SCN-8.2.3-01
+      (verified: `grep -nE "rule 9|Power of 10 #9|pointer-use rule"
+      core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` returns 0)
+- [x] `grep -niE "nasa|jpl|goddard"` returns 0 — SCN-8.2.3-01
+- [x] `grep -n "raw/"` returns 0 — SCN-8.2.3-01
+- [x] `scripts/validate_governance.sh` exits 0 — SCN-8.2.3-01 (all
+      17 checks PASS)
+- [x] Re-run `.astaire/astaire scan --root .` — SCN-8.2.3-01 (lint
+      0/0; new file NOT auto-registered — `adapters/profiles/` is
+      absent from the `governance_authoring` collection plugin's
+      path-to-type table; see follow-up below, same shape as the
+      SCN-8.2.1 evaluations gap)
 
 ## Embedded profile wiring + validation gate — SCN-8.2.4
 
@@ -155,3 +169,10 @@ MUST land before SCN-8.2.5 sign-off.
   `ai_dev_governance` collection plugin's path-to-type table (suggested
   type: `evaluation`). Discovered during SCN-8.2.1; current workaround
   is file-system discoverability only.
+- Upstream Astaire enhancement: add `adapters/profiles/` to the
+  `governance_authoring` collection plugin's path-to-type table
+  (suggested type: `adapter-profile`). The existing
+  `EMBEDDED_PROFILE.md` and `STRICT_BASELINE.md` are already on disk
+  but unregistered; the new `CockpitVM_Embedded_Style.md` inherits the
+  same gap. Discovered during SCN-8.2.3; current workaround is
+  file-system discoverability only.
