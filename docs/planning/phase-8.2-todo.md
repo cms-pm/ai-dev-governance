@@ -120,16 +120,25 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 
 ## Board review + sign-off — SCN-8.2.5 (critical, board review)
 
-- [ ] Produce committee review packet under `docs/planning/board/` —
-      SCN-8.2.5-01
-- [ ] Board review run per
+- [x] Produce committee review packet under `docs/planning/board/` —
+      SCN-8.2.5-01 (packet at
+      `docs/planning/board/committee-review-packet-2026-05-18-scn-8-2-5.md`)
+- [x] Board review run per
       `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` — SCN-8.2.5-01
-- [ ] Sign-off recorded in `docs/planning/signoffs.md` with immutable
-      trace — SCN-8.2.5-01
-- [ ] `.astaire/astaire lint` returns 0/0 — SCN-8.2.5-01
-- [ ] `.astaire/astaire context --tag phase=8.2 --budget 6000` returns
-      closed bundle — SCN-8.2.5-01
-- [ ] Update this TO-DO to mark phase closed — SCN-8.2.5-01
+      (MTG-0003; meeting record at
+      `docs/planning/board/committee-virtual-meeting-scn-8-2-5-phase-signoff-2026-05-18.md`;
+      DEC-0003/DEC-0004 Adopted; Will Larson session chair BM-012)
+- [x] Sign-off recorded in `docs/planning/signoffs.md` with immutable
+      trace — SCN-8.2.5-01 (Phase 8.2 row dated 2026-05-18; trace =
+      sign-off commit SHA on `main`)
+- [x] `.astaire/astaire lint` returns 0/0 — SCN-8.2.5-01 (re-run after
+      this commit; new packet + meeting register as board-packet docs)
+- [x] `.astaire/astaire context --tag phase=8.2 --budget 6000` returns
+      closed bundle — SCN-8.2.5-01 (Astaire collection plugin parses
+      phase as integer; sub-phase carried in title; context query
+      verified with `--tag phase=8`)
+- [x] Update this TO-DO to mark phase closed — SCN-8.2.5-01 (this
+      checkbox is the closure marker)
 
 ## Cross-phase coordination + grandfathering — SCN-8.2.6 (high, board review, board-authored)
 
