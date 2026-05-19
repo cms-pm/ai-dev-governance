@@ -182,20 +182,20 @@ MUST land before SCN-8.2.5 sign-off.
 
 ## Follow-ups (deferred past Phase 8.2)
 
-- Static-analyzer capability auditing schema in governance manifest
-  (Phase 8.3+; flagged by R-8.2-02).
+- [x] Static-analyzer capability auditing schema in governance manifest
+  (closed by SCN-8.3.4 schema + §16 fixtures; R-8.2-02 final closure
+  still waits on first downstream consumer adoption).
 - Wider language style coverage (Rust, Go, Python) — out of scope here.
-- Upstream Astaire enhancement: support fractional `phase` tags (e.g.
+- [x] Upstream Astaire enhancement: support fractional `phase` tags (e.g.
   `phase=8.2`) so sub-phases are first-class. Discovered during
-  SCN-8.2.0; current workaround is integer phase + sub-phase in title.
-- Upstream Astaire enhancement: add `docs/planning/evaluations/` to the
+  SCN-8.2.0; closed by SCN-8.3.3.
+- [x] Upstream Astaire enhancement: add `docs/planning/evaluations/` to the
   `ai_dev_governance` collection plugin's path-to-type table (suggested
   type: `evaluation`). Discovered during SCN-8.2.1; current workaround
-  is file-system discoverability only.
-- Upstream Astaire enhancement: add `adapters/profiles/` to the
+  closed by SCN-8.3.3.
+- [x] Upstream Astaire enhancement: add `adapters/profiles/` to the
   `governance_authoring` collection plugin's path-to-type table
   (suggested type: `adapter-profile`). The existing
   `EMBEDDED_PROFILE.md` and `STRICT_BASELINE.md` are already on disk
   but unregistered; the new `CockpitVM_Embedded_Style.md` inherits the
-  same gap. Discovered during SCN-8.2.3; current workaround is
-  file-system discoverability only.
+  same gap. Discovered during SCN-8.2.3; closed by SCN-8.3.3.

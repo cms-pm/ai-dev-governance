@@ -1,0 +1,2 @@
+analyzerDeclaration:
+  legacyString: "example-analyzer 1.0.0 detects recursion, unbounded loops, dynamic allocation after init, and unchecked return values"

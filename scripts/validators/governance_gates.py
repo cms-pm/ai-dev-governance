@@ -1,12 +1,16 @@
 """Stand-alone governance gates extracted from scripts/validate_governance.sh.
 
-One gate lives here:
+Two gates live here:
 
 - embedded-profile fail-closed gate: per-manifest verdict. Manifests that
   declare `profiles/embedded` under `adapters` MUST carry
   `evidence.embeddedVerificationChecklistPath` pointing to a file that
   exists relative to the manifest. Manifests that do not declare the
   embedded profile MUST NOT carry the key.
+- analyzer-capability declaration gate: when `analyzerDeclaration` is
+  present, manifests MUST carry exactly one of `legacyString` or
+  `structured`; structured declarations MUST set all required
+  `capabilitiesDetected` booleans to true.
 
 CLI:
 
@@ -34,6 +38,12 @@ from pathlib import Path
 
 CHECKLIST_KEY = "embeddedVerificationChecklistPath"
 EMBEDDED_ADAPTER = "profiles/embedded"
+ANALYZER_CAPABILITIES = (
+    "recursion",
+    "unboundedLoops",
+    "dynamicAllocationPostInit",
+    "uncheckedReturnValues",
+)
 
 
 def _parse_manifest(path: Path) -> dict:
@@ -108,6 +118,77 @@ def check_embedded_profile_gate(manifest_path: Path) -> tuple[bool, str]:
     return True, f"{manifest_path}: non-embedded, no checklist key"
 
 
+def _parse_analyzer_declaration(path: Path) -> dict:
+    """Extract the small analyzerDeclaration shape used by §16."""
+    result = {
+        "present": False,
+        "legacy": False,
+        "structured": False,
+        "capabilities": {},
+    }
+    in_analyzer = False
+    in_capabilities = False
+    for raw_line in path.read_text().splitlines():
+        line = raw_line.split("#", 1)[0].rstrip()
+        if not line:
+            continue
+        if re.match(r"^\S", line):
+            in_analyzer = line.startswith("analyzerDeclaration:")
+            in_capabilities = False
+            if in_analyzer:
+                result["present"] = True
+            continue
+        if not in_analyzer:
+            continue
+        if re.match(r"^\s{2}\S", line):
+            in_capabilities = line.strip().startswith("capabilitiesDetected:")
+            if line.strip().startswith("legacyString:"):
+                result["legacy"] = True
+            if line.strip().startswith("structured:"):
+                result["structured"] = True
+            continue
+        if result["structured"] and re.match(r"^\s{4}capabilitiesDetected:", line):
+            in_capabilities = True
+            continue
+        if in_capabilities:
+            m = re.match(r"^\s{6}([A-Za-z0-9_]+):\s*(\S+)", line)
+            if m:
+                result["capabilities"][m.group(1)] = m.group(2).lower()
+    return result
+
+
+def check_analyzer_declaration_gate(manifest_path: Path) -> tuple[bool, str]:
+    """Return `(passed, message)` for analyzerDeclaration §16."""
+    if not manifest_path.exists():
+        return False, f"manifest path missing: {manifest_path}"
+
+    data = _parse_analyzer_declaration(manifest_path)
+    if not data["present"]:
+        return True, f"{manifest_path}: no analyzerDeclaration"
+
+    if data["legacy"] and data["structured"]:
+        return False, (
+            f"{manifest_path} declares both analyzerDeclaration.legacyString "
+            "and analyzerDeclaration.structured; exactly one is allowed"
+        )
+    if not data["legacy"] and not data["structured"]:
+        return False, (
+            f"{manifest_path} declares analyzerDeclaration but is missing "
+            "analyzerDeclaration.legacyString or analyzerDeclaration.structured"
+        )
+    if data["legacy"]:
+        return True, f"{manifest_path}: analyzerDeclaration legacyString OK"
+
+    for capability in ANALYZER_CAPABILITIES:
+        value = data["capabilities"].get(capability)
+        if value != "true":
+            return False, (
+                f"{manifest_path} requires "
+                f"analyzerDeclaration.structured.capabilitiesDetected.{capability}=true"
+            )
+    return True, f"{manifest_path}: analyzerDeclaration structured OK"
+
+
 def _main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m scripts.validators.governance_gates",
@@ -121,10 +202,11 @@ def _main(argv: list[str]) -> int:
     )
     args = parser.parse_args(argv)
 
-    passed, message = check_embedded_profile_gate(args.manifest)
-    if not passed:
-        print(message, file=sys.stderr)
-        return 1
+    for check in (check_embedded_profile_gate, check_analyzer_declaration_gate):
+        passed, message = check(args.manifest)
+        if not passed:
+            print(message, file=sys.stderr)
+            return 1
     # Per-manifest invocation is silent on success; the orchestrating
     # shell script emits a single aggregate [PASS] line after the loop.
     return 0

@@ -33,13 +33,14 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-8.3.1 — R-8.2-05 cross-phase closure-request packet
 
-- [ ] `docs/planning/cross-phase/r-8.2-05-closure-request.md` on disk.
-- [ ] Cites SHA `5d47359` and §Cross-Phase In-Flight Coordination
+- [x] `docs/planning/cross-phase/r-8.2-05-closure-request.md` on disk.
+- [x] Cites SHA `5d47359` and §Cross-Phase In-Flight Coordination
       clause verbatim.
-- [ ] Restates closure criterion identical to R-8.2-05 row in
+- [x] Restates closure criterion identical to R-8.2-05 row in
       `phase-8.2-risks.md`.
-- [ ] Astaire scan + lint 0/0.
-- [ ] R-8.2-05 closure status re-read in next sprint critique.
+- [x] Astaire scan + lint 0/0.
+- [x] R-8.2-05 closure status re-read in next sprint critique
+      (carried forward unless Phase 8.1 reciprocal entry lands on main).
 
 ## SCN-8.3.2 — Validator factor-out
 
@@ -67,48 +68,48 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-8.3.3 — Astaire upstream enhancement bundle
 
-- [ ] Submodule commit in `astaire/` adds fractional `phase` tag
-      support.
-- [ ] Submodule commit adds `docs/planning/evaluations/` →
+- [x] Submodule commit in `astaire/` adds fractional `phase` tag
+      support (`c14c12488d1a92aeea813c0001185774981c69d8`).
+- [x] Submodule commit adds `docs/planning/evaluations/` →
       `evaluation` type entry.
-- [ ] Submodule commit adds `adapters/profiles/` →
+- [x] Submodule commit adds `adapters/profiles/` →
       `adapter-profile` type entry.
-- [ ] Pin bump in this repo's submodule SHA.
-- [ ] Post-bump scan registers
+- [x] Pin bump in this repo's submodule SHA.
+- [x] Post-bump scan registers
       `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` as
       `evaluation`.
-- [ ] Post-bump scan registers `CockpitVM_Embedded_Style.md`,
+- [x] Post-bump scan registers `CockpitVM_Embedded_Style.md`,
       `EMBEDDED_PROFILE.md`, `STRICT_BASELINE.md` as
       `adapter-profile`.
-- [ ] `.astaire/astaire query --tag phase=8.3` returns Phase 8.3 docs
+- [x] `.astaire/astaire query --tag phase=8.3` returns Phase 8.3 docs
       distinct from `phase=8`.
-- [ ] Phase 8.2 §Follow-ups items 3–5 marked closed (cross-link).
+- [x] Phase 8.2 §Follow-ups items 3–5 marked closed (cross-link).
 
 ## SCN-8.3.4 — Analyzer-capability schema
 
-- [ ] `contracts/governance-manifest.schema.json` carries
+- [x] `contracts/governance-manifest.schema.json` carries
       `analyzerDeclaration` with `legacyString` and `structured`
       subfields.
-- [ ] `validation/CONSISTENCY_RULES.md` §16 enforces exactly-one-of and
+- [x] `validation/CONSISTENCY_RULES.md` §16 enforces exactly-one-of and
       all-four-booleans-true.
-- [ ] `contracts/governance-manifest.example.yaml` updated with a
+- [x] `contracts/governance-manifest.example.yaml` updated with a
       `structured` example.
-- [ ] `validation/fixtures/analyzer-capability/` populated with positive
+- [x] `validation/fixtures/analyzer-capability/` populated with positive
       + negative cases (`false` capability, both-fields-present).
-- [ ] R-8.2-02 status update: schema landed; closure waits on first
+- [x] R-8.2-02 status update: schema landed; closure waits on first
       downstream consumer adoption.
 
 ## SCN-8.3.5 — Board review + sign-off
 
-- [ ] `docs/planning/board/committee-review-packet-<DATE>-scn-8-3-5.md`
+- [x] `docs/planning/board/committee-review-packet-<DATE>-scn-8-3-5.md`
       on disk (Accountability Review).
-- [ ] `docs/planning/board/committee-virtual-meeting-scn-8-3-5-phase-signoff-<DATE>.md`
+- [x] `docs/planning/board/committee-virtual-meeting-scn-8-3-5-phase-signoff-<DATE>.md`
       on disk (decisions recorded).
-- [ ] `docs/planning/signoffs.md` Phase 8.3 row dated.
-- [ ] `docs/planning/traceability.md` SCN-8.3.5-01 row closed.
-- [ ] R-8.2-05 disposition recorded (closed if Phase 8.1 reciprocal
+- [x] `docs/planning/signoffs.md` Phase 8.3 row dated.
+- [x] `docs/planning/traceability.md` SCN-8.3.5-01 row closed.
+- [x] R-8.2-05 disposition recorded (closed if Phase 8.1 reciprocal
       landed; carry-forward to Phase 8.4 otherwise).
-- [ ] R-8.3-01..04 disposition recorded.
+- [x] R-8.3-01..04 disposition recorded.
 
 ## Follow-ups (deferred past Phase 8.3)
 

@@ -259,6 +259,10 @@ for m in "${embedded_manifests[@]}"; do
 done
 pass "Embedded-profile fail-closed gate"
 
+bash validation/fixtures/analyzer-capability/run.sh \
+  || fail "Analyzer-capability declaration fixtures failed"
+pass "Analyzer-capability declaration gate"
+
 negative_fixture="validation/fixtures/embedded-missing-evidence/governance.yaml"
 [[ -f "$negative_fixture" ]] || fail "Negative fixture missing: $negative_fixture"
 if python3 - "$negative_fixture" <<'PY'

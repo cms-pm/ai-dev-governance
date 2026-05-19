@@ -82,6 +82,17 @@
     repo-wide sweep at Phase 8.2 bootstrap is the audit baseline; future
     additions are caught at PR review time.
 
+16. Governance manifests MAY carry `analyzerDeclaration`. When present,
+    it MUST carry exactly one of `legacyString` or `structured`.
+    `legacyString` is transitional compatibility text. `structured`
+    MUST declare `analyzer`, `version`, `capabilitiesDetected`,
+    `selfAttestedBy`, and `attestationDate`. All four
+    `capabilitiesDetected` booleans MUST be true: `recursion`,
+    `unboundedLoops`, `dynamicAllocationPostInit`, and
+    `uncheckedReturnValues`. This lands the schema-tightening half of
+    R-8.2-02; final closure still waits on first downstream consumer
+    adoption.
+
 ## Release Rules
 
 1. `CHANGELOG.md` has entry for current version.

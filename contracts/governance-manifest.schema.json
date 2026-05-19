@@ -42,6 +42,58 @@
       "minItems": 1,
       "uniqueItems": true
     },
+    "analyzerDeclaration": {
+      "type": "object",
+      "additionalProperties": false,
+      "oneOf": [
+        {
+          "required": ["legacyString"],
+          "properties": {
+            "legacyString": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        {
+          "required": ["structured"],
+          "properties": {
+            "structured": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "analyzer",
+                "version",
+                "capabilitiesDetected",
+                "selfAttestedBy",
+                "attestationDate"
+              ],
+              "properties": {
+                "analyzer": {"type": "string", "minLength": 1},
+                "version": {"type": "string", "minLength": 1},
+                "capabilitiesDetected": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": [
+                    "recursion",
+                    "unboundedLoops",
+                    "dynamicAllocationPostInit",
+                    "uncheckedReturnValues"
+                  ],
+                  "properties": {
+                    "recursion": {"type": "boolean", "const": true},
+                    "unboundedLoops": {"type": "boolean", "const": true},
+                    "dynamicAllocationPostInit": {"type": "boolean", "const": true},
+                    "uncheckedReturnValues": {"type": "boolean", "const": true}
+                  }
+                },
+                "selfAttestedBy": {"type": "string", "minLength": 1},
+                "attestationDate": {"type": "string", "format": "date"}
+              }
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
     "evidence": {
       "type": "object",
       "additionalProperties": false,

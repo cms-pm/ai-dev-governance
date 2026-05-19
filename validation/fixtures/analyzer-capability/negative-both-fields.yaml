@@ -1,0 +1,12 @@
+analyzerDeclaration:
+  legacyString: "legacy attestation"
+  structured:
+    analyzer: example-analyzer
+    version: 1.0.0
+    capabilitiesDetected:
+      recursion: true
+      unboundedLoops: true
+      dynamicAllocationPostInit: true
+      uncheckedReturnValues: true
+    selfAttestedBy: qa-lead
+    attestationDate: 2026-05-19

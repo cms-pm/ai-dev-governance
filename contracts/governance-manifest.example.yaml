@@ -5,6 +5,17 @@ adapters:
   - providers/codex
   - tooling/rtk
   - profiles/embedded
+analyzerDeclaration:
+  structured:
+    analyzer: example-static-analyzer
+    version: 1.0.0
+    capabilitiesDetected:
+      recursion: true
+      unboundedLoops: true
+      dynamicAllocationPostInit: true
+      uncheckedReturnValues: true
+    selfAttestedBy: tech-lead
+    attestationDate: 2026-05-19
 evidence:
   planningPath: docs/planning
   validationPath: docs/validation
