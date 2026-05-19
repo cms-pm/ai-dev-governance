@@ -42,3 +42,13 @@ per `governance.yaml` (SCN-1.1).
 | SCN-8.2.6-02 | SCN-8.2.6 | `docs/planning/phase-8.2-risks.md` (R-8.2-05 + Cross-Phase Risk References appendix) | Commit `01d3f00`; grep `R-8.2-05` / `Cross-Phase Risk References` returns expected hits | closed |
 | SCN-8.2.6-03 | SCN-8.2.6 | `docs/planning/board/committee-opportunity-register-phase-8-2-2026-05-17.md` (OPP-8.2-001) | Commit `01d3f00`; opportunity status `closed`; meeting record `docs/planning/board/committee-virtual-meeting-scn-8-2-2-p10-adoption-2026-05-17.md` | closed |
 | SCN-8.2.6-04 | SCN-8.2.6 | `docs/planning/phase-8.2-todo.md`, `docs/planning/traceability.md` | Commit `01d3f00`; all SCN-8.2.6 checkboxes ticked with evidence annotations; this row present | closed |
+| SCN-8.3.0-01 | SCN-8.3.0 | `docs/planning/chunks/phase-8.3-chunks.md` | — | pending |
+| SCN-8.3.0-02 | SCN-8.3.0 | `docs/planning/pool_questions/phase-8.3-bootstrap.md` | Gate score `0.0341` ≤ `0.20`; conf `4.0` ≥ `4.0` | pending |
+| SCN-8.3.0-03 | SCN-8.3.0 | `docs/planning/phase-8.3-risks.md` | R-8.3-01..04 + R-8.2-02..05 carry-forward | pending |
+| SCN-8.3.0-04 | SCN-8.3.0 | `docs/planning/phase-8.3-todo.md` | — | pending |
+| SCN-8.3.0-05 | SCN-8.3.0 | `.astaire/memory_palace.db` (Phase 8.3 ingest) | Astaire scan + lint 0/0 | pending |
+| SCN-8.3.1-01 | SCN-8.3.1 | `docs/planning/cross-phase/r-8.2-05-closure-request.md` | — | pending |
+| SCN-8.3.2-01 | SCN-8.3.2 | `scripts/validators/governance_gates.py`, `scripts/validate_governance.sh` | Existing 17/17 PASS preserved; negative-fixture rejection preserved | pending |
+| SCN-8.3.3-01 | SCN-8.3.3 | `astaire/` submodule (fractional phase tag + `evaluations/` + `adapters/profiles/` path-to-type entries), submodule pin bump | `query --tag phase=8.3` returns sub-phase docs; three previously-unregistered files appear with new types | pending |
+| SCN-8.3.4-01 | SCN-8.3.4 | `contracts/governance-manifest.schema.json`, `validation/CONSISTENCY_RULES.md` (§16), `contracts/governance-manifest.example.yaml`, `validation/fixtures/analyzer-capability/` | Positive + negative fixtures pass; R-8.2-02 schema portion landed | pending |
+| SCN-8.3.5-01 | SCN-8.3.5 | `docs/planning/board/committee-review-packet-<DATE>-scn-8-3-5.md`; `docs/planning/board/committee-virtual-meeting-scn-8-3-5-phase-signoff-<DATE>.md`; `docs/planning/signoffs.md` (Phase 8.3 row dated) | — | pending |
