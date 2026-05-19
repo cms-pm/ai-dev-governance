@@ -33,12 +33,21 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-8.3.1 — R-8.2-05 cross-phase closure-request packet
 
-- [ ] `docs/planning/cross-phase/r-8.2-05-closure-request.md` on disk.
-- [ ] Cites SHA `5d47359` and §Cross-Phase In-Flight Coordination
-      clause verbatim.
-- [ ] Restates closure criterion identical to R-8.2-05 row in
-      `phase-8.2-risks.md`.
-- [ ] Astaire scan + lint 0/0.
+- [x] `docs/planning/cross-phase/r-8.2-05-closure-request.md` on disk.
+- [x] Cites SHA `5d47359` and §Cross-Phase In-Flight Coordination
+      clause verbatim (clause text quoted from
+      `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` lines
+      215–232).
+- [x] Restates closure criterion identical to R-8.2-05 row in
+      `phase-8.2-risks.md` (both halves: reciprocal entry +
+      per-branch analyzer disposition).
+- [~] Astaire registration deferred to SCN-8.3.3 — the
+      `ai_dev_governance` plugin has no SCAN_RULE for
+      `docs/planning/cross-phase/` yet. SCN-8.3.3 scope expanded to
+      add `("docs/planning/cross-phase/", "cross-phase-request",
+      {"stage_produced": "plan"})` alongside the evaluations and
+      adapter-profiles rules. Astaire lint 0/0 against the rest of
+      the registry.
 - [ ] R-8.2-05 closure status re-read in next sprint critique.
 
 ## SCN-8.3.2 — Validator factor-out
@@ -63,6 +72,9 @@ appended in `(parens)` after each box is checked.
       `evaluation` type entry.
 - [ ] Submodule commit adds `adapters/profiles/` →
       `adapter-profile` type entry.
+- [ ] Submodule commit adds `docs/planning/cross-phase/` →
+      `cross-phase-request` type entry (carried in from
+      SCN-8.3.1 deferral).
 - [ ] Pin bump in this repo's submodule SHA.
 - [ ] Post-bump scan registers
       `docs/planning/evaluations/p10-and-cockpitvm-style-eval.md` as
