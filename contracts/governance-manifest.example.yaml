@@ -9,6 +9,7 @@ evidence:
   planningPath: docs/planning
   validationPath: docs/validation
   releasePath: docs/releases
+  embeddedVerificationChecklistPath: embedded-verification-checklist.example.md
 exceptions:
   registryPath: docs/governance/exceptions.yaml
   reviewCadenceDays: 14

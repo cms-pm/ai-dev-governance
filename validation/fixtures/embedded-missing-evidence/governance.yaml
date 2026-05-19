@@ -1,20 +1,25 @@
+# Negative fixture for SCN-8.2.4. Declares the embedded profile but
+# deliberately omits evidence.embeddedVerificationChecklistPath. The
+# embedded fail-closed release gate in scripts/validate_governance.sh
+# is asserted against this fixture in negative form: the fixture's
+# shape (embedded profile + key absent) is proved, demonstrating the
+# manifest pattern that the gate refuses.
 apiVersion: ai-dev-governance/v1
 governanceVersion: v0.7.4
 profile: strict-baseline+embedded
 adapters:
-  - providers/claude
+  - providers/codex
   - tooling/rtk
   - profiles/embedded
 evidence:
   planningPath: docs/planning
   validationPath: docs/validation
   releasePath: docs/releases
-  embeddedVerificationChecklistPath: embedded-verification-checklist.md
 exceptions:
   registryPath: docs/governance/exceptions.yaml
-  reviewCadenceDays: 14
+  reviewCadenceDays: 7
 approval:
-  accountableRole: lead-engineer
+  accountableRole: principal-engineer
   requiredReviewers: 2
 automation:
   mode: risk-tiered
@@ -78,5 +83,5 @@ boardReview:
     rosterPath: docs/governance/board/board-composition.yaml
     approvalRecordPath: docs/governance/board/board-composition-approval.md
     minimumAlternatesPerSeat: 1
-updateCadence: monthly
+updateCadence: quarterly
 compatibility: strict

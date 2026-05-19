@@ -93,16 +93,30 @@ Linked artifacts: `docs/planning/chunks/phase-8.2-chunks.md`,
 
 ## Embedded profile wiring + validation gate — SCN-8.2.4
 
-- [ ] Extend `adapters/profiles/EMBEDDED_PROFILE.md` to cite CockpitVM
+- [x] Extend `adapters/profiles/EMBEDDED_PROFILE.md` to cite CockpitVM
       Embedded Style as required when manifest declares embedded
-      profile — SCN-8.2.4-01
-- [ ] Add `validation/` consistency rule enforcing the gate —
-      SCN-8.2.4-02
-- [ ] Add CI agency-string guard for `core/` and `adapters/profiles/` —
-      SCN-8.2.4-03
-- [ ] Fixture suite covers embedded + non-embedded manifest paths —
-      SCN-8.2.4-02
-- [ ] `scripts/validate_governance.sh` exits 0 — SCN-8.2.4-01..03
+      profile — SCN-8.2.4-01 (Required Style + Fail-Closed Release Gate
+      sections; manifest key `evidence.embeddedVerificationChecklistPath`
+      named in §Fail-Closed Release Gate)
+- [x] Add `validation/` consistency rule enforcing the gate —
+      SCN-8.2.4-02 (`CONSISTENCY_RULES.md` Contract Rules §14;
+      `scripts/validate_governance.sh` carries a Python block iterating
+      example + prototype + mvp + production manifests and rejects
+      embedded-profile manifests missing the key OR non-embedded
+      manifests carrying the key)
+- [x] Add CI agency-string guard for `core/` and `adapters/profiles/` —
+      SCN-8.2.4-03 (`scripts/check_agency_strings.sh` invoked from
+      `validate_governance.sh`; Contract Rules §15 declares the gate;
+      rg `-i nasa|jpl|goddard` over both paths)
+- [x] Fixture suite covers embedded + non-embedded manifest paths —
+      SCN-8.2.4-02 (production + mvp + example carry the key with stub
+      checklist files; prototype + consumer-astaire stay non-embedded
+      and untouched; new `validation/fixtures/embedded-missing-evidence/`
+      proves the negative path — shape verified by a dedicated bash
+      block in the validator)
+- [x] `scripts/validate_governance.sh` exits 0 — SCN-8.2.4-01..03 (all
+      checks PASS including the new gate, the negative-fixture proof,
+      and the agency-string guard)
 
 ## Board review + sign-off — SCN-8.2.5 (critical, board review)
 

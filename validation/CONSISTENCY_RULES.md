@@ -57,6 +57,22 @@
     object. When production code changes, that object or an equivalent linked
     artifact MUST satisfy `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`.
 
+14. Governance manifests that list `profiles/embedded` under `adapters`
+    MUST declare `evidence.embeddedVerificationChecklistPath` pointing to
+    a file that exists relative to the manifest. The path is the
+    fail-closed release-gate handle for the CockpitVM Embedded Style
+    §Verification Checklist (see `adapters/profiles/EMBEDDED_PROFILE.md`
+    §Fail-Closed Release Gate). Manifests that do not declare the
+    embedded profile MUST NOT be required to carry the key.
+    `scripts/validate_governance.sh` enforces both directions across the
+    example manifest and every fixture under `validation/fixtures/`.
+
+15. No file under `core/` or `adapters/profiles/` MAY contain agency or
+    institutional identifiers (`nasa`, `jpl`, `goddard`, case-insensitive).
+    `scripts/check_agency_strings.sh` enforces this gate; the script is
+    invoked by `scripts/validate_governance.sh` so the agency-string
+    invariant runs on every governance validation pass.
+
 ## Release Rules
 
 1. `CHANGELOG.md` has entry for current version.
