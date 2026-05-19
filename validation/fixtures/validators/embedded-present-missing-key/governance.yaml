@@ -1,0 +1,10 @@
+# SCN-8.3.2 unit fixture: embedded adapter declared but
+# evidence.embeddedVerificationChecklistPath absent
+# → embedded-profile fail-closed gate FAILS.
+apiVersion: ai-dev-governance/v1
+profile: strict-baseline+embedded
+adapters:
+  - providers/codex
+  - profiles/embedded
+evidence:
+  planningPath: docs/planning

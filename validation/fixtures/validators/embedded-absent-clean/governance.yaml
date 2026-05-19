@@ -1,0 +1,11 @@
+# SCN-8.3.2 unit fixture: no embedded adapter, no checklist key
+# → embedded-profile fail-closed gate PASSES (the gate is a
+# bi-directional invariant; non-embedded manifests must not carry
+# the key).
+apiVersion: ai-dev-governance/v1
+profile: strict-baseline
+adapters:
+  - providers/claude
+  - tooling/rtk
+evidence:
+  planningPath: docs/planning

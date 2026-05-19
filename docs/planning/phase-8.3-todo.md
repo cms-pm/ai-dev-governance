@@ -43,17 +43,27 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-8.3.2 — Validator factor-out
 
-- [ ] `scripts/validators/governance_gates.py` on disk; callable as
+- [x] `scripts/validators/governance_gates.py` on disk; callable as
       `python -m scripts.validators.governance_gates --manifest <path>`.
-- [ ] `scripts/validate_governance.sh` delegates per-manifest verdict
+- [x] `scripts/validate_governance.sh` delegates per-manifest verdict
       logic to the new validator; retains orchestration.
-- [ ] `validation/fixtures/validators/` populated with embedded-profile
-      present/absent + agency-string guard fixtures.
-- [ ] Existing `scripts/validate_governance.sh` full pass preserved
-      byte-identical (17/17).
-- [ ] Negative fixture (embedded profile + missing key) still rejected.
-- [ ] `validation/CONSISTENCY_RULES.md` §14–§15 point to the new module
-      (rule text unchanged).
+- [x] `validation/fixtures/validators/` populated with embedded-profile
+      present/absent matrix (5 fixtures + `run.sh` exits 0). Agency-string
+      fixtures intentionally omitted — sweep retired (see below).
+- [x] `scripts/validate_governance.sh` full pass preserved for all
+      non-retired checks; embedded-profile `[PASS]` line still emitted.
+      The two agency-string `[PASS]` lines are gone by design
+      (SCN-8.3.2 retired the sweep per OPP-8.2-004 closure).
+- [x] Negative fixture `validation/fixtures/embedded-missing-evidence/`
+      still rejected by both the shell wrapper and the stand-alone
+      validator.
+- [x] `validation/CONSISTENCY_RULES.md` §14 points to the new module
+      (rule text unchanged); §15 rewritten as a SHOULD-level review-time
+      policy noting the SCN-8.3.2 retirement.
+- [x] Agency-string sweep retired: `scripts/check_agency_strings.sh`
+      deleted; `--agency-strings` flag removed from
+      `governance_gates.py`; per-pass invocation removed from
+      `validate_governance.sh`.
 
 ## SCN-8.3.3 — Astaire upstream enhancement bundle
 

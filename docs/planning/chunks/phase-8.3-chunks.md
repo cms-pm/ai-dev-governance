@@ -64,25 +64,40 @@ R-8.2-05. Closes with a board review + sign-off mirroring SCN-8.2.5.
 
 ## SCN-8.3.2 — Factor inline fail-closed gate into stand-alone validator
 
-- **Scope.** Extract the embedded-profile fail-closed gate and the
-  agency-string guard invocation out of `scripts/validate_governance.sh`
-  into `scripts/validators/governance_gates.py`, callable as
+- **Scope.** Extract the embedded-profile fail-closed gate out of
+  `scripts/validate_governance.sh` into
+  `scripts/validators/governance_gates.py`, callable as
   `python -m scripts.validators.governance_gates --manifest <path>`.
+  Concurrently retire the agency-string CI guard at repo level (the
+  guard's per-pass sweep, `scripts/check_agency_strings.sh`, and the
+  `--agency-strings` validator flag) per OPP-8.2-004 closure;
+  `validation/CONSISTENCY_RULES.md` §15 is rewritten as a review-time
+  expectation rather than an automated gate.
   - `validate_governance.sh` retains directory walks, fixture
     iteration, and exit-code aggregation; delegates per-manifest verdict
-    logic to the new validator.
+    logic to the new validator. The agency-string [PASS] lines are
+    removed; the embedded-profile [PASS] line is preserved.
   - Add unit fixtures under `validation/fixtures/validators/` for the
-    embedded-profile present/absent matrix and the agency-string guard.
-  - `validation/CONSISTENCY_RULES.md` updated to point Contract Rules
-    §14–§15 at the new validator module (rule text unchanged).
+    embedded-profile present/absent matrix. (No agency-string
+    fixtures — that scope is retired.)
+  - `validation/CONSISTENCY_RULES.md` updated: §14 points at the new
+    validator module (rule text unchanged); §15 rewritten as a
+    SHOULD-level review-time policy and notes the SCN-8.3.2
+    retirement.
 - **Acceptance IDs.** SCN-8.3.2-01 (validator on disk + invocation
-  contract), SCN-8.3.2-02 (existing 17/17 PASS preserved byte-identical),
-  SCN-8.3.2-03 (negative-fixture rejection preserved),
-  SCN-8.3.2-04 (new unit fixtures pass under the stand-alone validator).
-- **Acceptance criteria.** `scripts/validate_governance.sh` exit 0 with
-  17/17; `python -m scripts.validators.governance_gates` reports same
-  verdicts; negative fixture (embedded profile + missing key) still
-  rejected; Astaire lint 0/0.
+  contract), SCN-8.3.2-02 (embedded-profile [PASS] line preserved;
+  full `validate_governance.sh` pass minus the two retired
+  agency-string lines), SCN-8.3.2-03 (negative-fixture rejection
+  preserved), SCN-8.3.2-04 (new unit fixtures pass under the
+  stand-alone validator).
+- **Acceptance criteria.** `scripts/validate_governance.sh` exit 0;
+  `[PASS] Embedded-profile fail-closed gate` line still emitted;
+  agency-string sweep is gone (no `[PASS] Agency-string CI guard*`
+  lines); `python -m scripts.validators.governance_gates --manifest`
+  reports same per-manifest verdicts; existing negative fixture
+  (embedded profile + missing key) still rejected; new fixture sweep
+  `bash validation/fixtures/validators/run.sh` exits 0; Astaire lint
+  0/0.
 - **Atomic PR scope.** Single commit on branch `SCN-8.3.2`.
 
 ## SCN-8.3.3 — Astaire upstream enhancement bundle

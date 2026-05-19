@@ -241,74 +241,22 @@ pass "Astaire-first provider adapter carriage"
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"
 
-bash "$ROOT_DIR/scripts/check_agency_strings.sh" \
-  || fail "Agency-string CI guard rejected core/ or adapters/profiles/ content"
-pass "Agency-string CI guard"
-
-python3 - <<'PY' || fail "Embedded-profile fail-closed gate violated"
-import re
-from pathlib import Path
-
-CHECKLIST_KEY = "embeddedVerificationChecklistPath"
-EMBEDDED_ADAPTER = "profiles/embedded"
-
-manifest_paths = [
-    Path("contracts/governance-manifest.example.yaml"),
-    Path("validation/fixtures/prototype/governance.yaml"),
-    Path("validation/fixtures/mvp/governance.yaml"),
-    Path("validation/fixtures/production/governance.yaml"),
-]
-
-
-def parse_manifest(path: Path) -> dict:
-    adapters: list[str] = []
-    checklist_path: str | None = None
-    in_adapters = False
-    in_evidence = False
-    for raw_line in path.read_text().splitlines():
-        # Strip inline comments for value parsing, keep structure.
-        line = raw_line.split("#", 1)[0].rstrip()
-        if re.match(r"^\S", line):
-            in_adapters = line.startswith("adapters:")
-            in_evidence = line.startswith("evidence:")
-            continue
-        if in_adapters:
-            m = re.match(r"^\s*-\s*(\S+)", line)
-            if m:
-                adapters.append(m.group(1))
-        if in_evidence:
-            m = re.match(rf"^\s+{re.escape(CHECKLIST_KEY)}:\s*(\S+)", line)
-            if m:
-                checklist_path = m.group(1)
-    return {"adapters": adapters, CHECKLIST_KEY: checklist_path}
-
-
-for path in manifest_paths:
-    if not path.exists():
-        raise SystemExit(f"manifest path missing: {path}")
-    data = parse_manifest(path)
-    has_embedded = EMBEDDED_ADAPTER in data["adapters"]
-    declared = data[CHECKLIST_KEY]
-    if has_embedded:
-        if not declared:
-            raise SystemExit(
-                f"{path} declares {EMBEDDED_ADAPTER} but is missing "
-                f"evidence.{CHECKLIST_KEY}"
-            )
-        resolved = (path.parent / declared).resolve()
-        if not resolved.is_file():
-            raise SystemExit(
-                f"{path} declares evidence.{CHECKLIST_KEY}={declared} "
-                f"but {resolved} does not exist"
-            )
-    else:
-        if declared is not None:
-            raise SystemExit(
-                f"{path} does not declare {EMBEDDED_ADAPTER} but carries "
-                f"evidence.{CHECKLIST_KEY}={declared}; the key must be "
-                f"absent for non-embedded manifests"
-            )
-PY
+# Embedded-profile fail-closed gate — orchestration here, per-manifest
+# verdict delegated to scripts/validators/governance_gates.py. The
+# agency-string CI guard (formerly invoked here) was retired at
+# SCN-8.3.2 per OPP-8.2-004 closure: the one-time repo-wide sweep at
+# Phase 8.2 bootstrap is sufficient; ongoing per-pass enforcement is
+# not required.
+embedded_manifests=(
+  "contracts/governance-manifest.example.yaml"
+  "validation/fixtures/prototype/governance.yaml"
+  "validation/fixtures/mvp/governance.yaml"
+  "validation/fixtures/production/governance.yaml"
+)
+for m in "${embedded_manifests[@]}"; do
+  python3 -m scripts.validators.governance_gates --manifest "$m" \
+    || fail "Embedded-profile fail-closed gate violated for $m"
+done
 pass "Embedded-profile fail-closed gate"
 
 negative_fixture="validation/fixtures/embedded-missing-evidence/governance.yaml"

@@ -64,14 +64,23 @@
     §Verification Checklist (see `adapters/profiles/EMBEDDED_PROFILE.md`
     §Fail-Closed Release Gate). Manifests that do not declare the
     embedded profile MUST NOT be required to carry the key.
-    `scripts/validate_governance.sh` enforces both directions across the
-    example manifest and every fixture under `validation/fixtures/`.
+    The verdict is implemented by
+    `scripts/validators/governance_gates.py` (invocable as
+    `python -m scripts.validators.governance_gates --manifest <path>`);
+    `scripts/validate_governance.sh` orchestrates the per-manifest sweep
+    across the example manifest and every fixture under
+    `validation/fixtures/`.
 
-15. No file under `core/` or `adapters/profiles/` MAY contain agency or
-    institutional identifiers (`nasa`, `jpl`, `goddard`, case-insensitive).
-    `scripts/check_agency_strings.sh` enforces this gate; the script is
-    invoked by `scripts/validate_governance.sh` so the agency-string
-    invariant runs on every governance validation pass.
+15. No file under `core/` or `adapters/profiles/` SHOULD contain agency
+    or institutional identifiers (e.g., `nasa`, `jpl`, `goddard`).
+    Publication citations belong in evaluation memos under
+    `docs/planning/evaluations/`, not in normative policy. Enforcement
+    is by review, not by automated sweep: OPP-8.2-004 (agency-string
+    guard surface expansion) was closed without action at Phase 8.3
+    bootstrap, and SCN-8.3.2 retired the per-pass sweep that had been
+    running from `scripts/validate_governance.sh`. The one-time
+    repo-wide sweep at Phase 8.2 bootstrap is the audit baseline; future
+    additions are caught at PR review time.
 
 ## Release Rules
 

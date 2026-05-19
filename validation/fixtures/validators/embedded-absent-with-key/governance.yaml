@@ -1,0 +1,10 @@
+# SCN-8.3.2 unit fixture: no embedded adapter but the checklist key
+# is wrongly declared → embedded-profile fail-closed gate FAILS
+# (covers the inverse direction of the invariant).
+apiVersion: ai-dev-governance/v1
+profile: strict-baseline
+adapters:
+  - providers/claude
+  - tooling/rtk
+evidence:
+  embeddedVerificationChecklistPath: ./CHECKLIST.md

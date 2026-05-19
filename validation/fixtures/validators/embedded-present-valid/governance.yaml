@@ -1,0 +1,9 @@
+# SCN-8.3.2 unit fixture: embedded adapter + checklist key + file
+# exists → embedded-profile fail-closed gate PASSES.
+apiVersion: ai-dev-governance/v1
+profile: strict-baseline+embedded
+adapters:
+  - providers/codex
+  - profiles/embedded
+evidence:
+  embeddedVerificationChecklistPath: ./CHECKLIST.md

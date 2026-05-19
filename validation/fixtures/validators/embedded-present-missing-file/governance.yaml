@@ -1,0 +1,10 @@
+# SCN-8.3.2 unit fixture: embedded adapter + checklist key present but
+# the referenced file does not exist on disk
+# → embedded-profile fail-closed gate FAILS.
+apiVersion: ai-dev-governance/v1
+profile: strict-baseline+embedded
+adapters:
+  - providers/codex
+  - profiles/embedded
+evidence:
+  embeddedVerificationChecklistPath: ./NONEXISTENT_CHECKLIST.md
