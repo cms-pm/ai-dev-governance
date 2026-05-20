@@ -121,24 +121,37 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.4 — Self-application Part A (glossary + seam map + claims/projection refactor)
 
-- [ ] `docs/glossary/governance-authoring.md` on disk and registered
+- [x] `docs/glossary/governance-authoring.md` on disk and registered
       as `domain-glossary`.
-- [ ] `docs/glossary/memory-palace.md` on disk and registered.
-- [ ] `docs/glossary/validation.md` on disk and registered.
-- [ ] `docs/glossary/adapters.md` on disk and registered.
-- [ ] `docs/evidence/seam-maps/astaire-seam-map.md` on disk and
+      (registered by Astaire scan; `docs/glossary/` path-to-type entry
+      landed in SCN-9.2 submodule bundle)
+- [x] `docs/glossary/memory-palace.md` on disk and registered.
+- [x] `docs/glossary/validation.md` on disk and registered.
+- [x] `docs/glossary/adapters.md` on disk and registered.
+- [x] `docs/evidence/seam-maps/astaire-seam-map.md` on disk and
       registered.
-- [ ] `astaire/` claims/projection core refactored against
+- [x] `astaire/` claims/projection core refactored against
       `core/MODULARITY_GOVERNANCE.md`: domain types in I/O-free
       package, port Protocols for SQLite + FTS, adapter modules
       implement them.
-- [ ] Existing `pytest` suite inside `astaire/` green at every
+      (`astaire/src/domain/claims/{models,ports}.py` I/O-free;
+      adapters live under `astaire/src/adapters/sqlite/`; submodule
+      commit `8eeb71c`)
+- [x] Existing `pytest` suite inside `astaire/` green at every
       intermediate commit.
-- [ ] `scripts/validators/architecture_fitness.py` exit 0 against the
+      (372 tests green after refactor, including 9 new domain tests
+      in `astaire/tests/test_domain_claims.py` using port fakes)
+- [x] `scripts/validators/architecture_fitness.py` exit 0 against the
       refactored claims/projection core (no `sqlite3` / `astaire.db` /
       `astaire.fts` imports under the protected domain directory).
-- [ ] This repo's `governance.yaml` carries `analyzers.domainGlossary.path`
+      (`--audit` mode added; rules at
+      `validation/architecture-fitness.yaml`; `validate_governance.sh`
+      emits `[PASS] Architecture-fitness audit (SCN-9.4 forbidden-import
+      check)`)
+- [x] This repo's `governance.yaml` carries `analyzers.domainGlossary.path`
       pointing at `docs/glossary/`; §18 gate passes.
+      (`analyzers.domainGlossary` + `analyzers.architectureFitness`
+      blocks added; full `validate_governance.sh` exits 0)
 
 ## SCN-9.5 — Self-application Part B (mutation + Farley + characterisation suite)
 

@@ -76,5 +76,14 @@ boardReview:
     rosterPath: docs/planning/board/board-composition-approval-2026-04-19.md
     approvalRecordPath: docs/planning/board/board-composition-approval-2026-04-19.md
     minimumAlternatesPerSeat: 1
+analyzers:
+  domainGlossary:
+    path: docs/glossary/
+    coverageRule:
+      protectedPaths:
+        - astaire/src/domain/
+  architectureFitness:
+    rulesPath: validation/architecture-fitness.yaml
+    engine: scripts/validators/architecture_fitness.py
 updateCadence: monthly
 compatibility: strict

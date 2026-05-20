@@ -291,6 +291,17 @@ bash validation/fixtures/glossary/run.sh \
   || fail "Glossary-coverage fixtures failed"
 pass "Glossary-coverage fixtures"
 
+# Phase 9 SCN-9.4 — forbidden-import audit against the protected
+# domain tree. Rules file declares one or more protectedPath blocks;
+# the audit walks each path and flags every top-level `import X` or
+# `from X import …` that names a forbidden symbol. Fails closed.
+if [[ -f validation/architecture-fitness.yaml ]]; then
+  python3 -m scripts.validators.architecture_fitness --audit \
+    --rules validation/architecture-fitness.yaml --root . \
+    || fail "architecture_fitness --audit failed (see stderr above)"
+  pass "Architecture-fitness audit (SCN-9.4 forbidden-import check)"
+fi
+
 bash validation/fixtures/architecture/run.sh \
   || fail "Architecture-fitness fixtures failed"
 pass "Architecture-fitness fixtures"

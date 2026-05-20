@@ -1,0 +1,31 @@
+# Architecture-fitness rules — SCN-9.4
+#
+# Format (v1, consumed by `scripts/validators/architecture_fitness.py
+# --audit`):
+#
+#   rulesVersion: 1
+#   forbiddenImports:
+#     - protectedPath: <repository-relative directory>
+#       forbidden:
+#         - <python import name>
+#         - ...
+#       description: <one line>
+#
+# Per `core/MODULARITY_GOVERNANCE.md` §Architecture Fitness Rule, each
+# entry under `forbiddenImports` declares a directory whose modules
+# MUST NOT contain a top-level `import X` or `from X import …`
+# statement for any name in the `forbidden` list. The audit walks the
+# directory recursively and flags every offending file:line:statement.
+
+rulesVersion: 1
+forbiddenImports:
+  - protectedPath: astaire/src/domain/claims/
+    forbidden:
+      - sqlite3
+      - src.db
+      - astaire.db
+      - astaire.fts
+    description: >
+      SCN-9.4 hexagonal pilot. The memory-palace claims/projection
+      domain MUST stay I/O-free; SQLite and FTS access lives in
+      adapter modules under astaire/src/adapters/.
