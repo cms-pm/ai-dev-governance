@@ -1,0 +1,8 @@
+profile: strict-baseline
+# negative fixture — coverageRule is declared but missing the
+# required `protectedPaths` list. Validator MUST exit 1.
+analyzers:
+  domainGlossary:
+    path: docs/glossary/
+    coverageRule:
+      otherField: ignored

@@ -1,0 +1,7 @@
+profile: strict-baseline
+analyzers:
+  domainGlossary:
+    path: docs/glossary/
+    coverageRule:
+      protectedPaths:
+        - src/domain/

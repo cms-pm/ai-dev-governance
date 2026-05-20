@@ -1,0 +1,11 @@
+profile: strict-baseline
+# negative fixture — analyzers.mutation.threshold is declared but
+# missing the required `critical` tier. Validator MUST exit 1.
+analyzers:
+  mutation:
+    tool: cosmic-ray
+    commandTemplate: "cosmic-ray exec config.toml session"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 70
+      high: 85

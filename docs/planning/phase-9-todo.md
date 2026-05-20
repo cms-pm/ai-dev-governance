@@ -65,24 +65,24 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.2 — Contracts + validators + Astaire collection extensions
 
-- [ ] `contracts/governance-manifest.schema.json` carries
+- [x] `contracts/governance-manifest.schema.json` carries
       `analyzers.mutation`, `analyzers.domainGlossary`,
       `analyzers.architectureFitness` (all OPTIONAL at v1).
-- [ ] `contracts/governance-manifest.example.yaml` updated with all
+- [x] `contracts/governance-manifest.example.yaml` updated with all
       three blocks populated.
-- [ ] `validation/CONSISTENCY_RULES.md` §17 / §18 / §19 authored
+- [x] `validation/CONSISTENCY_RULES.md` §17 / §18 / §19 authored
       (tier-gated required-presence).
-- [ ] `scripts/validators/mutation_threshold.py`,
+- [x] `scripts/validators/mutation_threshold.py`,
       `glossary_coverage.py`, `architecture_fitness.py` on disk;
       callable as modules.
-- [ ] `scripts/validate_governance.sh` invokes the three new validators
+- [x] `scripts/validate_governance.sh` invokes the three new validators
       and emits `[PASS]` lines.
-- [ ] `validation/fixtures/{mutation,glossary,architecture}/` populated
+- [x] `validation/fixtures/{mutation,glossary,architecture}/` populated
       with positive + negative cases.
-- [ ] Astaire submodule commit adds three new path-to-type entries
+- [x] Astaire submodule commit adds three new path-to-type entries
       (`docs/evidence/mutation/` → `mutation-report`, `docs/evidence/farley/`
       → `farley-scorecard`, `docs/glossary/` → `domain-glossary`).
-- [ ] Submodule pin bump in this repo; `.astaire/astaire startup --root .`
+- [x] Submodule pin bump in this repo; `.astaire/astaire startup --root .`
       succeeds locally before the bump merges.
 - [ ] R-9-04 review window opens (first downstream adoption watch).
 

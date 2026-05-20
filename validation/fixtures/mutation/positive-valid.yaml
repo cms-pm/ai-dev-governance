@@ -1,0 +1,10 @@
+profile: strict-baseline
+analyzers:
+  mutation:
+    tool: cosmic-ray
+    commandTemplate: "cosmic-ray exec config.toml session && cosmic-ray dump session > report.md"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 70
+      high: 85
+      critical: 90

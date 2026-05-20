@@ -1,0 +1,6 @@
+profile: strict-baseline
+# negative fixture — analyzers.architectureFitness is declared but
+# missing the required `engine` key. Validator MUST exit 1.
+analyzers:
+  architectureFitness:
+    rulesPath: validation/architecture-fitness.yaml

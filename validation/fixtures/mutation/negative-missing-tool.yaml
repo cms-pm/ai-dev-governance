@@ -1,0 +1,11 @@
+profile: strict-baseline
+# negative fixture — analyzers.mutation is declared but missing
+# the required `tool` key. Validator MUST exit 1.
+analyzers:
+  mutation:
+    commandTemplate: "echo no-tool"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 70
+      high: 85
+      critical: 90

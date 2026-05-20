@@ -93,6 +93,46 @@
     R-8.2-02; final closure still waits on first downstream consumer
     adoption.
 
+17. Governance manifests MAY carry `analyzers.mutation`. The block is
+    OPTIONAL at the schema layer (Phase 9 Q5 — optional-at-v1). When
+    present, it MUST carry `tool`, `commandTemplate`, `reportPath`, and
+    a `threshold` object declaring `medium`, `high`, and `critical`
+    numeric scores. Tier-gated required-presence is **advisory until
+    SCN-9.7 ratification** (DEC-0005) per
+    `core/MUTATION_EVIDENCE.md` §Advisory Marker: the
+    `scripts/validators/mutation_threshold.py` validator emits WARN to
+    stderr when a strict-baseline manifest omits the block, but exits 0.
+    After ratification, this clause flips to fail-close at the
+    medium/high/critical tiers in the same commit that removes the
+    advisory marker. Structural violations (missing required keys when
+    the block is declared) fail-close even under the advisory regime.
+
+18. Governance manifests MAY carry `analyzers.domainGlossary`. The block
+    is OPTIONAL at the schema layer. When present, it MUST carry `path`
+    and a `coverageRule` object declaring at least one `protectedPaths`
+    entry. Tier-gated required-presence per
+    `core/DOMAIN_LANGUAGE_GOVERNANCE.md` §Risk Tier Coupling:
+    medium-tier-or-higher chunks MUST either declare the block or
+    record an exception under `core/EXCEPTIONS_AND_WAIVERS.md`.
+    Critical-tier chunks additionally MUST pass
+    `scripts/validators/glossary_coverage.py` exit 0 before sign-off
+    (full naming-correspondence check lands at SCN-9.4). The SCN-9.2
+    validator confines itself to structural checks and emits WARN
+    (exit 0) for absent blocks on strict-baseline profiles; structural
+    violations fail-close.
+
+19. Governance manifests MAY carry `analyzers.architectureFitness`. The
+    block is OPTIONAL at the schema layer. When present, it MUST carry
+    `rulesPath` and `engine`. Tier-gated required-presence per
+    `core/MODULARITY_GOVERNANCE.md` §Risk Tier Coupling:
+    medium-tier-or-higher chunks MUST either declare the block or
+    record an exception under `core/EXCEPTIONS_AND_WAIVERS.md`. The
+    `scripts/validators/architecture_fitness.py` validator confines
+    itself to structural checks at SCN-9.2; the full forbidden-import
+    audit against the protected domain directory lands at SCN-9.4 under
+    the same module. WARN (exit 0) for absent blocks on
+    strict-baseline profiles; structural violations fail-close.
+
 ## Release Rules
 
 1. `CHANGELOG.md` has entry for current version.

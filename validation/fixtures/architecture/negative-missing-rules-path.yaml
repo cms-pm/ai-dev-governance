@@ -1,0 +1,6 @@
+profile: strict-baseline
+# negative fixture — analyzers.architectureFitness is declared but
+# missing the required `rulesPath` key. Validator MUST exit 1.
+analyzers:
+  architectureFitness:
+    engine: scripts/validators/architecture_fitness.py

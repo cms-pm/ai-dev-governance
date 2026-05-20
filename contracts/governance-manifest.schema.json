@@ -257,6 +257,66 @@
       "type": "string",
       "enum": ["strict"]
     },
+    "analyzers": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional analyzer declarations. All three blocks are OPTIONAL at v1 (per Phase 9 Q5). Tier-gated required-presence is enforced at validation/CONSISTENCY_RULES.md §17 (mutation), §18 (domainGlossary), §19 (architectureFitness), not in this schema.",
+      "properties": {
+        "mutation": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Mutation testing harness declaration (core/MUTATION_EVIDENCE.md). Thresholds are advisory until SCN-9.7 ratification (DEC-0005).",
+          "required": ["tool", "commandTemplate", "reportPath", "threshold"],
+          "properties": {
+            "tool": {"type": "string", "minLength": 1},
+            "commandTemplate": {"type": "string", "minLength": 1},
+            "reportPath": {"type": "string", "minLength": 1},
+            "threshold": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["medium", "high", "critical"],
+              "properties": {
+                "medium": {"type": "number", "minimum": 0, "maximum": 100},
+                "high": {"type": "number", "minimum": 0, "maximum": 100},
+                "critical": {"type": "number", "minimum": 0, "maximum": 100}
+              }
+            }
+          }
+        },
+        "domainGlossary": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Ubiquitous-language glossary declaration (core/DOMAIN_LANGUAGE_GOVERNANCE.md).",
+          "required": ["path", "coverageRule"],
+          "properties": {
+            "path": {"type": "string", "minLength": 1},
+            "coverageRule": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["protectedPaths"],
+              "properties": {
+                "protectedPaths": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"type": "string", "minLength": 1},
+                  "uniqueItems": true
+                }
+              }
+            }
+          }
+        },
+        "architectureFitness": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Architecture-fitness rules declaration (core/MODULARITY_GOVERNANCE.md).",
+          "required": ["rulesPath", "engine"],
+          "properties": {
+            "rulesPath": {"type": "string", "minLength": 1},
+            "engine": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    },
     "graphify": {
       "type": "object",
       "additionalProperties": false,

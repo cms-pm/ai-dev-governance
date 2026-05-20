@@ -263,6 +263,38 @@ bash validation/fixtures/analyzer-capability/run.sh \
   || fail "Analyzer-capability declaration fixtures failed"
 pass "Analyzer-capability declaration gate"
 
+# Phase 9 SCN-9.2 analyzer-block validators. Per-manifest sweep is
+# advisory at SCN-9.2 — validators exit 0 even when blocks are absent
+# (WARN to stderr). Structural violations in declared blocks fail
+# fail-close; the fixture run.sh scripts exercise both paths.
+scn92_manifests=(
+  "contracts/governance-manifest.example.yaml"
+  "validation/fixtures/prototype/governance.yaml"
+  "validation/fixtures/mvp/governance.yaml"
+  "validation/fixtures/production/governance.yaml"
+)
+for m in "${scn92_manifests[@]}"; do
+  python3 -m scripts.validators.mutation_threshold --manifest "$m" \
+    || fail "mutation_threshold validator failed for $m"
+  python3 -m scripts.validators.glossary_coverage --manifest "$m" \
+    || fail "glossary_coverage validator failed for $m"
+  python3 -m scripts.validators.architecture_fitness --manifest "$m" \
+    || fail "architecture_fitness validator failed for $m"
+done
+pass "Phase 9 analyzer-block validators (mutation/glossary/architecture)"
+
+bash validation/fixtures/mutation/run.sh \
+  || fail "Mutation-threshold fixtures failed"
+pass "Mutation-threshold fixtures"
+
+bash validation/fixtures/glossary/run.sh \
+  || fail "Glossary-coverage fixtures failed"
+pass "Glossary-coverage fixtures"
+
+bash validation/fixtures/architecture/run.sh \
+  || fail "Architecture-fitness fixtures failed"
+pass "Architecture-fitness fixtures"
+
 negative_fixture="validation/fixtures/embedded-missing-evidence/governance.yaml"
 [[ -f "$negative_fixture" ]] || fail "Negative fixture missing: $negative_fixture"
 if python3 - "$negative_fixture" <<'PY'

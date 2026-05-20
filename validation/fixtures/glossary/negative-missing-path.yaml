@@ -1,0 +1,8 @@
+profile: strict-baseline
+# negative fixture — analyzers.domainGlossary is declared but missing
+# the required `path` key. Validator MUST exit 1.
+analyzers:
+  domainGlossary:
+    coverageRule:
+      protectedPaths:
+        - src/domain/

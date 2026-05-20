@@ -1,0 +1,5 @@
+profile: strict-baseline
+analyzers:
+  architectureFitness:
+    rulesPath: validation/architecture-fitness.yaml
+    engine: scripts/validators/architecture_fitness.py

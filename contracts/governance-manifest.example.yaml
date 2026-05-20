@@ -91,6 +91,29 @@ boardReview:
     minimumAlternatesPerSeat: 1
 updateCadence: monthly
 compatibility: strict
+# Analyzers block (v0.7.5+, Phase 9 SCN-9.2). All three sub-blocks are
+# OPTIONAL at the schema level (Q5 resolution). Tier-gated required-
+# presence is enforced at validation/CONSISTENCY_RULES.md §17–§19.
+# Thresholds under analyzers.mutation are ADVISORY until SCN-9.7
+# ratification (DEC-0005); the mutation_threshold validator runs in
+# WARN mode until that flip lands.
+analyzers:
+  mutation:
+    tool: cosmic-ray
+    commandTemplate: "cosmic-ray exec {config} {session} && cosmic-ray dump {session} > {report}"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 70
+      high: 85
+      critical: 90
+  domainGlossary:
+    path: docs/glossary/
+    coverageRule:
+      protectedPaths:
+        - src/domain/
+  architectureFitness:
+    rulesPath: validation/architecture-fitness.yaml
+    engine: scripts/validators/architecture_fitness.py
 # Graphify block (v0.6.0+). Drives scripts/run_graphify.sh.
 # NOTE: `allowlist` grammar is fnmatch-style (`*`, `**`, `?`). Brace
 # alternations like `**/*.{c,h}` are NOT expanded and will be rejected by
