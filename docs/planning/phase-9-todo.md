@@ -88,24 +88,36 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.3 — Claude adapter skills
 
-- [ ] Nine `SKILL.md` files on disk under
+- [x] Nine `SKILL.md` files on disk under
       `adapters/providers/claude/skills/{tdd, mutation-testing,
       test-design-reviewer, find-gaps, hexagonal-architecture,
       domain-driven-design, finding-seams, characterisation-tests,
       story-splitting}/`.
-- [ ] Each `SKILL.md` opens with its core-policy source-of-truth
+      (registered as `provider-skill` by Astaire scan; SCN-9.3 commit;
+      `query -t provider-skill` returns 9)
+- [x] Each `SKILL.md` opens with its core-policy source-of-truth
       pointer (Q4 authority boundary).
-- [ ] `grep -nE '\\b(MUST|SHOULD|MAY)\\b' adapters/providers/claude/skills/`
+- [x] `grep -nE '\\b(MUST|SHOULD|MAY)\\b' adapters/providers/claude/skills/`
       returns only quoted references back to `core/` documents
       (no skill-authored normative rules — R-9-03 mitigation).
-- [ ] Optional slash commands under `adapters/providers/claude/commands/`
+      (grep returns no matches; quoted directives reproduce the
+      source-of-truth lowercase prose, so the all-caps modal verbs do
+      not appear in any skill file)
+- [x] Optional slash commands under `adapters/providers/claude/commands/`
       authored (`/farley-review`, `/find-gaps`, `/mutate`).
-- [ ] Astaire `governance_authoring` plugin path-to-type entry for
+- [x] Astaire `governance_authoring` plugin path-to-type entry for
       `adapters/providers/claude/skills/` → `provider-skill` (lands in
       same submodule bundle as SCN-9.2 or as a follow-on).
-- [ ] Smoke test per skill: load the skill and produce one artifact it
+      (submodule commit `c14b7e5` on branch `scn-9.2-path-types`;
+      pin bump lands in this SCN-9.3 commit; remote push deferred per
+      session handoff)
+- [x] Smoke test per skill: load the skill and produce one artifact it
       describes against `astaire/` or a fixture; attach to evidence
       bundle.
+      (results summarised in
+      `docs/evidence/scn-9-3-skills-smoke/README.md`; full Cosmic Ray,
+      Farley scorecard, seam map, and characterisation suite runs land
+      in SCN-9.4 / SCN-9.5)
 
 ## SCN-9.4 — Self-application Part A (glossary + seam map + claims/projection refactor)
 
