@@ -76,4 +76,4 @@ to the board proposal.
 
 At schema v1 the analyzer block is optional. Tier-gated presence is a
 validation-layer concern in `validation/CONSISTENCY_RULES.md` §17, and
-mutation thresholds remain advisory until SCN-9.7 DEC-0005.
+mutation thresholds are the DEC-0005 ratified values.

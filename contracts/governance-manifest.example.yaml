@@ -94,9 +94,9 @@ compatibility: strict
 # Analyzers block (v0.7.5+, Phase 9 SCN-9.2). All three sub-blocks are
 # OPTIONAL at the schema level (Q5 resolution). Tier-gated required-
 # presence is enforced at validation/CONSISTENCY_RULES.md §17–§19.
-# Thresholds under analyzers.mutation are ADVISORY until SCN-9.7
-# ratification (DEC-0005); the mutation_threshold validator runs in
-# WARN mode until that flip lands.
+# Thresholds under analyzers.mutation were ratified by DEC-0005.
+# validation/CONSISTENCY_RULES.md §17 enforces required-presence for
+# strict-baseline manifests outside the schema layer.
 analyzers:
   mutation:
     tool: cosmic-ray

@@ -12,11 +12,8 @@ Linked to: `docs/planning/pool_questions/phase-9-tdr-hardening.md`,
 
 | ID | Title | Severity | Likelihood | Trigger SCN(s) | Mitigation | Owner | Review Window |
 |---|---|---|---|---|---|---|---|
-| R-9-01 | Hexagonal refactor of `astaire/` claims/projection core regresses existing pytest suite or breaks the `governance_authoring` plugin used by this repo | High | Medium | SCN-9.4 | Pilot-only scope per Q2 resolution. Existing pytest suite MUST stay green at every intermediate commit. Architecture-fitness rule (`architecture_fitness.py`) gates the seam between domain and adapters. Rollback = revert the claims/projection refactor commit; glossary + seam map remain on disk as inert documentation. | Accountable Delivery Lead | At SCN-9.4 review and every Phase 9 sprint critique through SCN-9.7 |
-| R-9-02 | SCN-9.5 mutation baseline produces poor data (sparse test corpus, unkillable mutants from infrastructure code) — proposed tier thresholds become misleading | Medium | Medium | SCN-9.5, SCN-9.7 | Advisory-until-ratified pattern per Q3 resolution. If SCN-9.5 baseline shows the proposed thresholds are unattainable for `astaire/` claims/projection core, the SCN-9.5 threshold-ratification proposal recommends revised numbers backed by survivor analysis. SCN-9.7 board MAY adopt-as-proposed, revise, or defer ratification to Phase 10 — the gate stays advisory in the deferral case. `validate_governance.sh` MUST NOT fail-close on mutation evidence until SCN-9.7 sign-off lands. | Accountable Delivery Lead | At SCN-9.5 review and SCN-9.7 board |
-| R-9-03 | Claude skills accidentally encode normative rules (MUST/SHOULD/MAY) instead of pointing at core policy — adapter-layer shadow governance emerges | Medium | Medium | SCN-9.3, SCN-9.6 | SCN-9.3 acceptance criterion: `grep -nE '\\b(MUST\|SHOULD\|MAY)\\b' adapters/providers/claude/skills/` returns only quoted references back to `core/` documents. Each `SKILL.md` opens with the source-of-truth pointer. Reviewed at SCN-9.3 and again at SCN-9.7 sign-off as part of the policy-vs-adapter audit. | Accountable Delivery Lead | At SCN-9.3 review and SCN-9.7 audit |
 | R-9-04 | Manifest schema additions (mutation, glossary, architecture-fitness) reject existing downstream consumer manifests despite the optional-at-v1 contract | Medium | Low | SCN-9.2, SCN-9.6, first downstream adoption | All three blocks declared `optional` in `governance-manifest.schema.json` per Q5 resolution. Tier-gated presence is enforced at the `validation/CONSISTENCY_RULES.md` §17–§19 layer, not in the schema. Migration note (SCN-9.6) provides copy-paste templates and explains tier-vs-presence semantics. First downstream consumer adoption is the live test. Closure cadence mirrors R-8.2-02. | Accountable Delivery Lead | At first downstream consumer adoption of any of the three new blocks |
-| R-9-05 | Glossary authoring authority drift — bounded contexts disagree on canonical term definitions, or new code lands without naming-correspondence enforcement | Medium | Medium | SCN-9.4, SCN-9.6, every consumer adoption | `core/DOMAIN_LANGUAGE_GOVERNANCE.md` names per-context authoring authority in the file preamble. The `glossary_coverage.py` validator (SCN-9.2) checks that types/functions/test names in the bounded-context directory map to glossary terms. Disputes escalate to board review (the test-design lens MAY annex glossary findings). | Accountable Delivery Lead | At SCN-9.4 review and quarterly thereafter |
+| R-9-05 | Glossary authoring authority drift — bounded contexts disagree on canonical term definitions, or new code lands without naming-correspondence enforcement | Medium | Medium | SCN-9.4, SCN-9.6, every consumer adoption | `core/DOMAIN_LANGUAGE_GOVERNANCE.md` names per-context authoring authority in the file preamble. The `glossary_coverage.py` validator (SCN-9.2) checks that types/functions/test names in the bounded-context directory map to glossary terms. Disputes escalate to board review (the test-design lens MAY annex glossary findings). | Accountable Delivery Lead | Phase 10 bootstrap and quarterly thereafter |
 
 ## Carried-forward from Phase 8.2 / 8.3 (monitor lane)
 
@@ -28,7 +25,20 @@ Linked to: `docs/planning/pool_questions/phase-9-tdr-hardening.md`,
 
 ## Closed Risks
 
-(none — phase newly opened)
+| ID | Closure / disposition |
+|---|---|
+| R-9-01 | Closed at SCN-9.7. The SCN-9.4 pilot refactor stayed scoped to `astaire/src/domain/claims/`; architecture-fitness audit passes; full Astaire pytest suite is green. |
+| R-9-02 | Closed at SCN-9.7. SCN-9.5 mutation baseline produced usable data; DEC-0005 accepted SCN-9.5-EQ-001 and ratified the thresholds. |
+| R-9-03 | Closed at SCN-9.7. Claude skills retained source-of-truth pointers; SCN-9.6 runbooks/templates add no new all-caps modal directives. |
+
+## Carried Forward After Phase 9
+
+| ID | Disposition |
+|---|---|
+| R-9-04 | Carry to Phase 10 until first downstream consumer adoption of each new analyzer block validates optional-at-schema/tier-gated-presence behavior. |
+| R-9-05 | Carry to Phase 10 and quarterly glossary ownership review; current Phase 9 glossary files are stable, but downstream/code-evolution drift is ongoing. |
+| R-8.2-02 | Carry to Phase 10 until first downstream consumer adoption of analyzer declarations and Phase 9 analyzer blocks. |
+| R-8.2-05 | Carry to Phase 10 because no Phase 8.1 reciprocal risk-log artifact is present in this repo at SCN-9.7 sign-off. |
 
 ## Rollback Strategy Notes
 

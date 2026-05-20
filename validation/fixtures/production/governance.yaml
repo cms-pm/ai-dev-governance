@@ -78,5 +78,14 @@ boardReview:
     rosterPath: docs/governance/board/board-composition.yaml
     approvalRecordPath: docs/governance/board/board-composition-approval.md
     minimumAlternatesPerSeat: 1
+analyzers:
+  mutation:
+    tool: cosmic-ray
+    commandTemplate: "cosmic-ray exec config.toml session && cosmic-ray dump session > report.md"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 70
+      high: 85
+      critical: 90
 updateCadence: quarterly
 compatibility: strict

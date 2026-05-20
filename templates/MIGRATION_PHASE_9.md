@@ -52,5 +52,5 @@ python3 -m scripts.validators.architecture_fitness --manifest governance.yaml
 bash scripts/validate_governance.sh
 ```
 
-Expected result during Phase 9: structural failures still fail, while
-mutation threshold enforcement remains WARN-mode until DEC-0005.
+Expected result after DEC-0005: structural failures fail, and
+strict-baseline manifests fail when `analyzers.mutation` is absent.

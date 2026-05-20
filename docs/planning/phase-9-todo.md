@@ -183,9 +183,10 @@ appended in `(parens)` after each box is checked.
       (DEC-0005 candidate recommends adopt-as-proposed with
       SCN-9.5-EQ-001 equivalent-mutant bundle acceptance)
 - [x] `validate_governance.sh` runs `mutation_threshold.py` in WARN
-      mode (advisory per Q3); no fail-close until SCN-9.7.
+      mode during SCN-9.5 (advisory per Q3); fail-close waits for
+      SCN-9.7.
       (`governance.yaml` now declares `analyzers.mutation`; validator
-      remains structurally validating/WARN-mode per §17 until SCN-9.7)
+      was structurally validating in non-failing mode until DEC-0005)
 
 ## SCN-9.6 — Runbooks + templates + consumer migration note
 
@@ -206,27 +207,34 @@ appended in `(parens)` after each box is checked.
       (cross-links the three SCN-9.6 runbooks)
 - [x] Migration note dry-run against this repo's `governance.yaml`
       passes `validate_governance.sh` exit 0.
-      (`bash scripts/validate_governance.sh` exits 0; expected Phase 9
-      WARN-mode analyzer messages remain non-failing)
+      (`bash scripts/validate_governance.sh` exits 0 before and after
+      DEC-0005; post-DEC-0005 strict manifests declare mutation blocks)
 
 ## SCN-9.7 — Phase 9 board review + sign-off (ratifies thresholds)
 
-- [ ] `docs/planning/board/committee-review-packet-<DATE>-scn-9-7.md`
+- [x] `docs/planning/board/committee-review-packet-<DATE>-scn-9-7.md`
       on disk (Accountability Review; chair continuity with MTG-0004);
       links threshold-ratification proposal as DEC-0005 candidate.
-- [ ] `docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-<DATE>.md`
+      (`docs/planning/board/committee-review-packet-2026-05-20-scn-9-7.md`)
+- [x] `docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-<DATE>.md`
       on disk; DEC-0005 recorded (adopt-as-proposed / revise / defer).
-- [ ] On adoption: `core/MUTATION_EVIDENCE.md` advisory marker removed
+      (`docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-2026-05-20.md`;
+      DEC-0005 outcome adopted-as-proposed with SCN-9.5-EQ-001 accepted)
+- [x] On adoption: `core/MUTATION_EVIDENCE.md` advisory marker removed
       and threshold table flipped to normative in the same commit.
-- [ ] On adoption: `validation/CONSISTENCY_RULES.md` §17 flipped from
+      (advisory marker removed; threshold table retitled and DEC-0005
+      ratification recorded)
+- [x] On adoption: `validation/CONSISTENCY_RULES.md` §17 flipped from
       WARN to fail-close at the ratified tiers;
       `validate_governance.sh` exit 0 against this repo's
       `governance.yaml` with §17 active.
-- [ ] `docs/planning/signoffs.md` Phase 9 row dated.
-- [ ] `docs/planning/traceability.md` SCN-9.7-01 row closed.
-- [ ] R-8.2-05 disposition recorded (closed if Phase 8.1 reciprocal
+      (`scripts/validators/mutation_threshold.py` fails strict-baseline
+      omissions; strict fixtures now declare `analyzers.mutation`)
+- [x] `docs/planning/signoffs.md` Phase 9 row dated.
+- [x] `docs/planning/traceability.md` SCN-9.7-01 row closed.
+- [x] R-8.2-05 disposition recorded (closed if Phase 8.1 reciprocal
       landed; carry-forward to Phase 10 otherwise).
-- [ ] R-9-01..05 disposition recorded.
+- [x] R-9-01..05 disposition recorded.
 
 ## Follow-ups (deferred past Phase 9)
 

@@ -263,10 +263,10 @@ bash validation/fixtures/analyzer-capability/run.sh \
   || fail "Analyzer-capability declaration fixtures failed"
 pass "Analyzer-capability declaration gate"
 
-# Phase 9 SCN-9.2 analyzer-block validators. Per-manifest sweep is
-# advisory at SCN-9.2 — validators exit 0 even when blocks are absent
-# (WARN to stderr). Structural violations in declared blocks fail
-# fail-close; the fixture run.sh scripts exercise both paths.
+# Phase 9 analyzer-block validators. Mutation block presence is
+# fail-closed after DEC-0005; glossary and architecture checks still
+# emit non-failing WARN messages where their structural validators
+# intentionally defer full project-specific coverage/audit checks.
 scn92_manifests=(
   "contracts/governance-manifest.example.yaml"
   "validation/fixtures/prototype/governance.yaml"

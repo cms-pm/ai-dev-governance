@@ -1,11 +1,9 @@
-"""Mutation-threshold validator (Phase 9 SCN-9.2).
+"""Mutation-threshold validator (Phase 9 SCN-9.7).
 
-Verifies the `analyzers.mutation` block when present and emits an
-advisory WARN to stderr (exit 0) when a strict-baseline manifest omits
-the block. Per `core/MUTATION_EVIDENCE.md` §Advisory Marker and Phase 9
-Q3 resolution, this validator MUST run in WARN-only mode until SCN-9.7
-ratification (DEC-0005). After ratification, this module is amended to
-fail-close at the medium/high/critical thresholds.
+Verifies the `analyzers.mutation` block. DEC-0005 ratified the Phase 9
+threshold table, so strict-baseline manifests now fail closed when the
+block is absent. The schema still treats the block as optional at v1;
+required-presence is enforced here.
 
 Structural FAIL conditions (exit 1):
 
@@ -13,10 +11,6 @@ Structural FAIL conditions (exit 1):
   leaf keys: `tool`, `commandTemplate`, `reportPath`, or `threshold`.
 - `threshold` sub-object is declared but missing `medium`, `high`, or
   `critical`.
-
-Advisory WARN conditions (exit 0, message on stderr):
-
-- Strict-baseline profile and the block is absent.
 
 PASS conditions (exit 0, silent):
 
@@ -56,10 +50,9 @@ def check(manifest_path: Path) -> tuple[int, str]:
 
     if not block_lines:
         if profile_requires_block(profile):
-            return 0, (
-                f"[WARN] {manifest_path}: profile={profile} but "
-                "analyzers.mutation is absent — advisory until SCN-9.7 "
-                "ratification (core/MUTATION_EVIDENCE.md §Advisory Marker)"
+            return 1, (
+                f"{manifest_path}: profile={profile} but "
+                "analyzers.mutation is absent after DEC-0005 ratification"
             )
         return 0, f"{manifest_path}: analyzers.mutation absent (non-strict profile)"
 
@@ -84,17 +77,14 @@ def _main(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="python -m scripts.validators.mutation_threshold",
         description=(
-            "Mutation-threshold validator (advisory until SCN-9.7). "
-            "Checks structural presence of analyzers.mutation in a "
-            "governance manifest."
+            "Mutation-threshold validator. Checks fail-closed presence "
+            "and structure of analyzers.mutation in a governance manifest."
         ),
     )
     parser.add_argument("--manifest", type=Path, required=True)
     args = parser.parse_args(argv)
     code, message = check(args.manifest)
     if code != 0:
-        print(message, file=sys.stderr)
-    elif message.startswith("[WARN]"):
         print(message, file=sys.stderr)
     return code
 

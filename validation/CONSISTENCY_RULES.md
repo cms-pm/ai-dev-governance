@@ -97,15 +97,11 @@
     OPTIONAL at the schema layer (Phase 9 Q5 — optional-at-v1). When
     present, it MUST carry `tool`, `commandTemplate`, `reportPath`, and
     a `threshold` object declaring `medium`, `high`, and `critical`
-    numeric scores. Tier-gated required-presence is **advisory until
-    SCN-9.7 ratification** (DEC-0005) per
-    `core/MUTATION_EVIDENCE.md` §Advisory Marker: the
-    `scripts/validators/mutation_threshold.py` validator emits WARN to
-    stderr when a strict-baseline manifest omits the block, but exits 0.
-    After ratification, this clause flips to fail-close at the
-    medium/high/critical tiers in the same commit that removes the
-    advisory marker. Structural violations (missing required keys when
-    the block is declared) fail-close even under the advisory regime.
+    numeric scores. After DEC-0005 ratification, strict-baseline
+    manifests fail closed when this block is absent unless an exception
+    is recorded under `core/EXCEPTIONS_AND_WAIVERS.md`. Structural
+    violations (missing required keys when the block is declared) also
+    fail closed.
 
 18. Governance manifests MAY carry `analyzers.domainGlossary`. The block
     is OPTIONAL at the schema layer. When present, it MUST carry `path`

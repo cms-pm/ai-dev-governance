@@ -10,15 +10,12 @@ sufficient evidence that behavior is objectively validated.
 
 Keywords `MUST`, `SHOULD`, and `MAY` are normative.
 
-## Advisory Marker (Phase 9)
+## Ratification
 
-**The tier threshold table in this document is ADVISORY until SCN-9.7
-ratification.** The SCN-9.5 baseline run on `astaire/` produces the
-data the SCN-9.7 board uses to adopt, revise, or defer the proposed
-thresholds (DEC-0005). Until SCN-9.7 sign-off lands,
-`scripts/validators/mutation_threshold.py` MUST run in WARN mode only.
-After ratification, this advisory marker is removed in the same commit
-that flips `validation/CONSISTENCY_RULES.md` §17 to fail-close.
+DEC-0005 adopted the tier threshold table at SCN-9.7. The SCN-9.5
+baseline run on `astaire/` supplied the ratification data and accepted
+`SCN-9.5-EQ-001` as an equivalent-mutant exception bundle for Cosmic
+Ray's type-only Protocol return-annotation mutants.
 
 ## Core Principle
 
@@ -42,7 +39,7 @@ percentage of generated mutants the suite kills.
 - **Tier.** The risk-tier label declared for the chunk
   (low/medium/high/critical), per `core/PLANNING_METHODOLOGY.md`.
 
-## Proposed Tier Threshold Table (Advisory)
+## Tier Threshold Table
 
 | Risk tier | Mutation score | Additional requirement |
 |---|---|---|
@@ -51,9 +48,8 @@ percentage of generated mutants the suite kills.
 | High | ≥ 85% | survivor list reviewed; equivalent-mutant exceptions filed |
 | Critical | ≥ 90% | zero survivors permitted in domain core; equivalent-mutant exceptions filed |
 
-These numbers are proposed inputs to DEC-0005. The SCN-9.5 baseline run
-on `astaire/` claims/projection core provides the empirical data that
-informs the final ratified numbers.
+These numbers are the DEC-0005 ratified thresholds. Equivalent mutants
+approved through the exception process are excluded from the denominator.
 
 ## Tool Policy
 
@@ -128,7 +124,7 @@ Exceptions are reviewable artifacts; tool-level ignore lists are not.
 For chunks under `core/MODULARITY_GOVERNANCE.md` discipline, the domain
 core (the I/O-free package(s) the architecture-fitness rule protects)
 is the highest-priority mutation target. At critical tier, the
-proposed table requires **zero survivors** in the domain core: any
+threshold table requires **zero survivors** in the domain core: any
 surviving mutant under the protected domain path MUST be
 kill-pending or filed as an equivalent-mutant exception before
 sign-off.
@@ -148,10 +144,9 @@ mutation report defined here.
 - Medium-tier and higher chunks MUST declare the `analyzers.mutation`
   block in the governance manifest or record an exception under
   `core/EXCEPTIONS_AND_WAIVERS.md`.
-- Until SCN-9.7 ratification (see Advisory Marker above), the
-  `mutation_threshold.py` validator runs in WARN mode. After
-  ratification, `validation/CONSISTENCY_RULES.md` §17 flips to
-  fail-close at the tiers above.
+- `validation/CONSISTENCY_RULES.md` §17 enforces the
+  `analyzers.mutation` block fail-closed for strict-baseline manifests
+  at the tiers above.
 
 ## Anti-Patterns
 
@@ -176,9 +171,8 @@ mutation report defined here.
   evidence field.
 - `core/MODULARITY_GOVERNANCE.md` — domain core is the highest-priority
   mutation target.
-- `validation/CONSISTENCY_RULES.md` §17 — required-presence of the
-  `analyzers.mutation` block by risk tier (WARN until SCN-9.7).
+- `validation/CONSISTENCY_RULES.md` §17 — fail-closed
+  required-presence of the `analyzers.mutation` block by risk tier.
 - `contracts/governance-manifest.schema.json` — schema for the
   `analyzers.mutation` block.
-- `runbooks/MUTATION_TESTING.md` — operating procedure (lands at
-  SCN-9.6).
+- `runbooks/MUTATION_TESTING.md` — operating procedure.
