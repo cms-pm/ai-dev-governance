@@ -105,6 +105,42 @@ Evidence MUST be stored in declared paths and include:
   assertions: assertions run unconditionally and produce a real
   pass/fail.
 
+## TDR-RGM (Red-Green-Mutate)
+
+For chunks at risk-tier medium or higher, the TDR cycle MUST include
+mutation evidence as a closure gate. The cycle is:
+
+1. **RED.** The acceptance test exists and fails before any
+   implementation lands. The failure MUST be observed at a reviewable
+   commit (or pre-commit pytest run captured in the chunk's evidence
+   bundle).
+2. **GREEN.** The implementation lands. The acceptance test passes
+   along with the full pre-existing suite.
+3. **MUTATE.** A mutation pass runs against the production code the
+   acceptance test exercises. Surviving mutants are dispositioned per
+   `core/MUTATION_EVIDENCE.md` §Survivor Triage Protocol. The chunk's
+   mutation report URI is emitted in the per-acceptance evidence
+   record (`mutationReportURI`).
+
+The RED step's evidence MAY be a pytest run log, a CI artifact, or a
+git diff showing the test landed in a commit prior to the
+implementation commit. The MUTATE step's evidence is the mutation
+report defined in `core/MUTATION_EVIDENCE.md`.
+
+The "behavior is objectively validated" condition from §Purpose is
+unchanged; TDR-RGM extends it with empirical test-suite effectiveness
+evidence at the tiers where that effectiveness is load-bearing.
+
+Cross-references:
+
+- `core/MUTATION_EVIDENCE.md` — mutation tool policy, tier threshold
+  table, survivor triage.
+- `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` §Test-Design Lens —
+  the test-design lens reviews TDR-RGM evidence at accountability
+  reviews.
+- `core/EVIDENCE_CONTRACT.md` — `mutationReportURI` and
+  `farleyScorecardURI` per-acceptance fields.
+
 ## Tooling
 
 This policy is tool-agnostic. Projects choose frameworks and runners through adapters while preserving core policy requirements.

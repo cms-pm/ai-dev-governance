@@ -76,6 +76,63 @@ Confidence rubric:
 - 2: weakly supported
 - 1: speculative
 
+## Pool Question Sub-Protocol — Find-Gaps Loop
+
+When the pool question set for a phase scores at or near the ambiguity
+gate but a reviewer suspects residual blind spots, agents MUST run the
+Find-Gaps Loop before phase sign-off:
+
+1. **One question at a time.** The agent (or human reviewer) poses a
+   single question targeting a suspected gap. Multi-question batches
+   defeat the loop's purpose.
+2. **Write-back required.** Each answer MUST land in one of:
+   - a new pool question entry with score and confidence, OR
+   - an amendment to an existing pool question (with change history), OR
+   - a new acceptance criterion ID on the relevant chunk, OR
+   - a new risk-log entry with severity + mitigation.
+
+   An answer that does not produce one of these artifacts is not yet
+   resolved; the loop continues.
+3. **Loop exit.** The loop exits when three consecutive questions
+   return "no new artifact required" with a brief rationale recorded
+   in the phase's planning notes.
+4. **Auditability.** Every loop iteration MUST be reviewable: either a
+   commit on the planning artifacts, a PR comment thread, or a board
+   meeting record.
+
+The Find-Gaps Loop is mandatory at risk-tier high and critical;
+recommended at risk-tier medium. It MAY be skipped at low tier with a
+short "skip rationale" recorded in the chunk plan.
+
+## Chunk Splitting
+
+When a chunk's acceptance-criterion count, cross-file edit count, or
+ambiguity-score contribution exceeds the project's comfort threshold,
+agents MUST split the chunk using one of the standard story-splitting
+techniques. ADG canonically accepts:
+
+1. **INVEST.** Independent / Negotiable / Valuable / Estimable / Small
+   / Testable. A chunk failing any axis is a candidate for split.
+2. **Hamburger.** Order the layers of work from "thinnest viable slice"
+   to "fully garnished"; the split point is the smallest slice that
+   delivers reviewable value end-to-end.
+3. **SPIDR.** Spike / Path / Interface / Data / Rule — split along the
+   axis that the chunk's biggest unknown sits on:
+   - **Spike.** Time-boxed investigation chunk producing a finding
+     report, not production code.
+   - **Path.** Split happy path from edge or failure paths.
+   - **Interface.** Split UI / CLI / API surface from underlying
+     logic.
+   - **Data.** Split read paths from write paths, or one entity type
+     from another.
+   - **Rule.** Split per business rule when multiple rules cluster in
+     one chunk.
+
+Each post-split chunk MUST independently satisfy the §Chunk Readiness
+Gate. The split MAY happen at planning time (preferred) or at
+implementation time when an unexpected scope expansion is discovered;
+the latter case requires a planning-note amendment.
+
 ## Acceptance Criteria Mapping
 
 - Functional/behavioral requirements MUST map to executable acceptance criteria.

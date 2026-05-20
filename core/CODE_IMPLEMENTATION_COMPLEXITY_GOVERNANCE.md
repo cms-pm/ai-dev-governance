@@ -342,6 +342,44 @@ Gate interpretation:
 - Two or more scores of 2 require a refactor plan before feature closeout.
 - Scores of 0 or 1 may proceed under normal risk-tier gates.
 
+## Refactor Plan
+
+When the rubric scores ≥ 2 on any axis, or when the chunk explicitly
+restructures existing production code, agents MUST produce a refactor
+plan that includes both of the following before any production edit
+lands:
+
+1. **Seam map.** A markdown artifact enumerating every seam in the
+   target code by type (constructor injection, fixture, monkeypatch,
+   module-level singleton, conditional import, environment-variable
+   switch). Each entry MUST include:
+   - file:line,
+   - seam type,
+   - current consumer(s) of the seam,
+   - refactor cost estimate (small / medium / large),
+   - whether the seam is exercised by an existing test.
+
+   The seam map MUST be registered under `docs/evidence/seam-maps/` and
+   linked from the chunk's TO-DO row.
+
+2. **Characterisation-test suite.** A pytest (or equivalent) suite that
+   pins the current observable behavior of the target code before the
+   refactor begins. Tests MUST be marked with the project's
+   characterisation marker (default: `@pytest.mark.characterisation`).
+   The suite MUST be green at every intermediate refactor commit;
+   failures indicate either a real behavior change (which MUST be
+   surfaced as an acceptance-criterion change) or a defective
+   characterisation test (which MUST be repaired before continuing).
+
+Both artifacts are required at rubric score ≥ 2 regardless of risk
+tier. The rationale is that high-complexity refactors without seam
+analysis or behavior pinning are the highest-likelihood path to silent
+regressions, independent of the surrounding feature's risk tier.
+
+When the work crosses the domain/adapter boundary defined in
+`core/MODULARITY_GOVERNANCE.md`, the refactor plan SHOULD also identify
+which seams become the new port declarations.
+
 ## Exception Process
 
 Hard-cap and forbidden-pattern exceptions require a short exception record with:

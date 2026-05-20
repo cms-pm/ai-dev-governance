@@ -28,6 +28,22 @@ Each acceptance item MUST include:
 - pass/fail status
 - artifact URI/path
 
+The following per-acceptance evidence URIs are REQUIRED at the risk
+tier where the corresponding analyzer block becomes required (see
+`validation/CONSISTENCY_RULES.md` §17–§19); OPTIONAL otherwise:
+
+- `mutationReportURI` — pointer to the mutation report defined in
+  `core/MUTATION_EVIDENCE.md` §Evidence URI Contract. REQUIRED at
+  risk-tier ≥ medium once SCN-9.7 ratifies the threshold table.
+- `farleyScorecardURI` — pointer to the test-design lens scorecard
+  registered as `farley-scorecard` (see
+  `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` §Test-Design Lens).
+  REQUIRED at risk-tier ≥ high.
+- `glossaryCoverageURI` — pointer to the glossary-coverage validator
+  report defined in `core/DOMAIN_LANGUAGE_GOVERNANCE.md`. REQUIRED at
+  risk-tier ≥ medium when the chunk introduces new domain vocabulary;
+  REQUIRED unconditionally at risk-tier critical.
+
 ## Board Review Evidence
 
 Each board review cycle MUST include:

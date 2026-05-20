@@ -123,6 +123,35 @@ Each board composition MUST cover these lenses:
 - operability
 - cognitive-load
 - domain-specific lens (project-defined)
+- **test-design** — empirical test-suite effectiveness, mutation
+  evidence review, and the Farley eight-property scorecard (see
+  §Test-Design Lens below).
+
+### Test-Design Lens
+
+The test-design lens reviews:
+
+1. Mutation reports for the phase's chunks at risk-tier ≥ medium (per
+   `core/MUTATION_EVIDENCE.md`).
+2. The Farley scorecard — each of Dave Farley's eight test-design
+   properties scored 1-5 with recommendations:
+   - **Authentic.** Tests exercise the system as the user does.
+   - **Repeatable.** Same inputs produce the same result.
+   - **Predictable.** Failure modes are diagnostic, not flaky.
+   - **Independent.** Tests do not order-depend on each other.
+   - **Specific.** Each test asserts one behavior.
+   - **Empathetic.** Failure messages help the next maintainer.
+   - **Fast.** Suite runtime is bounded and predictable.
+   - **Necessary.** Each test pulls weight; redundant tests are
+     candidates for retirement.
+3. Survivor disposition decisions from `core/MUTATION_EVIDENCE.md`
+   §Survivor Triage Protocol that require board-level escalation
+   (typically accepted-residual exceptions at critical tier).
+
+The lens uses the Farley scorecard template (registered as
+`farley-scorecard` in Astaire) as its standing artifact. Output is a
+severity-ranked critique entry conforming to §Constructive Criticism
+Protocol.
 
 ### Candidate Eligibility
 

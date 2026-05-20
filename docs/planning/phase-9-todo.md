@@ -31,30 +31,37 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.1 — Core policy authoring (new docs + amendments)
 
-- [ ] `core/MODULARITY_GOVERNANCE.md` on disk (ports + adapters,
+- [x] `core/MODULARITY_GOVERNANCE.md` on disk (ports + adapters,
       dependency-direction rule, "domain has no I/O imports",
       fitness-function format).
-- [ ] `core/DOMAIN_LANGUAGE_GOVERNANCE.md` on disk (glossary spec,
+      (registered as `core-policy` by Astaire scan; SCN-9.1 commit)
+- [x] `core/DOMAIN_LANGUAGE_GOVERNANCE.md` on disk (glossary spec,
       per-context authoring authority, naming-correspondence rule,
       evolution + deprecation protocol).
-- [ ] `core/MUTATION_EVIDENCE.md` on disk (operator policy, **advisory**
+      (registered as `core-policy`; SCN-9.1 commit)
+- [x] `core/MUTATION_EVIDENCE.md` on disk (operator policy, **advisory**
       tier threshold table, survivor triage protocol, equivalent-mutant
       exception process, evidence URI contract).
-- [ ] `core/AI_ASSISTED_TDR_METHODOLOGY.md` §TDR-RGM subsection
+      (registered as `core-policy`; advisory marker grep-verifiable at
+      `core/MUTATION_EVIDENCE.md:13`, `:15`, `:45`, `:151`)
+- [x] `core/AI_ASSISTED_TDR_METHODOLOGY.md` §TDR-RGM subsection
       authored; cross-links `MUTATION_EVIDENCE.md` and the test-design
       board lens.
-- [ ] `core/PLANNING_METHODOLOGY.md` §Find-Gaps Loop and §Chunk
+- [x] `core/PLANNING_METHODOLOGY.md` §Find-Gaps Loop and §Chunk
       Splitting subsections authored.
-- [ ] `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` test-design lens
+- [x] `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` test-design lens
       registered as the eighth required lens; Farley scorecard template
       referenced.
-- [ ] `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` §Refactor
+      (lens added under §Expert-Agent Board Selection; Farley
+      8-property scorecard rubric authored inline)
+- [x] `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` §Refactor
       Plan amended to require seam map + characterisation suite at
       rubric score ≥ 2.
-- [ ] `core/EVIDENCE_CONTRACT.md` adds `mutationReportURI`,
+- [x] `core/EVIDENCE_CONTRACT.md` adds `mutationReportURI`,
       `farleyScorecardURI`, `glossaryCoverageURI` per-acceptance fields.
-- [ ] Astaire scan + lint 0/0; advisory marker in `MUTATION_EVIDENCE.md`
+- [x] Astaire scan + lint 0/0; advisory marker in `MUTATION_EVIDENCE.md`
       grep-verifiable.
+      (lint 0/0 at 2026-05-20T01:08:31Z after startup-driven L0 refresh)
 
 ## SCN-9.2 — Contracts + validators + Astaire collection extensions
 
