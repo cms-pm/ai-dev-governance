@@ -155,21 +155,37 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.5 — Self-application Part B (mutation + Farley + characterisation suite)
 
-- [ ] `astaire/cosmic-ray.toml` on disk; full Cosmic Ray pass produces
+- [x] `astaire/cosmic-ray.toml` on disk; full Cosmic Ray pass produces
       `docs/evidence/mutation/astaire-claims-projection-<DATE>.md`
       (registered as `mutation-report`).
-- [ ] `astaire/mutmut.ini` (or equivalent) on disk; mutmut inner-loop
+      (`docs/evidence/mutation/astaire-claims-projection-2026-05-20.md`;
+      Cosmic Ray 8.4.6 baseline: 70 total, 37 killed, 33 equivalent
+      candidates; raw score 52.86%, equivalent-adjusted 100.00% if
+      SCN-9.5-EQ-001 is accepted)
+- [x] `astaire/mutmut.ini` (or equivalent) on disk; mutmut inner-loop
       documented in `mutation-testing` skill.
-- [ ] `docs/evidence/farley/astaire-pytest-<DATE>.md` on disk and
+      (`astaire/pyproject.toml` carries active `[tool.mutmut]`;
+      `astaire/mutmut.ini` mirrors it; skill updated for Cosmic Ray
+      8.4.6 `dump` flow and mutmut 3.5.0 tool-compatibility note)
+- [x] `docs/evidence/farley/astaire-pytest-<DATE>.md` on disk and
       registered as `farley-scorecard`.
-- [ ] `docs/evidence/seam-maps/astaire-characterisation-suite.md` on
+      (`docs/evidence/farley/astaire-pytest-2026-05-20.md`; Farley
+      average 4.00/5)
+- [x] `docs/evidence/seam-maps/astaire-characterisation-suite.md` on
       disk; characterisation tests marked with
       `@pytest.mark.characterisation` and pass under pytest.
-- [ ] `docs/planning/board/threshold-ratification-proposal-scn-9-7.md`
+      (`astaire/tests/test_characterisation_phase9.py`; marker
+      registered in `astaire/pyproject.toml`; 3 characterisation tests
+      green, 24 focused domain+characterisation tests green)
+- [x] `docs/planning/board/threshold-ratification-proposal-scn-9-7.md`
       on disk; cites SCN-9.5 baseline numbers; recommends adoption /
       revision / deferral.
-- [ ] `validate_governance.sh` runs `mutation_threshold.py` in WARN
+      (DEC-0005 candidate recommends adopt-as-proposed with
+      SCN-9.5-EQ-001 equivalent-mutant bundle acceptance)
+- [x] `validate_governance.sh` runs `mutation_threshold.py` in WARN
       mode (advisory per Q3); no fail-close until SCN-9.7.
+      (`governance.yaml` now declares `analyzers.mutation`; validator
+      remains structurally validating/WARN-mode per §17 until SCN-9.7)
 
 ## SCN-9.6 — Runbooks + templates + consumer migration note
 

@@ -77,6 +77,14 @@ boardReview:
     approvalRecordPath: docs/planning/board/board-composition-approval-2026-04-19.md
     minimumAlternatesPerSeat: 1
 analyzers:
+  mutation:
+    tool: cosmic-ray
+    commandTemplate: "cd astaire && uv run --with cosmic-ray cosmic-ray exec cosmic-ray.toml ../artifacts/cosmic-ray/astaire-claims-projection.sqlite"
+    reportPath: docs/evidence/mutation/
+    threshold:
+      medium: 0.70
+      high: 0.85
+      critical: 0.90
   domainGlossary:
     path: docs/glossary/
     coverageRule:

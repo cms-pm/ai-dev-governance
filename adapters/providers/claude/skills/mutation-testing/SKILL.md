@@ -23,7 +23,7 @@ contract all live there. This skill contains tool ergonomics only.
 | Loop | Tool | Config | Output |
 |---|---|---|---|
 | Gate (CI / release evidence) | Cosmic Ray | `astaire/cosmic-ray.toml` | `docs/evidence/mutation/<target>-<DATE>.md` |
-| Inner loop (developer) | mutmut | `astaire/mutmut.ini` (or equivalent) | terminal report; promotes to Cosmic Ray on commit |
+| Inner loop (developer) | mutmut | `astaire/pyproject.toml` `[tool.mutmut]` (`astaire/mutmut.ini` kept as a mirror for older mutmut) | terminal report; promotes to Cosmic Ray on commit |
 
 Cosmic Ray is the evidence tool. mutmut is for tight RED-GREEN-MUTATE
 loops where Cosmic Ray's full pass is too slow.
@@ -31,23 +31,27 @@ loops where Cosmic Ray's full pass is too slow.
 ## Cosmic Ray run
 
 ```bash
-./.astaire/uv run cosmic-ray init astaire/cosmic-ray.toml session.sqlite
-./.astaire/uv run cosmic-ray exec astaire/cosmic-ray.toml session.sqlite
-./.astaire/uv run cosmic-ray report session.sqlite > \
-    docs/evidence/mutation/astaire-claims-projection-$(date -u +%Y-%m-%d).md
+cd astaire
+uv run --with cosmic-ray cosmic-ray init cosmic-ray.toml ../artifacts/cosmic-ray/astaire-claims-projection.sqlite
+uv run --with cosmic-ray cosmic-ray exec cosmic-ray.toml ../artifacts/cosmic-ray/astaire-claims-projection.sqlite
+uv run --with cosmic-ray cosmic-ray dump ../artifacts/cosmic-ray/astaire-claims-projection.sqlite > \
+    ../artifacts/cosmic-ray/astaire-claims-projection.json
 ```
 
 The report header carries: target package, total mutants, killed,
 survived, equivalent-claimed, mutation score (killed / (total -
-equivalent)). The survivor table includes one column per `core/MUTATION_EVIDENCE.md`
-§Survivor Triage requirement (id, operator, location, disposition).
+equivalent)). Convert the JSON dump into the Markdown evidence file
+under `docs/evidence/mutation/`. The survivor table includes one column
+per `core/MUTATION_EVIDENCE.md` §Survivor Triage requirement (id,
+operator, location, disposition).
 
 ## mutmut inner loop
 
 ```bash
-./.astaire/uv run mutmut run --paths-to-mutate astaire/src/domain/claims/
-./.astaire/uv run mutmut results
-./.astaire/uv run mutmut show <id>
+cd astaire
+uv run --with mutmut mutmut run
+uv run --with mutmut mutmut results
+uv run --with mutmut mutmut show <id>
 ```
 
 Disposition options are quoted from
