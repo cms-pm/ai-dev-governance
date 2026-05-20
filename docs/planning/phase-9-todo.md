@@ -189,16 +189,25 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-9.6 — Runbooks + templates + consumer migration note
 
-- [ ] `runbooks/MUTATION_TESTING.md` on disk and registered.
-- [ ] `runbooks/GLOSSARY_AUTHORING.md` on disk and registered.
-- [ ] `runbooks/TEST_DESIGN_REVIEW.md` on disk and registered.
-- [ ] `templates/MIGRATION_PHASE_9.md` on disk and registered.
-- [ ] `templates/` stub blocks for the three new `analyzers` entries
+- [x] `runbooks/MUTATION_TESTING.md` on disk and registered.
+      (operational guide; cites `core/MUTATION_EVIDENCE.md`)
+- [x] `runbooks/GLOSSARY_AUTHORING.md` on disk and registered.
+      (operational guide; cites `core/DOMAIN_LANGUAGE_GOVERNANCE.md`)
+- [x] `runbooks/TEST_DESIGN_REVIEW.md` on disk and registered.
+      (operational guide; cites
+      `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`)
+- [x] `templates/MIGRATION_PHASE_9.md` on disk and registered.
+- [x] `templates/` stub blocks for the three new `analyzers` entries
       and a stub `docs/glossary/<context>.md` on disk.
-- [ ] `README.md` §Governance Principles updated with cross-references
+      (`templates/ANALYZERS_PHASE_9_TEMPLATE.yaml`;
+      `templates/DOMAIN_GLOSSARY_CONTEXT_TEMPLATE.md`)
+- [x] `README.md` §Governance Principles updated with cross-references
       to the new runbooks.
-- [ ] Migration note dry-run against this repo's `governance.yaml`
+      (cross-links the three SCN-9.6 runbooks)
+- [x] Migration note dry-run against this repo's `governance.yaml`
       passes `validate_governance.sh` exit 0.
+      (`bash scripts/validate_governance.sh` exits 0; expected Phase 9
+      WARN-mode analyzer messages remain non-failing)
 
 ## SCN-9.7 — Phase 9 board review + sign-off (ratifies thresholds)
 

@@ -21,6 +21,11 @@ See `runbooks/ASTAIRE_ACCESS.md` for the canonical surface and read-discipline
 rule, and `templates/ASTAIRE_CLI_SNIPPET.md` for the consumer-facing variant to
 paste into `AGENTS.md` / `CLAUDE.md`.
 
+Phase 9 operational runbooks extend this principle into empirical test
+design and domain-language work: `runbooks/MUTATION_TESTING.md`,
+`runbooks/GLOSSARY_AUTHORING.md`, and `runbooks/TEST_DESIGN_REVIEW.md`.
+They execute the policy in `core/` without replacing it.
+
 ## Why Use It
 
 `ai-dev-governance` gives a consuming project a working operating system for
