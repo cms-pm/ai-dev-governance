@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v0.7.4
+governanceVersion: v1.0.0
 profile: strict-baseline+embedded
 adapters:
   - providers/codex
@@ -91,7 +91,7 @@ boardReview:
     minimumAlternatesPerSeat: 1
 updateCadence: monthly
 compatibility: strict
-# Analyzers block (v0.7.5+, Phase 9 SCN-9.2). All three sub-blocks are
+# Analyzers block (v1.0.0+, Phase 9 SCN-9.2). All three sub-blocks are
 # OPTIONAL at the schema level (Q5 resolution). Tier-gated required-
 # presence is enforced at validation/CONSISTENCY_RULES.md §17–§19.
 # Thresholds under analyzers.mutation were ratified by DEC-0005.

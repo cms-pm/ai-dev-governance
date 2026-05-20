@@ -2,6 +2,27 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [1.0.0] - 2026-05-20
+
+### Added
+- Phase 9 empirical governance release baseline covering mutation testing,
+  glossary/domain-language authoring, test design review, architecture fitness
+  declarations, and implementation handoff evidence.
+- Release evidence requirements for Astaire v0.5.0 and downstream consumer
+  bootstrap validation.
+
+### Changed
+- Bumped the bundled Astaire submodule to `v0.5.0` with expanded Phase 9
+  collection coverage, governance-authoring indexing, claims/projection
+  hexagonal pilot docs, and mutation baseline harness documentation.
+- Promoted the public consumer baseline to `v1.0.0` with
+  `consumer/bootstrap-v1.0.0`.
+- Refreshed manifest examples and validation fixtures to `v1.0.0`.
+
+### Fixed
+- Bootstrap pin verification now recognizes compatibility matrix rows that
+  publish a human-readable Astaire tag plus the locked SHA in parentheses.
+
 ## [0.7.4] - 2026-05-08
 
 ### Added

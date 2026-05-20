@@ -12,10 +12,10 @@ git submodule update --init --recursive
 ```bash
 cd .governance/ai-dev-governance
 git fetch --tags
-git checkout v0.6.1
+git checkout v1.0.0
 cd -
 git add .governance/ai-dev-governance
-git commit -m "Pin governance submodule to v0.6.1"
+git commit -m "Pin governance submodule to v1.0.0"
 ```
 
 ## Scheduled Bump

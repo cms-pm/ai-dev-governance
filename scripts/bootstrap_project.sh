@@ -95,7 +95,7 @@ read_pins() {
   local matrix="${CONSUMER_ROOT}/${GOVERNANCE_MOUNT}/runbooks/COMPATIBILITY_MATRIX.md"
   EXPECTED_ASTAIRE_SHA=""
   if [[ -f "$matrix" ]]; then
-    EXPECTED_ASTAIRE_SHA="$(sed -n 's/.*astaire` @ `\([a-f0-9]*\).*/\1/p' "$matrix" | head -1 || true)"
+    EXPECTED_ASTAIRE_SHA="$(sed -nE 's/.*`astaire` @ `[^`]+` \(`?([a-f0-9]{7,40})`?\).*/\1/p; s/.*`astaire` @ `([a-f0-9]{7,40})`.*/\1/p' "$matrix" | head -1 || true)"
   fi
 }
 
@@ -196,7 +196,7 @@ write_governance_yaml() {
   if [[ -f "${CONSUMER_ROOT}/${GOVERNANCE_MOUNT}/VERSION" ]]; then
     gov_version="v$(cat "${CONSUMER_ROOT}/${GOVERNANCE_MOUNT}/VERSION" | tr -d '[:space:]')"
   else
-    gov_version="v0.6.0"
+    gov_version="v1.0.0"
   fi
   if [[ "$MODE" == "new" ]] || [[ "$FORCE" == true ]]; then
     cat > "$path" << YAML
@@ -465,15 +465,16 @@ if [[ "$MODE" == "retrofit" ]]; then
     info "governance.yaml already exists — not overwritten"
   fi
 
-  # AGENTS.md / CLAUDE.md: update or create bootstrap block
-  AGENT_FILE=""
-  for f in AGENTS.md CLAUDE.md; do
-    [[ -f "$f" ]] && { AGENT_FILE="$f"; break; }
-  done
-  if [[ -z "$AGENT_FILE" ]]; then
-    AGENT_FILE="AGENTS.md"
+  # AGENTS.md / CLAUDE.md: update or create provider-appropriate bootstrap blocks.
+  if [[ -f "governance.yaml" ]] && grep -q "providers/claude" governance.yaml; then
+    update_bootstrap_block "CLAUDE.md"
   fi
-  update_bootstrap_block "$AGENT_FILE"
+  if [[ -f "governance.yaml" ]] && grep -q "providers/codex" governance.yaml; then
+    update_bootstrap_block "AGENTS.md"
+  fi
+  if [[ ! -f "CLAUDE.md" && ! -f "AGENTS.md" ]]; then
+    update_bootstrap_block "AGENTS.md"
+  fi
 
   echo ""
   if [[ "$DRIFT_FOUND" == true ]] && [[ "$FORCE" == false ]]; then

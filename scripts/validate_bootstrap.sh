@@ -82,9 +82,10 @@ fi
 # ── 8. Tentacle pin verification ─────────────────────────────────────────────
 MATRIX="$GOVERNANCE_MOUNT/runbooks/COMPATIBILITY_MATRIX.md"
 if [[ -f "$MATRIX" ]]; then
-  # Extract expected astaire SHA from matrix (looks for pattern: astaire @ <sha>)
-  EXPECTED_ASTAIRE_SHA="$(sed -n 's/.*astaire` @ `\([a-f0-9]*\).*/\1/p' "$MATRIX" | head -1 || true)"
-  if [[ -n "$EXPECTED_ASTAIRE_SHA" && -d "$GOVERNANCE_MOUNT/astaire/.git" ]]; then
+  # Extract expected astaire SHA from matrix (tag + parenthesized SHA, or bare SHA).
+  EXPECTED_ASTAIRE_SHA="$(sed -nE 's/.*`astaire` @ `[^`]+` \(`?([a-f0-9]{7,40})`?\).*/\1/p; s/.*`astaire` @ `([a-f0-9]{7,40})`.*/\1/p' "$MATRIX" | head -1 || true)"
+  if [[ -n "$EXPECTED_ASTAIRE_SHA" ]] && \
+     git -C "$GOVERNANCE_MOUNT/astaire" rev-parse --git-dir >/dev/null 2>&1; then
     ACTUAL_SHA="$(git -C "$GOVERNANCE_MOUNT/astaire" rev-parse --short HEAD 2>/dev/null || true)"
     if [[ "${ACTUAL_SHA}" == "${EXPECTED_ASTAIRE_SHA}"* ]] || \
        [[ "${EXPECTED_ASTAIRE_SHA}" == "${ACTUAL_SHA}"* ]]; then
