@@ -43,6 +43,15 @@ tier where the corresponding analyzer block becomes required (see
   report defined in `core/DOMAIN_LANGUAGE_GOVERNANCE.md`. REQUIRED at
   risk-tier ≥ medium when the chunk introduces new domain vocabulary;
   REQUIRED unconditionally at risk-tier critical.
+- `codegraphIndexFreshnessURI` — pointer to the CodeGraph (CG) index
+  freshness evidence defined in
+  `core/CODE_INTELLIGENCE_GOVERNANCE.md` §Freshness Rule. REQUIRED when
+  an acceptance item cites CG output as validation or release evidence;
+  OPTIONAL when CG is used only as exploratory context.
+- `codegraphImageDigestURI` — pointer to the immutable CG runtime image
+  digest used by the MCP service or validator. REQUIRED when a consumer
+  declares CG as an enabled Tier-2 capability for the acceptance item;
+  OPTIONAL when the consumer does not declare CG.
 
 ## Board Review Evidence
 
@@ -117,6 +126,10 @@ Each release MUST include:
   - L0 snapshot captured at release tag cut: `docs/releases/<version>/l0-snapshot.md`
   - Health report with zero blocking findings: `docs/releases/<version>/health-report.md`
   - Both artifacts emitted by `scripts/emit_release_evidence.sh <version>`
+- CodeGraph Tier-2 evidence (when the release manifest declares CG):
+  - `codegraphIndexFreshnessURI`
+  - `codegraphImageDigestURI`
+  - declared CG path scope and checker identifier
 
 ## Scenario Status Vocabulary
 

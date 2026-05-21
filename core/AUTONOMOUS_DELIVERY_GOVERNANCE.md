@@ -69,6 +69,13 @@ Implementation complexity evidence MUST follow
 naming/placement, line-count, state/task, and complexity-rubric findings when
 production code changes.
 
+Optional Tier-2 code-intelligence capabilities MAY be declared as structured
+artifacts. CodeGraph (CG) is optional at v1: a consumer that declares CG MUST
+emit the evidence fields registered in `core/EVIDENCE_CONTRACT.md`
+(`codegraphIndexFreshnessURI` and `codegraphImageDigestURI`) when CG output is
+used for validation or release evidence; a consumer that does not declare CG
+MUST NOT fail required-presence checks solely because CG is absent.
+
 ## Release Gating
 
 Release MUST be blocked when:

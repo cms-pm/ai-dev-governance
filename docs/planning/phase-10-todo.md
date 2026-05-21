@@ -32,14 +32,14 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.1 — Core policy authoring
 
-- [ ] `core/CODE_INTELLIGENCE_GOVERNANCE.md` on disk (three-tier
+- [x] `core/CODE_INTELLIGENCE_GOVERNANCE.md` on disk (three-tier
       doctrine, bounded-context glossary entries, path-scope contract,
       freshness rule, evidence URIs).
-- [ ] `core/EVIDENCE_CONTRACT.md` amended with
+- [x] `core/EVIDENCE_CONTRACT.md` amended with
       `codegraphIndexFreshnessURI` + `codegraphImageDigestURI`.
-- [ ] `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §evidence amended with
+- [x] `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §evidence amended with
       Tier-2 optional-capability note (no required-presence at v1).
-- [ ] Astaire scan + lint 0/0; cross-references resolve.
+- [x] Astaire scan + lint 0/0; cross-references resolve.
 
 ## SCN-10.2 — Dockerfile + image build
 

@@ -87,10 +87,10 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.0-04 | SCN-10.0 | `docs/planning/phase-10-todo.md` | — | pending |
 | SCN-10.0-05 | SCN-10.0 | `.astaire/memory_palace.db` (Phase 10 ingest) | Astaire context/query/lint logs | pending |
 | SCN-10.0-06 | SCN-10.0 | `docs/planning/signoffs.md`; `docs/planning/traceability.md` | Phase 10 row appended (status `pending`); SCN-10.0..SCN-10.10 traceability rows appended. | pending |
-| SCN-10.1-01 | SCN-10.1 | `core/CODE_INTELLIGENCE_GOVERNANCE.md` | — | pending |
-| SCN-10.1-02 | SCN-10.1 | `core/EVIDENCE_CONTRACT.md` (`codegraphIndexFreshnessURI`, `codegraphImageDigestURI`) | — | pending |
-| SCN-10.1-03 | SCN-10.1 | `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` (§evidence Tier-2 optional-capability note) | — | pending |
-| SCN-10.1-04 | SCN-10.1 | `.astaire/memory_palace.db` (SCN-10.1 ingest); cross-reference resolution via `astaire query` | — | pending |
+| SCN-10.1-01 | SCN-10.1 | `core/CODE_INTELLIGENCE_GOVERNANCE.md` | New core policy on disk with three-tier doctrine, code-intelligence bounded-context glossary entries, path-scope contract, freshness rule, and evidence URI definitions. | done |
+| SCN-10.1-02 | SCN-10.1 | `core/EVIDENCE_CONTRACT.md` (`codegraphIndexFreshnessURI`, `codegraphImageDigestURI`) | Evidence URI fields registered under validation evidence; release evidence includes CG fields when the release manifest declares CG. | done |
+| SCN-10.1-03 | SCN-10.1 | `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` (§evidence Tier-2 optional-capability note) | Artifact-first execution now declares CG as optional at v1 and forbids required-presence failures when CG is absent. | done |
+| SCN-10.1-04 | SCN-10.1 | `.astaire/memory_palace.db` (SCN-10.1 ingest); cross-reference resolution via `astaire query` | `.astaire/astaire scan --root .` registered `CODE Intelligence Governance`; `.astaire/astaire query --fts "CODE Intelligence Governance"`, `--fts "Evidence Contract"`, and `--fts "Autonomous Delivery Governance"` each resolve; `.astaire/astaire lint` reports 0 warnings, 0 errors. | done |
 | SCN-10.2-01 | SCN-10.2 | `templates/codegraph/Dockerfile` | — | pending |
 | SCN-10.2-02 | SCN-10.2 | `templates/codegraph/Makefile.snippet` | — | pending |
 | SCN-10.2-03 | SCN-10.2 | reproducible-digest evidence under `docs/validation/scn-10.2/` | — | pending |
