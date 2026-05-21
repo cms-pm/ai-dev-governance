@@ -81,3 +81,49 @@ per `governance.yaml` (SCN-1.1).
 | SCN-9.6-02 | SCN-9.6 | `templates/MIGRATION_PHASE_9.md`; `templates/ANALYZERS_PHASE_9_TEMPLATE.yaml`; `templates/DOMAIN_GLOSSARY_CONTEXT_TEMPLATE.md` | Migration note + analyzer block stub + glossary stub on disk; migration dry-run passes `validate_governance.sh`. | closed |
 | SCN-9.6-03 | SCN-9.6 | `README.md` (§Governance Principles cross-references) | README updated with cross-references to the three new runbooks. | closed |
 | SCN-9.7-01 | SCN-9.7 | `docs/planning/board/committee-review-packet-2026-05-20-scn-9-7.md`; `docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-2026-05-20.md`; `docs/planning/signoffs.md`; `core/MUTATION_EVIDENCE.md`; `validation/CONSISTENCY_RULES.md` §17 | Board adopted Phase 9; DEC-0005 ratified thresholds and accepted SCN-9.5-EQ-001; advisory marker removed; §17 and `mutation_threshold.py` flipped fail-closed; validation exits 0 with strict manifests declaring `analyzers.mutation`. | closed |
+| SCN-10.0-01 | SCN-10.0 | `docs/planning/chunks/phase-10-chunks.md` | — | pending |
+| SCN-10.0-02 | SCN-10.0 | `docs/planning/pool_questions/phase-10-codegraph.md` | — | pending |
+| SCN-10.0-03 | SCN-10.0 | `docs/planning/phase-10-risks.md` | — | pending |
+| SCN-10.0-04 | SCN-10.0 | `docs/planning/phase-10-todo.md` | — | pending |
+| SCN-10.0-05 | SCN-10.0 | `.astaire/memory_palace.db` (Phase 10 ingest) | Astaire context/query/lint logs | pending |
+| SCN-10.0-06 | SCN-10.0 | `docs/planning/signoffs.md`; `docs/planning/traceability.md` | Phase 10 row appended (status `pending`); SCN-10.0..SCN-10.10 traceability rows appended. | pending |
+| SCN-10.1-01 | SCN-10.1 | `core/CODE_INTELLIGENCE_GOVERNANCE.md` | — | pending |
+| SCN-10.1-02 | SCN-10.1 | `core/EVIDENCE_CONTRACT.md` (`codegraphIndexFreshnessURI`, `codegraphImageDigestURI`) | — | pending |
+| SCN-10.1-03 | SCN-10.1 | `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` (§evidence Tier-2 optional-capability note) | — | pending |
+| SCN-10.1-04 | SCN-10.1 | `.astaire/memory_palace.db` (SCN-10.1 ingest); cross-reference resolution via `astaire query` | — | pending |
+| SCN-10.2-01 | SCN-10.2 | `templates/codegraph/Dockerfile` | — | pending |
+| SCN-10.2-02 | SCN-10.2 | `templates/codegraph/Makefile.snippet` | — | pending |
+| SCN-10.2-03 | SCN-10.2 | reproducible-digest evidence under `docs/validation/scn-10.2/` | — | pending |
+| SCN-10.2-04 | SCN-10.2 | `.codegraph/evidence/sbom.spdx.json` (fixture) | — | pending |
+| SCN-10.2-05 | SCN-10.2 | `docker inspect` log under `docs/validation/scn-10.2/` | — | pending |
+| SCN-10.3-01 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp` | — | pending |
+| SCN-10.3-02 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp.cmd` | — | pending |
+| SCN-10.3-03 | SCN-10.3 | wrapper runtime auto-detection + `ADG_CONTAINER_RUNTIME` override (in-script) | — | pending |
+| SCN-10.3-04 | SCN-10.3 | hardening-matrix flags applied (verified by `docker inspect`) | — | pending |
+| SCN-10.3-05 | SCN-10.3 | network-isolation evidence under `docs/validation/scn-10.3/` (outbound-fetch failure) | — | pending |
+| SCN-10.4-01 | SCN-10.4 | `templates/codegraph/.mcp.json.fragment` | — | pending |
+| SCN-10.4-02 | SCN-10.4 | `templates/codegraph/.codegraphignore` | — | pending |
+| SCN-10.4-03 | SCN-10.4 | `templates/codegraph/CLAUDE.md.fragment` | — | pending |
+| SCN-10.4-04 | SCN-10.4 | `templates/codegraph/settings.json.fragment` | — | pending |
+| SCN-10.4-05 | SCN-10.4 | `templates/codegraph/PLAN_B_LSDF.md` | — | pending |
+| SCN-10.5-01 | SCN-10.5 | `adapters/providers/claude/CODEGRAPH.md` | — | pending |
+| SCN-10.5-02 | SCN-10.5 | `adapters/providers/codex/CODEGRAPH.md` | — | pending |
+| SCN-10.5-03 | SCN-10.5 | Explore-agent prompt addendum byte-identical (verified by `diff`) | — | pending |
+| SCN-10.6-01 | SCN-10.6 | `graphify/skills/*` (scope-narrowing to research-corpus) | — | pending |
+| SCN-10.6-02 | SCN-10.6 | `.graphifyignore` (denies `scripts/`, `validation/`, `astaire/src/`, `adapters/`) | — | pending |
+| SCN-10.6-03 | SCN-10.6 | `graphify/README.md` (ADG-context note) | — | pending |
+| SCN-10.6-04 | SCN-10.6 | smoke-test evidence under `docs/validation/scn-10.6/` (`/graphify` over `raw/`) | — | pending |
+| SCN-10.7-01 | SCN-10.7 | `scripts/validate_codegraph_wiring.sh` | — | pending |
+| SCN-10.7-02 | SCN-10.7 | `validation/fixtures/codegraph/positive/` | — | pending |
+| SCN-10.7-03 | SCN-10.7 | `validation/fixtures/codegraph/negative-*/` | — | pending |
+| SCN-10.8-01 | SCN-10.8 | `scripts/validate_codegraph_wiring.sh` (denylist block) | — | pending |
+| SCN-10.8-02 | SCN-10.8 | `validation/fixtures/codegraph/negative-*/` (per denylist entry) | — | pending |
+| SCN-10.8-03 | SCN-10.8 | validator exit-code matrix evidence under `docs/validation/scn-10.8/` | — | pending |
+| SCN-10.9-01 | SCN-10.9 | `runbooks/RELEASE_PROCESS.md` (CG freshness gate referencing SCN-10.1 URIs) | — | pending |
+| SCN-10.9-02 | SCN-10.9 | `runbooks/RELEASE_PROCESS.md` (pilot evidence-contract section for R-10-04) | — | pending |
+| SCN-10.9-03 | SCN-10.9 | `.astaire/memory_palace.db` (SCN-10.9 ingest); `astaire lint` 0/0 | — | pending |
+| SCN-10.10-01 | SCN-10.10 | `docs/planning/board/committee-review-packet-<date>-scn-10-10.md` | — | pending |
+| SCN-10.10-02 | SCN-10.10 | `docs/planning/board/committee-virtual-meeting-scn-10-10-phase-signoff-<date>.md` | — | pending |
+| SCN-10.10-03 | SCN-10.10 | `docs/planning/signoffs.md` (Phase 10 row flipped to `ratified`) | — | pending |
+| SCN-10.10-04 | SCN-10.10 | `docs/planning/traceability.md` (SCN-10.0..SCN-10.10 all `done`) | — | pending |
+| SCN-10.10-05 | SCN-10.10 | `docs/planning/phase-10-risks.md` (R-10-01 closed; R-10-02/03/04 monitor lane) | — | pending |
