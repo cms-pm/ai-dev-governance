@@ -57,18 +57,22 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.3 — Wrapper script (runtime-agnostic, rootless)
 
-- [ ] `templates/codegraph/scripts/codegraph-mcp` (POSIX) on disk.
-- [ ] `templates/codegraph/scripts/codegraph-mcp.cmd` (Windows) on disk.
-- [ ] Runtime auto-detection (podman → docker → nerdctl) + override via
-      `ADG_CONTAINER_RUNTIME`.
-- [ ] Hardening matrix applied verbatim: `--read-only`,
+- [x] `templates/codegraph/scripts/codegraph-mcp` (POSIX) on disk.
+- [x] `templates/codegraph/scripts/codegraph-mcp.cmd` (Windows) on disk.
+- [x] Runtime auto-detection (podman → docker → nerdctl) + override via
+      `ADG_CONTAINER_RUNTIME` (static dry-run evidence:
+      `docs/validation/scn-10.3/wrapper-static-check.md`).
+- [x] Hardening matrix applied verbatim: `--read-only`,
       `--tmpfs /tmp:size=64m,mode=1777`, `--network=none`,
       `--cap-drop=ALL`, `--security-opt=no-new-privileges:true`,
       `--pids-limit=512`, `--memory=2g`, `--cpus=2`,
       `--ulimit nofile=4096:4096`, `--ipc=none`, `--user $(id -u):$(id -g)`,
-      source bind-mounted `:ro`, named volume for `.codegraph/`.
-- [ ] Network isolation proven by deliberate outbound-fetch failing
-      fast inside the container.
+      source bind-mounted `:ro`, named volume for `.codegraph/`
+      (static dry-run + live Docker inspect evidence:
+      `docs/validation/scn-10.3/wrapper-static-check.md`).
+- [x] Network isolation proven by deliberate outbound-fetch failing
+      fast inside the container (live Docker evidence:
+      `docs/validation/scn-10.3/network-isolation.md`).
 - [ ] Wrapper executes on macOS, Linux (rootless podman + rootless
       docker), Windows (Docker Desktop / WSL2).
 

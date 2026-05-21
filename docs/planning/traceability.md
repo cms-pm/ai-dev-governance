@@ -96,11 +96,11 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.2-03 | SCN-10.2 | reproducible-digest evidence under `docs/validation/scn-10.2/` | — | pending |
 | SCN-10.2-04 | SCN-10.2 | `.codegraph/evidence/sbom.spdx.json` (fixture) | — | pending |
 | SCN-10.2-05 | SCN-10.2 | `docker inspect` log under `docs/validation/scn-10.2/` | — | pending |
-| SCN-10.3-01 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp` | — | pending |
-| SCN-10.3-02 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp.cmd` | — | pending |
-| SCN-10.3-03 | SCN-10.3 | wrapper runtime auto-detection + `ADG_CONTAINER_RUNTIME` override (in-script) | — | pending |
-| SCN-10.3-04 | SCN-10.3 | hardening-matrix flags applied (verified by `docker inspect`) | — | pending |
-| SCN-10.3-05 | SCN-10.3 | network-isolation evidence under `docs/validation/scn-10.3/` (outbound-fetch failure) | — | pending |
+| SCN-10.3-01 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp` | POSIX wrapper on disk; `sh -n` exits 0; `--help` documents runtime/source/digest/platform/volume overrides. | done |
+| SCN-10.3-02 | SCN-10.3 | `templates/codegraph/scripts/codegraph-mcp.cmd` | Windows wrapper on disk with matching runtime detection, digest resolution, hardening flags, read-only source mount, and named `.codegraph/` volume. | done |
+| SCN-10.3-03 | SCN-10.3 | wrapper runtime auto-detection + `ADG_CONTAINER_RUNTIME` override (in-script) | `codegraph-mcp` detects `podman` → `docker` → `nerdctl`; `/bin/echo` override dry-run recorded in `docs/validation/scn-10.3/wrapper-static-check.md`. | done |
+| SCN-10.3-04 | SCN-10.3 | hardening-matrix flags applied (verified by `docker inspect`) | Static dry-run emits every required runtime flag and mount; live Docker inspect confirms read-only rootfs, `NetworkMode=none`, `CapDrop=["ALL"]`, no-new-privileges, pids/memory/cpu/nofile limits, `IpcMode=none`, host UID/GID user, read-only source bind, and named `.codegraph/` volume. Evidence: `docs/validation/scn-10.3/wrapper-static-check.md`. | done |
+| SCN-10.3-05 | SCN-10.3 | network-isolation evidence under `docs/validation/scn-10.3/` (outbound-fetch failure) | Live wrapper run exits 0 for a deliberate outbound `fetch('https://example.com')` failure under `--network=none`. Evidence: `docs/validation/scn-10.3/network-isolation.md`. | done |
 | SCN-10.4-01 | SCN-10.4 | `templates/codegraph/.mcp.json.fragment` | — | pending |
 | SCN-10.4-02 | SCN-10.4 | `templates/codegraph/.codegraphignore` | — | pending |
 | SCN-10.4-03 | SCN-10.4 | `templates/codegraph/CLAUDE.md.fragment` | — | pending |

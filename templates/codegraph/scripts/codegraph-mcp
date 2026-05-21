@@ -1,0 +1,103 @@
+#!/bin/sh
+set -eu
+
+usage() {
+  cat >&2 <<'USAGE'
+Usage: codegraph-mcp [codegraph args...]
+
+Environment:
+  ADG_CONTAINER_RUNTIME   Override runtime (podman, docker, nerdctl, or path).
+  ADG_CODEGRAPH_IMAGE     Image repository/name. Default: localhost/codegraph-mcp.
+  ADG_CODEGRAPH_DIGEST    Digest file. Default: .codegraph/image.digest.
+  ADG_CODEGRAPH_SOURCE    Source tree to mount read-only. Default: current dir.
+  ADG_CODEGRAPH_VOLUME    Named volume for /workspace/.codegraph.
+  ADG_CODEGRAPH_PLATFORM  Platform override. Default: host-derived linux/amd64 or linux/arm64.
+USAGE
+}
+
+die() {
+  printf 'codegraph-mcp: %s\n' "$*" >&2
+  exit 1
+}
+
+find_runtime() {
+  if [ "${ADG_CONTAINER_RUNTIME:-}" ]; then
+    command -v "$ADG_CONTAINER_RUNTIME" >/dev/null 2>&1 || die "ADG_CONTAINER_RUNTIME not found: $ADG_CONTAINER_RUNTIME"
+    printf '%s\n' "$ADG_CONTAINER_RUNTIME"
+    return 0
+  fi
+
+  for runtime in podman docker nerdctl; do
+    if command -v "$runtime" >/dev/null 2>&1; then
+      printf '%s\n' "$runtime"
+      return 0
+    fi
+  done
+
+  die 'no supported container runtime found (searched: podman, docker, nerdctl)'
+}
+
+host_platform() {
+  case "$(uname -m)" in
+    x86_64|amd64) printf 'linux/amd64\n' ;;
+    arm64|aarch64) printf 'linux/arm64\n' ;;
+    *) die "unsupported host architecture: $(uname -m)" ;;
+  esac
+}
+
+absolute_path() {
+  path=$1
+  if [ -d "$path" ]; then
+    (cd "$path" && pwd -P)
+    return 0
+  fi
+  die "source directory does not exist: $path"
+}
+
+volume_name() {
+  source_path=$1
+  base=$(basename "$source_path" | tr -c 'A-Za-z0-9_.-' '_')
+  stamp=$(printf '%s' "$source_path" | cksum | awk '{print $1}')
+  printf 'adg_codegraph_%s_%s\n' "$base" "$stamp"
+}
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  usage
+  exit 0
+fi
+
+runtime=$(find_runtime)
+source_dir=$(absolute_path "${ADG_CODEGRAPH_SOURCE:-.}")
+digest_file=${ADG_CODEGRAPH_DIGEST:-"$source_dir/.codegraph/image.digest"}
+[ -f "$digest_file" ] || die "image digest file not found: $digest_file"
+
+digest=$(tr -d '[:space:]' < "$digest_file")
+[ "$digest" ] || die "image digest file is empty: $digest_file"
+
+case "$digest" in
+  *@sha256:*) image_ref=$digest ;;
+  sha256:*) image_ref="${ADG_CODEGRAPH_IMAGE:-localhost/codegraph-mcp}@$digest" ;;
+  *) die "image digest must be sha256:<hex> or image@sha256:<hex>: $digest" ;;
+esac
+
+platform=${ADG_CODEGRAPH_PLATFORM:-$(host_platform)}
+cache_volume=${ADG_CODEGRAPH_VOLUME:-$(volume_name "$source_dir")}
+uid_gid="$(id -u):$(id -g)"
+
+exec "$runtime" run --rm -i \
+  --platform "$platform" \
+  --read-only \
+  --tmpfs /tmp:size=64m,mode=1777 \
+  --network=none \
+  --cap-drop=ALL \
+  --security-opt=no-new-privileges:true \
+  --pids-limit=512 \
+  --memory=2g \
+  --cpus=2 \
+  --ulimit nofile=4096:4096 \
+  --ipc=none \
+  --user "$uid_gid" \
+  --mount "type=bind,src=$source_dir,dst=/workspace,readonly" \
+  --mount "type=volume,src=$cache_volume,dst=/workspace/.codegraph" \
+  --workdir /workspace \
+  "$image_ref" "$@"
