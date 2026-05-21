@@ -61,6 +61,13 @@ Flags shared across subcommands: `--db <path>` (the wrapper sets this),
   (note: hyphens inside FTS terms are fragile — prefer phrases or
   unhyphenated forms).
 - **"Assemble context for work in phase N."** → `context --tag phase=<n> --budget <n>`.
+- **"How do I run a governed test?"** → query the `test-card` first,
+  then use its `agent_invocation` signpost when present:
+  `.astaire/astaire query -t test-card --tag id=<card-id>`.
+  Consumer repos SHOULD keep project-specific commands in the card, not
+  in this shared governance submodule. The preferred project command
+  shape is usually the repo-local executor, for example
+  `.venv/bin/python scripts/cockpit-cli --json test run <card-id> ...`.
 
 ## FTS Caveat
 

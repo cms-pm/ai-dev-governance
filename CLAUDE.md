@@ -52,6 +52,24 @@ Full surface: `runbooks/ASTAIRE_ACCESS.md`.
 
 ---
 
+## Test-card signposts
+
+For governed tests, query the card before invoking any bench or SiL command:
+
+```bash
+.astaire/astaire query -t test-card --tag id=<card-id>
+```
+
+If the card has `agent_invocation` frontmatter, use that signpost. Keep
+project-specific command strings in the consumer repo's card, not in this
+shared governance submodule. The common shape is a repo-local executor such as:
+
+```bash
+.venv/bin/python scripts/cockpit-cli --json test run <card-id> ...
+```
+
+---
+
 ## RTK — token compression
 
 RTK rewrites high-volume shell commands transparently via the Claude Code hook.
