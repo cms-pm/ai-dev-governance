@@ -113,9 +113,9 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.6-02 | SCN-10.6 | `scripts/`; `validation/fixtures/` | Graphify wrapper, validator, fallback installer, and graphify-specific fixtures removed. | done |
 | SCN-10.6-03 | SCN-10.6 | `contracts/governance-manifest.schema.json`; `contracts/governance-manifest.example.yaml` | Governance manifest contract no longer declares or examples a `graphify` object; consistency rules forbid reintroduction. | done |
 | SCN-10.6-04 | SCN-10.6 | `README.md`; `runbooks/`; `core/` | Active ADG docs no longer instruct consumers to install or invoke Graphify; code intelligence routes through Astaire, optional CodeGraph, RTK, and native tools. | done |
-| SCN-10.7-01 | SCN-10.7 | `scripts/validate_codegraph_wiring.sh` | — | pending |
-| SCN-10.7-02 | SCN-10.7 | `validation/fixtures/codegraph/positive/` | — | pending |
-| SCN-10.7-03 | SCN-10.7 | `validation/fixtures/codegraph/negative-*/` | — | pending |
+| SCN-10.7-01 | SCN-10.7 | `scripts/validate_codegraph_wiring.sh` | Consumer-side Bash validator added with `[PASS]`/`[FAIL]` output; checks `.mcp.json` wrapper invocation, image digest presence/host inspect match, `.codegraphignore` ADG denial, `.codegraph/` freshness, and SBOM evidence. | done |
+| SCN-10.7-02 | SCN-10.7 | `validation/fixtures/codegraph/positive/` | Positive fixture passes through `validation/fixtures/codegraph/run.sh` using a fixture runtime for deterministic image-inspect output. | done |
+| SCN-10.7-03 | SCN-10.7 | `validation/fixtures/codegraph/negative-*/` | Negative fixtures cover missing MCP server, raw `npx`, missing digest, missing ignore file, stale index, and missing SBOM, each asserting the matching failure line. | done |
 | SCN-10.8-01 | SCN-10.8 | `scripts/validate_codegraph_wiring.sh` (denylist block) | — | pending |
 | SCN-10.8-02 | SCN-10.8 | `validation/fixtures/codegraph/negative-*/` (per denylist entry) | — | pending |
 | SCN-10.8-03 | SCN-10.8 | validator exit-code matrix evidence under `docs/validation/scn-10.8/` | — | pending |

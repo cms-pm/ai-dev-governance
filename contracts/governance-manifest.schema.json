@@ -101,7 +101,9 @@
       "properties": {
         "planningPath": {"type": "string", "minLength": 1},
         "validationPath": {"type": "string", "minLength": 1},
-        "releasePath": {"type": "string", "minLength": 1}
+        "releasePath": {"type": "string", "minLength": 1},
+        "codegraphIndexFreshnessURI": {"type": "string", "minLength": 1},
+        "codegraphImageDigestURI": {"type": "string", "minLength": 1}
       }
     },
     "exceptions": {

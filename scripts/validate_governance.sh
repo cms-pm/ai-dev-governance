@@ -54,6 +54,7 @@ required_files=(
   "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
   "scripts/validate_chunk_scope.sh"
   "scripts/validate_astaire_wiring.sh"
+  "scripts/validate_codegraph_wiring.sh"
   "templates/ASTAIRE_CLI_SNIPPET.md"
   "runbooks/ASTAIRE_ACCESS.md"
   "CLAUDE.md"
@@ -312,6 +313,10 @@ bash validation/fixtures/architecture/run.sh \
   || fail "Architecture-fitness fixtures failed"
 pass "Architecture-fitness fixtures"
 
+bash validation/fixtures/codegraph/run.sh \
+  || fail "CodeGraph wiring fixtures failed"
+pass "CodeGraph wiring fixtures"
+
 negative_fixture="validation/fixtures/embedded-missing-evidence/governance.yaml"
 [[ -f "$negative_fixture" ]] || fail "Negative fixture missing: $negative_fixture"
 if python3 - "$negative_fixture" <<'PY'
@@ -354,6 +359,17 @@ fi
 
 consumer_root="${GOVERNANCE_CONSUMER_ROOT:-$INVOCATION_DIR}"
 if [[ -n "$consumer_root" && "$consumer_root" != "$ROOT_DIR" && -d "$consumer_root" ]]; then
+  consumer_manifest="$consumer_root/governance.yaml"
+  if [[ -f "$consumer_manifest" ]] \
+    && rg -q "codegraphIndexFreshnessURI:" "$consumer_manifest" \
+    && rg -q "codegraphImageDigestURI:" "$consumer_manifest"; then
+    bash "$ROOT_DIR/scripts/validate_codegraph_wiring.sh" --root "$consumer_root" \
+      || fail "CodeGraph wiring check failed for consumer root $consumer_root"
+    pass "CodeGraph wiring (consumer manifest declares CG)"
+  else
+    pass "CodeGraph wiring consumer check skipped"
+  fi
+
   overlay_dir="$consumer_root/docs/governance/amendments"
   if [[ -d "$overlay_dir" ]]; then
     [[ -f "$overlay_dir/README.md" ]] || fail "Optional consumer overlay exists but is missing docs/governance/amendments/README.md"

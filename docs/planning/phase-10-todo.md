@@ -111,13 +111,13 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.7 — Consumer-side validator
 
-- [ ] `scripts/validate_codegraph_wiring.sh` on disk (mirrors
+- [x] `scripts/validate_codegraph_wiring.sh` on disk (mirrors
       `validate_astaire_wiring.sh` shape).
-- [ ] Positive fixture under `validation/fixtures/codegraph/positive/`
+- [x] Positive fixture under `validation/fixtures/codegraph/positive/`
       passes (exit 0).
-- [ ] Negative fixtures (one per required artifact missing) fail with
+- [x] Negative fixtures (one per required artifact missing) fail with
       the matching error line.
-- [ ] Validator invoked from `scripts/validate_governance.sh` only when
+- [x] Validator invoked from `scripts/validate_governance.sh` only when
       consumer governance.yaml declares CG (per SCN-10.1 evidence URIs).
 
 ## SCN-10.8 — Anti-pattern denylist

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [[ "${1:-}" = "image" && "${2:-}" = "inspect" ]]; then
+  image_ref="${3:-}"
+  digest="${image_ref##*@}"
+  printf '{"RepoDigests":["%s"],"Id":"%s"}\n' "$image_ref" "$digest"
+  exit 0
+fi
+
+echo "fake-runtime: unsupported command: $*" >&2
+exit 1

@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "./adg/templates/codegraph/scripts/codegraph-mcp",
+      "args": ["--transport", "stdio"]
+    }
+  }
+}
