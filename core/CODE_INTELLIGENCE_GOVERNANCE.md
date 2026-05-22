@@ -4,21 +4,19 @@
 
 Define the bounded context, tier model, evidence contract, and freshness
 rules for code-intelligence tooling used by ADG consumers. This policy
-keeps durable governance memory, local code navigation, and research-corpus
-graphing in separate roles so agents can choose the right surface without
-scope drift.
+keeps durable governance memory and local code navigation in separate roles
+so agents can choose the right surface without scope drift.
 
 Keywords `MUST`, `SHOULD`, and `MAY` are normative.
 
 ## Three-Tier Doctrine
 
-ADG recognizes three code-intelligence tiers:
+ADG recognizes two code-intelligence tiers:
 
 | Tier | Capability | Authority | Required Presence |
 |---|---|---|---|
 | Tier 1 | Astaire | Governance memory palace and port-of-first-resort for ADG artifacts | Required for strict ADG consumers |
 | Tier 2 | CodeGraph (CG) | Optional local code intelligence for source navigation and structural queries | Optional at v1 |
-| Tier 3 | Graphify | Research-corpus and document-graph exploration | Optional and not authoritative for source-code navigation |
 
 Tier 1 is the durable governance memory layer. Agents MUST query Astaire
 first for `core/**`, `docs/planning/**`, and other registered governance
@@ -30,11 +28,6 @@ declares CG support, agents MAY use it for symbol lookup, call/reference
 navigation, file-impact discovery, and source-structure exploration inside
 the declared path scope. CG results are advisory context; final changes and
 evidence MUST still bind to repository files and acceptance IDs.
-
-Tier 3 is a research-corpus graph layer. Graphify MUST NOT be treated as the
-authoritative source-code navigation surface for ADG code directories. Its
-ADG role is limited to document, raw-corpus, and research graph exploration
-unless an approved exception explicitly widens the scope.
 
 ## Bounded-Context Glossary
 
@@ -74,23 +67,9 @@ Lead. Term amendments follow `core/DOMAIN_LANGUAGE_GOVERNANCE.md`
 - **Canonical references.**
   - `core/CODE_INTELLIGENCE_GOVERNANCE.md` §Tier-2 Declaration
   - `core/EVIDENCE_CONTRACT.md` §Validation Evidence
-- **Synonyms (deprecated).** "CG" is an allowed abbreviation after first use;
-  "graphify for code" is deprecated.
+- **Synonyms (deprecated).** "CG" is an allowed abbreviation after first use.
 - **Notes.** CG is advisory context and does not replace tests, direct file
   evidence, or Astaire governance projections.
-
-### Graphify
-
-- **Definition.** The Tier-3 research-corpus graphing capability used for
-  document and raw-corpus exploration, not authoritative source-code
-  navigation.
-- **Owning context.** code-intelligence
-- **Canonical references.**
-  - `core/SECURITY_CONTROLS.md` §Tool-Execution Containment
-  - `scripts/run_graphify.sh`
-- **Synonyms (deprecated).** none.
-- **Notes.** Homograph: Graphify upstream may describe code graphing in its
-  own documentation; ADG narrows the local governance role to Tier 3.
 
 ### CodeGraph Index Freshness
 
@@ -171,8 +150,7 @@ See `core/EVIDENCE_CONTRACT.md` for requiredness by evidence type.
 
 ## Anti-Patterns
 
-1. Treating Graphify as the source-code navigation authority for ADG code
-   directories.
+1. Reintroducing Graphify as an ADG integration surface.
 2. Using a stale CG index as validation evidence.
 3. Declaring CG without a path scope.
 4. Citing a mutable image tag such as `latest` instead of an immutable digest.
@@ -186,4 +164,3 @@ See `core/EVIDENCE_CONTRACT.md` for requiredness by evidence type.
 - `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` — optional Tier-2 capability
   declaration in artifact-first execution.
 - `core/PLANNING_METHODOLOGY.md` — Astaire-first read discipline.
-- `core/SECURITY_CONTROLS.md` — local tool-execution containment.

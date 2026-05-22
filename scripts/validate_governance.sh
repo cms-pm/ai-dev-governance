@@ -158,6 +158,12 @@ for k in ("selection", "composition"):
 PY
 pass "Manifest schema keys"
 
+if rg -n "^graphify:" contracts validation governance.yaml >/tmp/adg_graphify_manifest_hits.txt; then
+  cat /tmp/adg_graphify_manifest_hits.txt >&2
+  fail "Graphify manifest blocks are not supported in ADG"
+fi
+pass "Graphify manifest blocks absent"
+
 rg -q "rtk init -g" adapters/providers/CLAUDE_CONTEXT_ADAPTER.md || fail "Claude adapter must document RTK hook install"
 rg -q "rtk init -g --codex" adapters/providers/CODEX_CONTEXT_ADAPTER.md || fail "Codex adapter must document RTK install"
 rg -q "tooling/rtk" adapters/tooling/RTK_CONTEXT_ADAPTER.md || fail "RTK tooling adapter must define manifest mapping"

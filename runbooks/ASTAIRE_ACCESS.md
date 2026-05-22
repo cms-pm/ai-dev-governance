@@ -21,7 +21,8 @@ first. Direct file reads are permitted only when:
 2. The read is in service of an edit the Edit/Write tool will perform.
 
 Every agent invocation begins at Astaire L0 and routes outward to
-tentacles (L1/L2, graphify, RTK) rather than fanning out in parallel.
+tentacles (L1/L2, CodeGraph when configured, RTK) rather than fanning out in
+parallel.
 
 ## Repo-local Invocation
 

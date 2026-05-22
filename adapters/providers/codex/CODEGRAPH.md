@@ -14,8 +14,7 @@ configuration, and Codex working practice without redefining the policy.
 - Astaire remains the port of first resort for ADG governance artifacts.
 - CodeGraph is limited to the consumer product-code path scope declared by the
   consumer repository.
-- Graphify remains the Tier-3 research-corpus surface and is not the
-  authoritative source-code navigation path for ADG code directories.
+- Graphify is not an ADG-supported integration surface.
 - CG findings are advisory context. Acceptance evidence still binds to
   repository files, tests, validation logs, and the evidence URIs defined in
   `core/EVIDENCE_CONTRACT.md`.

@@ -29,49 +29,6 @@
 12. Update `CHANGELOG.md`
 13. Create annotated tag and release notes
 
-## Graphify Install Paths
-
-The release and evidence steps above invoke `graphify` via
-`scripts/run_graphify.sh`. If `graphify` is not on `PATH`, install from
-source using the path that matches your consumer layout:
-
-- **Monorepo / authoring checkout** (this repo, or any checkout where the
-  governance source tree is the repo root):
-  ```bash
-  pip install -e ./graphify
-  ```
-- **Submodule consumer** (graphify lives inside the pinned governance
-  submodule at `.governance/ai-dev-governance/graphify`):
-  ```bash
-  pip install -e ./.governance/ai-dev-governance/graphify
-  ```
-- **Optional heavy extras** (Leiden / community detection only):
-  `pip install -e '<path>[cluster]'`.
-
-`scripts/run_graphify.sh` emits both paths in its "graphify not on PATH"
-failure message; follow the one that matches the layout.
-
-## Graphify Lightweight Fallback Install
-
-The default graphify install lists `graspologic` as a top-level dependency,
-which pulls in `numba` / `llvmlite` and requires a system LLVM toolchain.
-The restricted / structural fallback path used for governance graph
-generation does not exercise community detection, so consumers can skip
-the heavy stack:
-
-```bash
-scripts/install_graphify_fallback.sh [venv-python]
-```
-
-This installs the minimal runtime subset (`networkx` + tree-sitter bindings)
-and then installs graphify from source with `--no-deps`. `graspologic` is
-left out; calling the community-detection path will raise ImportError.
-
-A permanent fix — moving `graspologic` into an opt-in `[cluster]` extra —
-needs to land in the upstream graphify project
-(`https://github.com/safishamsi/graphify`). Track the corresponding upstream
-contribution and re-pin the submodule once it ships.
-
 ## Required Release Artifacts
 
 - Changelog entry

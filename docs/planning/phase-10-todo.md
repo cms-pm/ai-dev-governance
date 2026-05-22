@@ -100,15 +100,14 @@ appended in `(parens)` after each box is checked.
       by `diff` over the addendum block).
 - [x] Astaire scan registers both as provider-skill / adapter docs.
 
-## SCN-10.6 — Graphify demotion
+## SCN-10.6 — Graphify removal
 
-- [ ] Graphify skill registration under `graphify/skills/` scoped to
-      research-corpus use (no code-navigation references).
-- [ ] `.graphifyignore` at ADG root denies `scripts/`, `validation/`,
-      `astaire/src/`, `adapters/` (explicit handoff to CG).
-- [ ] `graphify/README.md` "Usage in ADG context" note on disk.
-- [ ] Smoke test: `/graphify` against `raw/` still produces a wiki.
-- [ ] R-10-01 closure annotated (in concert with SCN-10.1 doctrine).
+- [x] Graphify submodule removed from `.gitmodules` and repository index.
+- [x] Graphify wrapper/validator/fallback scripts and fixtures removed.
+- [x] Manifest schema/example no longer declare a `graphify` object.
+- [x] Active README/runbook/core policy references no longer instruct
+      consumers to install or invoke Graphify.
+- [x] R-10-01 closure annotated (in concert with SCN-10.1 doctrine).
 
 ## SCN-10.7 — Consumer-side validator
 

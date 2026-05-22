@@ -109,10 +109,10 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.5-01 | SCN-10.5 | `adapters/providers/claude/CODEGRAPH.md` | Claude CodeGraph adapter spec on disk; source-of-truth pointer cites `core/CODE_INTELLIGENCE_GOVERNANCE.md`; maps CG use to Claude MCP/settings/templates and evidence URI constraints. | done |
 | SCN-10.5-02 | SCN-10.5 | `adapters/providers/codex/CODEGRAPH.md` | Codex CodeGraph adapter spec on disk; source-of-truth pointer cites `core/CODE_INTELLIGENCE_GOVERNANCE.md`; maps CG use to `AGENTS.md`/MCP conventions and evidence URI constraints. | done |
 | SCN-10.5-03 | SCN-10.5 | Explore-agent prompt addendum byte-identical (verified by `diff`) | Addendum blocks between `CODEGRAPH_EXPLORE_ADDENDUM_START` and `CODEGRAPH_EXPLORE_ADDENDUM_END` compare cleanly by `diff`; block forbids unnecessary re-Read of CG-returned files, gives narrow budget guidance, and names native-tool fallback path. | done |
-| SCN-10.6-01 | SCN-10.6 | `graphify/skills/*` (scope-narrowing to research-corpus) | — | pending |
-| SCN-10.6-02 | SCN-10.6 | `.graphifyignore` (denies `scripts/`, `validation/`, `astaire/src/`, `adapters/`) | — | pending |
-| SCN-10.6-03 | SCN-10.6 | `graphify/README.md` (ADG-context note) | — | pending |
-| SCN-10.6-04 | SCN-10.6 | smoke-test evidence under `docs/validation/scn-10.6/` (`/graphify` over `raw/`) | — | pending |
+| SCN-10.6-01 | SCN-10.6 | `.gitmodules`; repository index | Graphify submodule removed from `.gitmodules` and the repository index. | done |
+| SCN-10.6-02 | SCN-10.6 | `scripts/`; `validation/fixtures/` | Graphify wrapper, validator, fallback installer, and graphify-specific fixtures removed. | done |
+| SCN-10.6-03 | SCN-10.6 | `contracts/governance-manifest.schema.json`; `contracts/governance-manifest.example.yaml` | Governance manifest contract no longer declares or examples a `graphify` object; consistency rules forbid reintroduction. | done |
+| SCN-10.6-04 | SCN-10.6 | `README.md`; `runbooks/`; `core/` | Active ADG docs no longer instruct consumers to install or invoke Graphify; code intelligence routes through Astaire, optional CodeGraph, RTK, and native tools. | done |
 | SCN-10.7-01 | SCN-10.7 | `scripts/validate_codegraph_wiring.sh` | — | pending |
 | SCN-10.7-02 | SCN-10.7 | `validation/fixtures/codegraph/positive/` | — | pending |
 | SCN-10.7-03 | SCN-10.7 | `validation/fixtures/codegraph/negative-*/` | — | pending |

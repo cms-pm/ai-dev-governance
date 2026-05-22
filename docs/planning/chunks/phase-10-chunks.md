@@ -16,13 +16,11 @@ consumer repos wire into their `.mcp.json`. ADG ships *prescription
 only* — Dockerfile, wrapper script, template fragments, adapter specs,
 validator, runbook gate, new core policy. ADG does not run CG itself.
 
-Three-tier doctrine (the new boundary contract):
+Two-tier doctrine (the new boundary contract):
 - **Tier 1 — Astaire** (port of first resort, unchanged). In a consumer
   repo, Astaire's scope is *the ADG submodule path*. CG must never
   index that path.
 - **Tier 2 — CodeGraph** owns the consumer's product code via MCP.
-- **Tier 3 — Graphify** owns the consumer's research corpus only
-  (`raw/` and adjacent), invoked explicitly.
 
 The authoritative architectural plan for this phase is
 `/Users/cms/.claude/plans/let-s-turn-this-into-soft-sloth.md`. The SCNs
@@ -58,12 +56,11 @@ below are the ADG-compliant execution of that plan.
 
 - **Scope.** Land one new core policy document and amend two existing
   ones, all in one commit so cross-references resolve atomically:
-  - **New:** `core/CODE_INTELLIGENCE_GOVERNANCE.md` (three-tier
+  - **New:** `core/CODE_INTELLIGENCE_GOVERNANCE.md` (two-tier
     doctrine, bounded-context glossary entries — Tier-1 Astaire,
-    Tier-2 CG, Tier-3 Graphify — under the
-    `DOMAIN_LANGUAGE_GOVERNANCE.md` pattern; path-scope contract;
-    freshness rule; evidence URIs `codegraphIndexFreshnessURI`,
-    `codegraphImageDigestURI`).
+    Tier-2 CG — under the `DOMAIN_LANGUAGE_GOVERNANCE.md` pattern;
+    path-scope contract; freshness rule; evidence URIs
+    `codegraphIndexFreshnessURI`, `codegraphImageDigestURI`).
   - **Amend** `core/EVIDENCE_CONTRACT.md` to register the two new
     URIs.
   - **Amend** `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §evidence to
@@ -135,7 +132,7 @@ below are the ADG-compliant execution of that plan.
 - **Scope.** Remaining `templates/codegraph/` files:
   - `.mcp.json.fragment` (Docker-invoked via wrapper, digest-pinned).
   - `.codegraphignore` (excludes ADG submodule path, `raw/`, `docs/`,
-    build artifacts — mirrors `.graphifyignore` precedent).
+    build artifacts — mirrors the prior generated-ignore precedent).
   - `CLAUDE.md.fragment` (Tier-2 stanza in Astaire idiom; main
     session uses lightweight CG tools, Explore agents use
     `_explore`/`_context`, glob/grep/Read are fallback).
@@ -171,26 +168,23 @@ below are the ADG-compliant execution of that plan.
   `provider-skill` / adapter docs.
 - **Atomic PR scope.** Single commit on branch `SCN-10.5`.
 
-## SCN-10.6 — Graphify demotion
+## SCN-10.6 — Graphify removal
 
-- **Scope.** Update graphify's skill registration under
-  `/graphify/skills/` (sibling-vendored repo) to scope its trigger
-  documentation to research-corpus use; amend `.graphifyignore` at
-  ADG root to deny code directories (`scripts/`, `validation/`,
-  `astaire/src/`, `adapters/`) — explicit handoff to CG; update
-  `graphify/README.md` "Usage in ADG context" note. Closes R-10-01
-  (code-intelligence bounded-context glossary ambiguity), in concert
-  with the SCN-10.1 doctrine landing.
-- **Acceptance IDs.** SCN-10.6-01 (graphify skill scope-narrowing),
-  SCN-10.6-02 (`.graphifyignore` denies the four code dirs),
-  SCN-10.6-03 (graphify README ADG-context note),
-  SCN-10.6-04 (smoke test: `/graphify` over `raw/` still produces a
-  wiki).
-- **Risk tier.** Medium (touches sibling-vendored repo content).
-- **Validation method.** Graphify slash-command documentation no
-  longer references code navigation; `.graphifyignore` denies the
-  four code directories; manual smoke test that `/graphify` against
-  `raw/` still produces a wiki.
+- **Scope.** Remove Graphify from ADG entirely: delete the sibling-vendored
+  submodule, remove Graphify wrapper/validator/fallback scripts, remove the
+  manifest schema/example block and graphify fixtures, and update active
+  governance docs to route source-code intelligence to CodeGraph/native tools
+  only. Closes R-10-01 (code-intelligence bounded-context glossary ambiguity)
+  in concert with the SCN-10.1 doctrine landing.
+- **Acceptance IDs.** SCN-10.6-01 (Graphify submodule removed from
+  `.gitmodules` and repository index), SCN-10.6-02 (Graphify scripts and
+  fixtures removed), SCN-10.6-03 (manifest schema/example no longer declare
+  `graphify`), SCN-10.6-04 (active ADG docs no longer instruct consumers to
+  install or invoke Graphify).
+- **Risk tier.** Medium (removes a previously published optional integration).
+- **Validation method.** `git ls-files` has no Graphify integration files;
+  governance schema/example reject/omit `graphify`; active README/runbook/core
+  references point to Astaire, CodeGraph, RTK, or native tools only.
 - **Atomic PR scope.** Single commit on branch `SCN-10.6`.
 
 ## SCN-10.7 — Consumer-side validator
@@ -254,9 +248,9 @@ below are the ADG-compliant execution of that plan.
 ## SCN-10.10 — Board review + signoff
 
 - **Scope.** Phase 10 board packet, board meeting with eight lenses
-  (incl. test-design per SCN-9.1), ratify the three-tier doctrine,
+  (incl. test-design per SCN-9.1), ratify the two-tier doctrine,
   close R-10-01, hand R-10-02 (downstream CG adoption), R-10-03
-  (graphify demotion second-order effects), R-10-04 (CockpitVM pilot)
+  (removed Graphify fallback), R-10-04 (CockpitVM pilot)
   to monitor lane, flip signoff row to `ratified` with approver
   `cms-pm` and date, append the closing TODO ticks. Mirrors SCN-9.7
   sign-off pattern.
@@ -291,7 +285,7 @@ SCN-10.1 (core policy — gate for everything)
     |          |
     |          +--> SCN-10.7 (validator harness) --> SCN-10.8 (denylist)
     |
-    +--> SCN-10.6 (graphify demotion; independent after 10.1)
+    +--> SCN-10.6 (Graphify removal; independent after 10.1)
 
 10.5, 10.6, 10.8 --> SCN-10.9 (runbook) --> SCN-10.10 (signoff)
 ```

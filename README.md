@@ -8,7 +8,7 @@ submodule, not copied piecemeal from this repo's authoring branch.
 
 > **Port-of-first-resort.** Every agent call begins at Astaire's L0. L0 answers
 > the majority directly; otherwise it routes — to a deeper Astaire projection
-> (L1/L2), to graphify for structural traversal, to RTK-gated shell inspection,
+> (L1/L2), to CodeGraph where configured, to RTK-gated shell inspection,
 > or further out. Agents never bypass the router; tentacles extend the reach
 > without fragmenting the memory.
 
@@ -35,8 +35,8 @@ AI-assisted delivery:
   memory instead of raw file fan-out
 - **RTK-guided shell discipline** so broad exploration, git inspection, and
   validation stay token-efficient
-- **graphify structural awareness** so planning, refactoring, and bug-hunting
-  can route through codebase topology instead of only prose artifacts
+- **Optional CodeGraph structural awareness** so planning, refactoring, and
+  bug-hunting can route through declared codebase topology when configured
 - **strict planning and evidence contracts** so changes are traceable,
   reviewable, and releasable
 - **consumer bootstrap automation** so a new or existing repo can be wired into
@@ -75,7 +75,7 @@ What this gives the consumer repo:
 - generated `governance.yaml`
 - provider-appropriate bootstrap instructions in `AGENTS.md` / `CLAUDE.md`
 - bootstrap directories under `docs/`
-- recursive tentacle initialization for nested submodules such as Astaire and graphify
+- recursive tentacle initialization for nested submodules such as Astaire
 
 For submodule pinning guidance after bootstrap, see
 `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
@@ -88,15 +88,13 @@ For submodule pinning guidance after bootstrap, see
 - **RTK** is the token-discipline layer. Shell-visible exploration, search,
   git, lint, and release work should flow through RTK-backed paths whenever
   possible.
-- **graphify** adds structural understanding. It plugs into Astaire as a
-  tentacle for codebase topology, routing hints, and graph-derived planning
-  context.
+- **CodeGraph** is the optional source-code intelligence lane for consumers
+  that declare and validate a local code graph.
 
 Current published tentacle releases used by the consumer baseline:
 
 - `ai-dev-governance` — `v1.0.0`
 - `astaire` — `v0.5.0`
-- `graphify` — `v1.0.0`
 
 ## Repository Layout
 

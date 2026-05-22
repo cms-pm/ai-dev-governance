@@ -1,13 +1,13 @@
 # Submodule Pinning Runbook
 
 Scope: governance for tentacle submodules consumed by `ai-dev-governance`
-itself (currently `astaire/` and `graphify/`). Consumer-side pinning of
+itself (currently `astaire/`). Consumer-side pinning of
 `ai-dev-governance` is covered in `SUBMODULE_CONSUMER_RUNBOOK.md`.
 
 ## Pin-at-Tag Rule
 
 - Every tentacle submodule MUST be pinned at a signed or annotated upstream
-  tag where one is available (for example, `graphify@v1.0.0`).
+  tag where one is available.
 - The authoritative pin is the submodule SHA recorded in the superproject
   tree. `.gitmodules` SHOULD also carry a `branch = <tag>` annotation where
   the upstream tag is stable, so `git submodule update --remote` resolves

@@ -23,17 +23,9 @@ This policy defines minimum security controls for AI-assisted coding workflows.
 ## Data-transmitting adapters
 
 Adapters that transmit repository content to an external model or service
-(e.g. **graphify** during LLM-powered extraction) are a higher-risk
-surface than local-only tooling. Consumers using such adapters MUST
-configure the adapter through its governance contract rather than invoking
-it directly. For graphify specifically, see
-`adapters/tooling/GRAPHIFY_CONTEXT_ADAPTER.md` §Security Modes; the
-`full` mode transmits every allowlisted file and is fail-closed unless a
-matching exception exists in `docs/governance/exceptions.yaml`.
-Enforcement is performed by `scripts/run_graphify.sh`, which reads the
-manifest, screens the allowlist against a curated secret-pattern denylist,
-emits a `.graphifyignore`, and refuses to invoke graphify if any
-fail-closed condition is violated.
+are a higher-risk surface than local-only tooling. Consumers using such
+adapters MUST configure them through a reviewed governance contract rather
+than invoking them directly. Graphify is not an ADG-supported adapter.
 
 ## Incident Handling
 

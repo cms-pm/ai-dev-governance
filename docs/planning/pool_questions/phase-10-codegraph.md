@@ -14,13 +14,11 @@ consumer repos wire into their `.mcp.json`. CG presents ambient
 eliminating the wasteful glob/grep/Read churn observed during refactors
 of large monolithic sources in downstream repos.
 
-Establish a **three-tier doctrine** with disjoint path scopes:
+Establish a **two-tier doctrine** with disjoint path scopes:
 - **Tier 1 — Astaire** owns governance artifacts. Within a consumer
   repo, Astaire's scope is *the ADG submodule path*. CG must never index
   that path.
 - **Tier 2 — CodeGraph** owns the consumer's product code via MCP.
-- **Tier 3 — Graphify** is demoted to mixed-modal research corpora
-  (`raw/` and adjacent), invoked explicitly.
 
 ADG ships *prescription only* — Dockerfile, wrapper script, template
 fragments, adapter specs, validator, runbook gate, new core policy. ADG
@@ -50,9 +48,9 @@ R-10-04, not gating phase signoff.
 **From the approved architectural plan
 (`/Users/cms/.claude/plans/let-s-turn-this-into-soft-sloth.md`):**
 
-The plan prescribes CG as the ambient code-navigation surface,
-graphify as research-corpus only, LSDF-core as documented Plan B for
-Python-only / no-Docker consumers (reference only — no vendoring). The
+The top-level decision now prescribes CG as the ambient code-navigation
+surface and removes Graphify from ADG entirely. LSDF-core remains the
+documented Plan B for Python-only / no-Docker consumers (reference only — no vendoring). The
 SCNs below are the ADG-compliant execution of that plan.
 
 ## Scope
@@ -68,7 +66,7 @@ Authoring only at the ADG layer:
 - Consumer-side validator (`scripts/validate_codegraph_wiring.sh`) +
   positive/negative fixtures.
 - Runbook gate update in `runbooks/RELEASE_PROCESS.md`.
-- Graphify demotion (sibling-vendored repo touch + `.graphifyignore`).
+- Graphify removal from ADG integration surfaces.
 - Board sign-off mirroring SCN-9.7.
 
 Out of scope:
@@ -82,14 +80,16 @@ Out of scope:
 
 ## Resolved Questions
 
-### Q1 — Tool selection: CodeGraph vs LSDF-core vs continued graphify reliance
+### Q1 — Tool selection: CodeGraph vs LSDF-core vs Graphify removal
 
 **Resolution.** Adopt CodeGraph as Tier-2; document LSDF-core as Plan B;
-demote graphify to Tier-3 research-corpus only.
+remove Graphify from ADG entirely.
 
 **Reasoning.** Graphify's non-adoption root cause is invocation shape
-(slash-command opt-in vs ambient MCP) and output shape (files to Read
-vs queryable primitives). CG presents ambient `mcp__codegraph__*` tools
+(slash-command opt-in vs ambient MCP), output shape (files to Read
+vs queryable primitives), and a top-level decision to remove the tool from
+the ADG supported surface rather than maintain a narrowed role. CG presents
+ambient `mcp__codegraph__*` tools
 that Explore agents will reach for by default and returns symbol-graph
 primitives directly. Upstream benchmark across 7 codebases: ~35% cost /
 ~70% tool-call reduction. LSDF-core is Python-only with no MCP/query
@@ -100,7 +100,7 @@ API — appropriate as Plan B for consumers that cannot run Docker.
 **Resolution.** The indexed codebase is the **consumer** of ADG, not
 ADG itself. CG indexes consumer product code only and never the ADG
 submodule path. Astaire continues to own the ADG submodule path within
-the consumer. Graphify is scoped to consumer `raw/` and adjacent.
+the consumer. Graphify is not part of the ADG-supported integration surface.
 
 **Reasoning.** ADG is shipped as a submodule. If CG indexed the ADG
 submodule path in a consumer, the agent's first answer on a CG query
@@ -146,7 +146,7 @@ a future possibility lives in Phase 11 monitor lane (out of scope).
 
 **Resolution.** Monitor-lane adoption mirroring R-8.2-02 / R-9-04.
 SCN-10.10 ratifies the doctrine; downstream CG adoption (CockpitVM
-expected first), graphify second-order effects, and the CockpitVM
+expected first), removed-Graphify fallback effects, and the CockpitVM
 benchmark all land as R-10-02, R-10-03, R-10-04 respectively under the
 Phase 10 → Phase 11 monitor-lane carry-forward.
 
