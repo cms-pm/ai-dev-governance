@@ -78,17 +78,17 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.4 — Templates + Plan B
 
-- [ ] `templates/codegraph/.mcp.json.fragment` on disk (Docker-invoked
+- [x] `templates/codegraph/.mcp.json.fragment` on disk (Docker-invoked
       via wrapper, digest-pinned).
-- [ ] `templates/codegraph/.codegraphignore` on disk (excludes ADG
+- [x] `templates/codegraph/.codegraphignore` on disk (excludes ADG
       submodule path, `raw/`, `docs/`, build artifacts).
-- [ ] `templates/codegraph/CLAUDE.md.fragment` on disk (Tier-2 stanza
+- [x] `templates/codegraph/CLAUDE.md.fragment` on disk (Tier-2 stanza
       in Astaire idiom).
-- [ ] `templates/codegraph/settings.json.fragment` on disk (eight
+- [x] `templates/codegraph/settings.json.fragment` on disk (eight
       `mcp__codegraph__*` allow entries).
-- [ ] `templates/codegraph/PLAN_B_LSDF.md` on disk (one-page Plan B,
+- [x] `templates/codegraph/PLAN_B_LSDF.md` on disk (one-page Plan B,
       reference-only).
-- [ ] `.codegraphignore` denies ADG submodule path under a glob test.
+- [x] `.codegraphignore` denies ADG submodule path under a glob test.
 
 ## SCN-10.5 — Adapter specs (Claude + Codex)
 

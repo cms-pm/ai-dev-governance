@@ -101,11 +101,11 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.3-03 | SCN-10.3 | wrapper runtime auto-detection + `ADG_CONTAINER_RUNTIME` override (in-script) | `codegraph-mcp` detects `podman` → `docker` → `nerdctl`; `/bin/echo` override dry-run recorded in `docs/validation/scn-10.3/wrapper-static-check.md`. | done |
 | SCN-10.3-04 | SCN-10.3 | hardening-matrix flags applied (verified by `docker inspect`) | Static dry-run emits every required runtime flag and mount; live Docker inspect confirms read-only rootfs, `NetworkMode=none`, `CapDrop=["ALL"]`, no-new-privileges, pids/memory/cpu/nofile limits, `IpcMode=none`, host UID/GID user, read-only source bind, and named `.codegraph/` volume. Evidence: `docs/validation/scn-10.3/wrapper-static-check.md`. | done |
 | SCN-10.3-05 | SCN-10.3 | network-isolation evidence under `docs/validation/scn-10.3/` (outbound-fetch failure) | Live wrapper run exits 0 for a deliberate outbound `fetch('https://example.com')` failure under `--network=none`. Evidence: `docs/validation/scn-10.3/network-isolation.md`. | done |
-| SCN-10.4-01 | SCN-10.4 | `templates/codegraph/.mcp.json.fragment` | — | pending |
-| SCN-10.4-02 | SCN-10.4 | `templates/codegraph/.codegraphignore` | — | pending |
-| SCN-10.4-03 | SCN-10.4 | `templates/codegraph/CLAUDE.md.fragment` | — | pending |
-| SCN-10.4-04 | SCN-10.4 | `templates/codegraph/settings.json.fragment` | — | pending |
-| SCN-10.4-05 | SCN-10.4 | `templates/codegraph/PLAN_B_LSDF.md` | — | pending |
+| SCN-10.4-01 | SCN-10.4 | `templates/codegraph/.mcp.json.fragment` | Wrapper-based `codegraph` MCP server fragment added with `.codegraph/image.digest` and `localhost/codegraph-mcp` env pins. | done |
+| SCN-10.4-02 | SCN-10.4 | `templates/codegraph/.codegraphignore` | Ignore template excludes common ADG submodule paths, `raw/`, `docs/`, build/cache output, dependencies, and secret-bearing paths; glob test confirms ADG path denial. | done |
+| SCN-10.4-03 | SCN-10.4 | `templates/codegraph/CLAUDE.md.fragment` | Tier-2 stanza added in Astaire idiom: Astaire-first governance reads, lightweight CodeGraph navigation, Explore-agent `_explore`/`_context` guidance, and native-tool fallback when stale or unavailable. | done |
+| SCN-10.4-04 | SCN-10.4 | `templates/codegraph/settings.json.fragment` | Settings fragment added with eight `mcp__codegraph__*` allow entries for search, callers, callees, impact, context, explore, file context, and diff context. | done |
+| SCN-10.4-05 | SCN-10.4 | `templates/codegraph/PLAN_B_LSDF.md` | Reference-only Plan B added for Python-only/no-Docker consumers; points upstream material to `raw/lsdf-core/` and avoids normative ADG policy language. | done |
 | SCN-10.5-01 | SCN-10.5 | `adapters/providers/claude/CODEGRAPH.md` | — | pending |
 | SCN-10.5-02 | SCN-10.5 | `adapters/providers/codex/CODEGRAPH.md` | — | pending |
 | SCN-10.5-03 | SCN-10.5 | Explore-agent prompt addendum byte-identical (verified by `diff`) | — | pending |

@@ -1,0 +1,41 @@
+# CodeGraph Tier-2 ignore template.
+#
+# Copy to the consumer repository root and replace the ADG submodule paths
+# below with the actual local submodule path before enabling CodeGraph.
+
+# Tier boundaries: Astaire owns ADG governance artifacts; Graphify owns raw.
+adg/**
+ai-dev-governance/**
+vendor/ai-dev-governance/**
+submodules/ai-dev-governance/**
+raw/**
+docs/**
+
+# Build, dependency, cache, and generated output.
+.codegraph/evidence/**
+.git/**
+.venv/**
+venv/**
+node_modules/**
+dist/**
+build/**
+out/**
+target/**
+coverage/**
+.pytest_cache/**
+.mypy_cache/**
+.ruff_cache/**
+__pycache__/**
+*.pyc
+
+# Secret-bearing paths mirror the restricted Graphify precedent.
+secrets/**
+**/secrets/**
+.env
+**/.env
+.env.*
+**/*.pem
+**/*.key
+**/id_rsa*
+**/credentials*
+**/*.kdbx

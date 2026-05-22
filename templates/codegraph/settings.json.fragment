@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__codegraph__search",
+      "mcp__codegraph__callers",
+      "mcp__codegraph__callees",
+      "mcp__codegraph__impact",
+      "mcp__codegraph__context",
+      "mcp__codegraph__explore",
+      "mcp__codegraph__file_context",
+      "mcp__codegraph__diff_context"
+    ]
+  }
+}

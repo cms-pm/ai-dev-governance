@@ -1,0 +1,23 @@
+## CodeGraph Tier-2 Code Intelligence
+
+Astaire remains the port of first resort for ADG governance artifacts. Use
+CodeGraph only for the consumer product-code path scope declared by this
+repository, and treat `.codegraphignore` as the boundary between Tier 1
+Astaire, Tier 2 CodeGraph, and Tier 3 Graphify.
+
+For source-code navigation, prefer lightweight CodeGraph queries before
+falling back to `Glob`, `Grep`, or `Read`:
+
+- `mcp__codegraph__search` for symbol, file, and text discovery.
+- `mcp__codegraph__callers` and `mcp__codegraph__callees` for call paths.
+- `mcp__codegraph__impact` before changing shared functions.
+- `mcp__codegraph__context` for compact project or file context.
+
+Explore agents should begin with `mcp__codegraph__explore` or
+`mcp__codegraph__context` when the task is source-navigation heavy. If
+CodeGraph is unavailable, stale, or outside the declared path scope, continue
+with native repository tools and record that fallback in the work log.
+
+Do not use CodeGraph results as validation evidence unless
+`codegraphIndexFreshnessURI` and `codegraphImageDigestURI` evidence are
+available for the acceptance item.
