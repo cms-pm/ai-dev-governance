@@ -43,11 +43,11 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.2 — Dockerfile + image build
 
-- [ ] `templates/codegraph/Dockerfile` on disk (multi-stage,
+- [x] `templates/codegraph/Dockerfile` on disk (multi-stage,
       `node:20-alpine@sha256:<PIN>`, `npm ci --ignore-scripts`,
       non-root `USER 10001:10001`, `NODE_OPTIONS=--disable-proto=delete`,
       `ENTRYPOINT` set).
-- [ ] `templates/codegraph/Makefile.snippet` on disk (`codegraph-image`
+- [x] `templates/codegraph/Makefile.snippet` on disk (`codegraph-image`
       target, buildx multi-arch amd64+arm64, `--provenance=mode=max`,
       `--sbom=true`).
 - [ ] Two consecutive `make codegraph-image` runs with fixed

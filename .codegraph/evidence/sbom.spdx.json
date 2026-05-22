@@ -1,0 +1,28 @@
+{
+  "spdxVersion": "SPDX-2.3",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "codegraph-mcp-image-sbom-fixture",
+  "documentNamespace": "https://github.com/cms-pm/ai-dev-governance/codegraph/sbom/scn-10.2-fixture",
+  "creationInfo": {
+    "created": "2026-05-21T00:00:00Z",
+    "creators": [
+      "Tool: docker-buildx-sbom-attestation"
+    ]
+  },
+  "packages": [
+    {
+      "name": "localhost/codegraph-mcp:local",
+      "SPDXID": "SPDXRef-Package-codegraph-mcp-image",
+      "downloadLocation": "NOASSERTION",
+      "filesAnalyzed": false,
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE-MANAGER",
+          "referenceType": "purl",
+          "referenceLocator": "pkg:docker/localhost/codegraph-mcp@sha256:pending"
+        }
+      ]
+    }
+  ]
+}

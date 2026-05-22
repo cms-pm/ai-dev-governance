@@ -91,8 +91,8 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.1-02 | SCN-10.1 | `core/EVIDENCE_CONTRACT.md` (`codegraphIndexFreshnessURI`, `codegraphImageDigestURI`) | Evidence URI fields registered under validation evidence; release evidence includes CG fields when the release manifest declares CG. | done |
 | SCN-10.1-03 | SCN-10.1 | `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` (§evidence Tier-2 optional-capability note) | Artifact-first execution now declares CG as optional at v1 and forbids required-presence failures when CG is absent. | done |
 | SCN-10.1-04 | SCN-10.1 | `.astaire/memory_palace.db` (SCN-10.1 ingest); cross-reference resolution via `astaire query` | `.astaire/astaire scan --root .` registered `CODE Intelligence Governance`; `.astaire/astaire query --fts "CODE Intelligence Governance"`, `--fts "Evidence Contract"`, and `--fts "Autonomous Delivery Governance"` each resolve; `.astaire/astaire lint` reports 0 warnings, 0 errors. | done |
-| SCN-10.2-01 | SCN-10.2 | `templates/codegraph/Dockerfile` | — | pending |
-| SCN-10.2-02 | SCN-10.2 | `templates/codegraph/Makefile.snippet` | — | pending |
+| SCN-10.2-01 | SCN-10.2 | `templates/codegraph/Dockerfile` | Multi-stage CodeGraph image template added; base pinned to `node:20-alpine@sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293`; runtime sets `USER 10001:10001`, `NODE_OPTIONS=--disable-proto=delete`, and `ENTRYPOINT ["node", "/app/dist/bin/codegraph.js"]`. | done |
+| SCN-10.2-02 | SCN-10.2 | `templates/codegraph/Makefile.snippet` | `codegraph-image` target invokes Buildx for `linux/amd64,linux/arm64` with `--provenance=mode=max`, `--sbom=true`, fixed `SOURCE_DATE_EPOCH`, and evidence writes to `.codegraph/image.digest` plus `.codegraph/evidence/sbom.spdx.json`. | done |
 | SCN-10.2-03 | SCN-10.2 | reproducible-digest evidence under `docs/validation/scn-10.2/` | — | pending |
 | SCN-10.2-04 | SCN-10.2 | `.codegraph/evidence/sbom.spdx.json` (fixture) | — | pending |
 | SCN-10.2-05 | SCN-10.2 | `docker inspect` log under `docs/validation/scn-10.2/` | — | pending |

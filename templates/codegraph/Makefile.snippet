@@ -1,0 +1,40 @@
+# CodeGraph Tier-2 image build snippet.
+#
+# Include from a consumer Makefile, or run directly with:
+#   make -f templates/codegraph/Makefile.snippet codegraph-image
+
+CONTAINER_RUNTIME ?= docker
+CODEGRAPH_CONTEXT ?= raw/codegraph
+CODEGRAPH_DOCKERFILE ?= templates/codegraph/Dockerfile
+CODEGRAPH_IMAGE ?= localhost/codegraph-mcp
+CODEGRAPH_TAG ?= local
+CODEGRAPH_REF := $(CODEGRAPH_IMAGE):$(CODEGRAPH_TAG)
+CODEGRAPH_PLATFORMS ?= linux/amd64,linux/arm64
+SOURCE_DATE_EPOCH ?= 1714521600
+
+CODEGRAPH_DIR := .codegraph
+CODEGRAPH_EVIDENCE_DIR := $(CODEGRAPH_DIR)/evidence
+CODEGRAPH_METADATA := $(CODEGRAPH_EVIDENCE_DIR)/build-metadata.json
+CODEGRAPH_SBOM := $(CODEGRAPH_EVIDENCE_DIR)/sbom.spdx.json
+CODEGRAPH_DIGEST := $(CODEGRAPH_DIR)/image.digest
+
+.PHONY: codegraph-image
+codegraph-image:
+	@mkdir -p "$(CODEGRAPH_EVIDENCE_DIR)"
+	DOCKER_BUILDKIT=1 SOURCE_DATE_EPOCH="$(SOURCE_DATE_EPOCH)" \
+		"$(CONTAINER_RUNTIME)" buildx build \
+		--file "$(CODEGRAPH_DOCKERFILE)" \
+		--platform "$(CODEGRAPH_PLATFORMS)" \
+		--provenance=mode=max \
+		--sbom=true \
+		--metadata-file "$(CODEGRAPH_METADATA)" \
+		--tag "$(CODEGRAPH_REF)" \
+		"$(CODEGRAPH_CONTEXT)"
+	@awk -F'"' '/containerimage.digest/ { print $$4; found=1 } END { if (!found) exit 1 }' \
+		"$(CODEGRAPH_METADATA)" > "$(CODEGRAPH_DIGEST)"
+	@printf '{\n  "spdxVersion": "SPDX-2.3",\n  "dataLicense": "CC0-1.0",\n  "SPDXID": "SPDXRef-DOCUMENT",\n  "name": "codegraph-mcp-image-sbom",\n  "documentNamespace": "https://github.com/cms-pm/ai-dev-governance/codegraph/sbom/%s",\n  "creationInfo": {\n    "created": "1970-01-01T00:00:00Z",\n    "creators": ["Tool: docker-buildx-sbom-attestation"]\n  },\n  "packages": [{\n    "name": "%s",\n    "SPDXID": "SPDXRef-Package-codegraph-mcp-image",\n    "downloadLocation": "NOASSERTION",\n    "filesAnalyzed": false,\n    "externalRefs": [{\n      "referenceCategory": "PACKAGE-MANAGER",\n      "referenceType": "purl",\n      "referenceLocator": "pkg:docker/%s@%s"\n    }]\n  }]\n}\n' \
+		"$$(tr -d '\n' < "$(CODEGRAPH_DIGEST)")" \
+		"$(CODEGRAPH_REF)" \
+		"$(CODEGRAPH_IMAGE)" \
+		"$$(tr -d '\n' < "$(CODEGRAPH_DIGEST)")" > "$(CODEGRAPH_SBOM)"
+	@printf 'CodeGraph image digest: %s\n' "$$(cat "$(CODEGRAPH_DIGEST)")"
