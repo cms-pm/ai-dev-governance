@@ -106,9 +106,9 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.4-03 | SCN-10.4 | `templates/codegraph/CLAUDE.md.fragment` | Tier-2 stanza added in Astaire idiom: Astaire-first governance reads, lightweight CodeGraph navigation, Explore-agent `_explore`/`_context` guidance, and native-tool fallback when stale or unavailable. | done |
 | SCN-10.4-04 | SCN-10.4 | `templates/codegraph/settings.json.fragment` | Settings fragment added with eight `mcp__codegraph__*` allow entries for search, callers, callees, impact, context, explore, file context, and diff context. | done |
 | SCN-10.4-05 | SCN-10.4 | `templates/codegraph/PLAN_B_LSDF.md` | Reference-only Plan B added for Python-only/no-Docker consumers; points upstream material to `raw/lsdf-core/` and avoids normative ADG policy language. | done |
-| SCN-10.5-01 | SCN-10.5 | `adapters/providers/claude/CODEGRAPH.md` | — | pending |
-| SCN-10.5-02 | SCN-10.5 | `adapters/providers/codex/CODEGRAPH.md` | — | pending |
-| SCN-10.5-03 | SCN-10.5 | Explore-agent prompt addendum byte-identical (verified by `diff`) | — | pending |
+| SCN-10.5-01 | SCN-10.5 | `adapters/providers/claude/CODEGRAPH.md` | Claude CodeGraph adapter spec on disk; source-of-truth pointer cites `core/CODE_INTELLIGENCE_GOVERNANCE.md`; maps CG use to Claude MCP/settings/templates and evidence URI constraints. | done |
+| SCN-10.5-02 | SCN-10.5 | `adapters/providers/codex/CODEGRAPH.md` | Codex CodeGraph adapter spec on disk; source-of-truth pointer cites `core/CODE_INTELLIGENCE_GOVERNANCE.md`; maps CG use to `AGENTS.md`/MCP conventions and evidence URI constraints. | done |
+| SCN-10.5-03 | SCN-10.5 | Explore-agent prompt addendum byte-identical (verified by `diff`) | Addendum blocks between `CODEGRAPH_EXPLORE_ADDENDUM_START` and `CODEGRAPH_EXPLORE_ADDENDUM_END` compare cleanly by `diff`; block forbids unnecessary re-Read of CG-returned files, gives narrow budget guidance, and names native-tool fallback path. | done |
 | SCN-10.6-01 | SCN-10.6 | `graphify/skills/*` (scope-narrowing to research-corpus) | — | pending |
 | SCN-10.6-02 | SCN-10.6 | `.graphifyignore` (denies `scripts/`, `validation/`, `astaire/src/`, `adapters/`) | — | pending |
 | SCN-10.6-03 | SCN-10.6 | `graphify/README.md` (ADG-context note) | — | pending |

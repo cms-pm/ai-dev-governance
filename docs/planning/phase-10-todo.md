@@ -92,13 +92,13 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.5 — Adapter specs (Claude + Codex)
 
-- [ ] `adapters/providers/claude/CODEGRAPH.md` on disk.
-- [ ] `adapters/providers/codex/CODEGRAPH.md` on disk.
-- [ ] Both cite `core/CODE_INTELLIGENCE_GOVERNANCE.md` as source of
+- [x] `adapters/providers/claude/CODEGRAPH.md` on disk.
+- [x] `adapters/providers/codex/CODEGRAPH.md` on disk.
+- [x] Both cite `core/CODE_INTELLIGENCE_GOVERNANCE.md` as source of
       truth.
-- [ ] Explore-agent prompt addendum byte-identical across both (verified
+- [x] Explore-agent prompt addendum byte-identical across both (verified
       by `diff` over the addendum block).
-- [ ] Astaire scan registers both as provider-skill / adapter docs.
+- [x] Astaire scan registers both as provider-skill / adapter docs.
 
 ## SCN-10.6 — Graphify demotion
 
