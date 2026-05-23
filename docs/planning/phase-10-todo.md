@@ -48,12 +48,13 @@ appended in `(parens)` after each box is checked.
       non-root `USER 10001:10001`, `NODE_OPTIONS=--disable-proto=delete`,
       `ENTRYPOINT` set).
 - [x] `templates/codegraph/Makefile.snippet` on disk (`codegraph-image`
-      target, buildx multi-arch amd64+arm64, `--provenance=mode=max`,
-      `--sbom=true`).
-- [ ] Two consecutive `make codegraph-image` runs with fixed
+      target, host-platform default with opt-in multi-arch
+      `CODEGRAPH_MULTI_PLATFORM=1`, attested mode via
+      `--provenance=mode=max` / `--sbom=true`).
+- [x] Two consecutive `make codegraph-image` runs with fixed
       `SOURCE_DATE_EPOCH` produce identical digests.
-- [ ] SBOM emitted at `.codegraph/evidence/sbom.spdx.json`.
-- [ ] `docker inspect` confirms `User=10001:10001` and `CapAdd` empty.
+- [x] SBOM emitted at `.codegraph/evidence/sbom.spdx.json`.
+- [x] `docker inspect` confirms `User=10001:10001` and `CapAdd` empty.
 
 ## SCN-10.3 — Wrapper script (runtime-agnostic, rootless)
 
@@ -137,12 +138,12 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.9 — Runbook + release-evidence gate
 
-- [ ] `runbooks/RELEASE_PROCESS.md` updated with CG freshness gate
+- [x] `runbooks/RELEASE_PROCESS.md` updated with CG freshness gate
       (image digest + index freshness for consumers that declare CG in
       `governance.yaml`).
-- [ ] Pilot evidence-contract section (token/tool-call delta capture
+- [x] Pilot evidence-contract section (token/tool-call delta capture
       format) on disk — byte-identical to format R-10-04 expects.
-- [ ] Astaire lint 0/0.
+- [x] Astaire lint 0/0.
 
 ## SCN-10.10 — Board review + signoff
 

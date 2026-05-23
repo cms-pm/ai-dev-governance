@@ -26,6 +26,22 @@ design and domain-language work: `runbooks/MUTATION_TESTING.md`,
 `runbooks/GLOSSARY_AUTHORING.md`, and `runbooks/TEST_DESIGN_REVIEW.md`.
 They execute the policy in `core/` without replacing it.
 
+## Agent Wiring
+
+Top-level agent directives for this baseline should keep these links
+front-and-center:
+
+- `runbooks/ASTAIRE_ACCESS.md` for Astaire-first read discipline
+- `templates/ASTAIRE_CLI_SNIPPET.md` for consumer-facing `AGENTS.md` /
+  `CLAUDE.md` wiring
+- `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` for board critique and
+  test-design review
+- `core/PLANNING_METHODOLOGY.md` for phase gating, sign-off, and
+  traceability
+
+Phase 10 closeout artifacts should be read as evidence that this wiring
+is active end-to-end, not as a substitute for the directives themselves.
+
 ## Why Use It
 
 `ai-dev-governance` gives a consuming project a working operating system for

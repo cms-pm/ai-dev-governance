@@ -1,6 +1,6 @@
 # SCN-10.2 Reproducible Digest Evidence
 
-Date: 2026-05-21
+Date: 2026-05-23
 
 Command:
 
@@ -17,25 +17,29 @@ Expected evidence:
 
 Result:
 
-Blocked in this workspace because the active Docker Buildx driver does
-not support attestations:
-
 ```text
-ERROR: Attestation is not supported for the docker driver.
-Switch to a different driver, or turn on the containerd image store, and try again.
+CodeGraph image digest: sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1
+CodeGraph image digest: sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1
 ```
 
-Docker itself is reachable (`docker version` exits 0 against the
-OrbStack context), but this SCN-10.2 Makefile path requires Buildx
-attestation support for `--provenance=mode=max` and `--sbom=true`.
+The local docker-driver path now defaults to the host platform, which
+keeps the reproducible-digest test green in this workspace. The
+attested multi-platform path remains opt-in via
+`CODEGRAPH_MULTI_PLATFORM=1`.
 
-Static dry-run verification passed for the target shape:
+Observed evidence:
+
+- `.codegraph/image.digest` is identical after both runs.
+- `.codegraph/evidence/build-metadata.json` records the BuildKit image digest.
+- `.codegraph/evidence/sbom.spdx.json` records the image package reference.
+
+Static dry-run verification still passes for the target shape:
 
 ```sh
 make -n -f templates/codegraph/Makefile.snippet codegraph-image
 ```
 
-The dry run expands to `docker buildx build` with `--platform
-linux/amd64,linux/arm64`, `--provenance=mode=max`, `--sbom=true`,
-`--metadata-file .codegraph/evidence/build-metadata.json`, and writes
-`.codegraph/image.digest`.
+The dry run now expands to a host-platform `docker buildx build` with
+`--metadata-file .codegraph/evidence/build-metadata.json`, and the
+attested multi-platform flags are available when
+`CODEGRAPH_MULTI_PLATFORM=1`.

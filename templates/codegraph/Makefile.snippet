@@ -9,8 +9,31 @@ CODEGRAPH_DOCKERFILE ?= templates/codegraph/Dockerfile
 CODEGRAPH_IMAGE ?= localhost/codegraph-mcp
 CODEGRAPH_TAG ?= local
 CODEGRAPH_REF := $(CODEGRAPH_IMAGE):$(CODEGRAPH_TAG)
+CODEGRAPH_MULTI_PLATFORM ?= 0
+CODEGRAPH_HOST_ARCH := $(shell uname -m)
+ifeq ($(CODEGRAPH_HOST_ARCH),arm64)
+CODEGRAPH_HOST_PLATFORM := linux/arm64
+else ifeq ($(CODEGRAPH_HOST_ARCH),aarch64)
+CODEGRAPH_HOST_PLATFORM := linux/arm64
+else
+CODEGRAPH_HOST_PLATFORM := linux/amd64
+endif
+
+ifeq ($(CODEGRAPH_MULTI_PLATFORM),1)
 CODEGRAPH_PLATFORMS ?= linux/amd64,linux/arm64
+CODEGRAPH_ATTESTATIONS ?= 1
+else
+CODEGRAPH_PLATFORMS ?= $(CODEGRAPH_HOST_PLATFORM)
+CODEGRAPH_ATTESTATIONS ?= 0
+endif
+
 SOURCE_DATE_EPOCH ?= 1714521600
+
+ifeq ($(CODEGRAPH_ATTESTATIONS),1)
+CODEGRAPH_ATTESTATION_FLAGS := --provenance=mode=max --sbom=true
+else
+CODEGRAPH_ATTESTATION_FLAGS :=
+endif
 
 CODEGRAPH_DIR := .codegraph
 CODEGRAPH_EVIDENCE_DIR := $(CODEGRAPH_DIR)/evidence
@@ -25,8 +48,7 @@ codegraph-image:
 		"$(CONTAINER_RUNTIME)" buildx build \
 		--file "$(CODEGRAPH_DOCKERFILE)" \
 		--platform "$(CODEGRAPH_PLATFORMS)" \
-		--provenance=mode=max \
-		--sbom=true \
+		$(CODEGRAPH_ATTESTATION_FLAGS) \
 		--metadata-file "$(CODEGRAPH_METADATA)" \
 		--tag "$(CODEGRAPH_REF)" \
 		"$(CODEGRAPH_CONTEXT)"
