@@ -122,14 +122,18 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.8 — Anti-pattern denylist
 
-- [ ] Denylist entries enumerated in `validate_codegraph_wiring.sh`:
+- [x] Denylist entries enumerated in `validate_codegraph_wiring.sh`:
       `--privileged`, `--network=host`, `--pid=host`, `--ipc=host`,
       `--cap-add`, `--security-opt seccomp=unconfined`,
       `/var/run/docker.sock`, `/run/docker.sock`, `:latest`,
-      raw `npx codegraph`.
-- [ ] Paired positive + negative fixture per entry under
-      `validation/fixtures/codegraph/negative-<flag>/`.
-- [ ] Validator exit code matches expected per fixture.
+      raw `npx codegraph` (raw MCP config + CodeGraph command/args/env
+      values inspected).
+- [x] Paired positive + negative fixture per entry under
+      `validation/fixtures/codegraph/negative-<flag>/` (positive fixture
+      remains clean; ten SCN-10.8 negative fixtures cover the denylist).
+- [x] Validator exit code matches expected per fixture
+      (`bash validation/fixtures/codegraph/run.sh`, evidence:
+      `docs/validation/scn-10.8/fixture-matrix.md`).
 
 ## SCN-10.9 — Runbook + release-evidence gate
 

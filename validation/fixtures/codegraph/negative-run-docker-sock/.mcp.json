@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "codegraph": {
+      "command": "./adg/templates/codegraph/scripts/codegraph-mcp",
+      "args": ["--transport", "stdio", "--mount", "type=bind,src=/run/docker.sock,dst=/run/docker.sock"],
+      "env": {
+        "ADG_CODEGRAPH_DIGEST": ".codegraph/image.digest",
+        "ADG_CODEGRAPH_IMAGE": "localhost/codegraph-mcp",
+        "ADG_CODEGRAPH_SOURCE": "."
+      }
+    }
+  }
+}

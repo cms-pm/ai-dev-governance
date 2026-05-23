@@ -1,0 +1,12 @@
+apiVersion: ai-dev-governance/v1
+governanceVersion: v1.0.0
+profile: strict-baseline
+adapters:
+  - providers/codex
+  - tooling/rtk
+evidence:
+  planningPath: docs/planning
+  validationPath: docs/validation
+  releasePath: docs/releases
+  codegraphIndexFreshnessURI: .codegraph/
+  codegraphImageDigestURI: .codegraph/image.digest

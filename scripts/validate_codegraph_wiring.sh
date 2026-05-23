@@ -78,6 +78,48 @@ PY
   fi
 )"
 
+mcp_config_text="$(
+  if [[ -f ".mcp.json" ]]; then
+    python3 - <<'PY' 2>/dev/null || true
+import json
+from pathlib import Path
+
+raw = Path(".mcp.json").read_text()
+print(raw)
+
+try:
+    data = json.loads(raw)
+except json.JSONDecodeError:
+    raise SystemExit(0)
+
+values = []
+
+def collect(value):
+    if isinstance(value, str):
+        values.append(value)
+    elif isinstance(value, list):
+        for item in value:
+            collect(item)
+    elif isinstance(value, dict):
+        for item in value.values():
+            collect(item)
+
+collect(data.get("mcpServers", {}).get("codegraph", {}))
+print(" ".join(values))
+PY
+  fi
+)"
+
+deny_mcp_pattern() {
+  local pattern="$1"
+  local message="$2"
+  if [[ -n "$mcp_config_text" ]] && grep -E "$pattern" <<<"$mcp_config_text" >/dev/null; then
+    fail "$message"
+  else
+    pass "$message not present"
+  fi
+}
+
 if [[ -z "$codegraph_command" ]]; then
   fail ".mcp.json missing mcpServers.codegraph.command"
 elif [[ "$codegraph_command" == *"npx"* || "$codegraph_command" != *"codegraph-mcp"* ]]; then
@@ -85,6 +127,27 @@ elif [[ "$codegraph_command" == *"npx"* || "$codegraph_command" != *"codegraph-m
 else
   pass ".mcp.json invokes CodeGraph through codegraph-mcp wrapper"
 fi
+
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--privileged([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --privileged"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--network=host([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --network=host"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--pid=host([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --pid=host"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--ipc=host([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --ipc=host"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--cap-add([=[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --cap-add"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])--security-opt[=[:space:]][^[:space:]"'\'',\]]*seccomp=unconfined([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use --security-opt seccomp=unconfined"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])/var/run/docker\.sock([:/[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not mount /var/run/docker.sock"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])/run/docker\.sock([:/[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not mount /run/docker.sock"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])[^[:space:]"'\'',@]+:latest([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not use :latest image refs"
+deny_mcp_pattern '(^|[[:space:]"'\'',\[])npx[[:space:]]+codegraph([[:space:]"'\'',\]]|$)' \
+  ".mcp.json CodeGraph wiring must not invoke raw npx codegraph"
 
 digest_file=".codegraph/image.digest"
 digest=""
