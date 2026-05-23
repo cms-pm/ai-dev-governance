@@ -35,7 +35,10 @@ KILL       → strengthen the test or add a sibling test until each
 REFACTOR   → only after the mutate/kill pass is green. Apply the
               refactor onramp from
               `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`
-              §Refactor Plan when the rubric scores >= 2.
+              §Refactor Plan when the rubric scores >= 2. In a
+              CodeGraph-declared consumer, run a CG impact,
+              caller/callee, context, or explore query before native
+              spidering or the first production refactor edit.
 ```
 
 Reference to the normative rule (quoted, not authored): from

@@ -54,13 +54,20 @@ characterisation-suite skill (which writes the actual safety net).
 
 ## Workflow
 
-1. Read the target module via `Read`; do not modify it yet.
-2. Enumerate every cross-boundary call (I/O, globals, module-level
+1. If the consumer declares CodeGraph, run `mcp__codegraph__impact`,
+   `mcp__codegraph__callers`, `mcp__codegraph__callees`,
+   `mcp__codegraph__context`, or `mcp__codegraph__explore` for the
+   target symbol/path before broad `Read`, `Grep`, `Glob`, `rg`, or
+   `find` spidering. Record the query and affected files in the seam
+   map. If CodeGraph is unavailable, stale, or outside scope, record
+   that fallback before native spidering.
+2. Read the target module narrowly; do not modify it yet.
+3. Enumerate every cross-boundary call (I/O, globals, module-level
    state).
-3. For each, choose the lowest-cost seam from the table that preserves
+4. For each, choose the lowest-cost seam from the table that preserves
    call-site signature.
-4. Write the seam map under `docs/evidence/seam-maps/`.
-5. Register with `.astaire/astaire scan`.
+5. Write the seam map under `docs/evidence/seam-maps/`.
+6. Register with `.astaire/astaire scan`.
 
 ## Quoted source-of-truth rule
 

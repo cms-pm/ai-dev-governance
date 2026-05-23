@@ -73,6 +73,13 @@ def test_ingest_source_matches_golden(tmp_path):
 
 ## Discipline
 
+Before selecting fixtures or reading broadly across legacy code, use
+CodeGraph first when the consumer declares it: run a narrow
+`mcp__codegraph__context`, `explore`, `callers`, `callees`, or `impact`
+query for the target path/symbol and record the affected files in the
+characterisation evidence note. If CodeGraph is unavailable, stale, or
+outside declared scope, record that fallback before native spidering.
+
 Quoted from
 `core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md` §Refactor Onramp —
 > "Characterisation tests pin observed behaviour, not desired

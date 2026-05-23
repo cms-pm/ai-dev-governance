@@ -10,6 +10,8 @@ Defines recommended context conventions for teams using Codex-style assistants.
 - Keep provider-specific operational hints outside `core/`.
 - Capture decision links in sign-offs using commit/PR references.
 - For strict baseline projects, prefer shell-capable workflows that can be routed through RTK before falling back to native internal inspection tools.
+- When CodeGraph is declared, source-code discovery and refactor impact
+  analysis MUST check CodeGraph before broad shell or native spidering.
 
 ## Astaire Integration (port-of-first-resort)
 
@@ -42,8 +44,24 @@ Defines recommended context conventions for teams using Codex-style assistants.
 - Prefer RTK-backed shell commands for high-volume reads, searches, listings, git, test, and CI output. Native internal tools remain allowed for narrow targeted inspection, but they SHOULD NOT be the default when a shell flow is available.
 - Release evidence for strict Codex consumers MUST include Codex-specific RTK setup verification plus `rtk gain` and `rtk discover` output or a documented no-op result. When repo-local tracking is used, include live usage proof such as `rtk gain --history` after a repo-local RTK command.
 
+## CodeGraph Integration
+
+- Consumers that declare CodeGraph MUST load
+  `adapters/providers/codex/CODEGRAPH.md` into the agent bootstrap surface
+  alongside the Astaire and RTK snippets.
+- Before broad source discovery with `rg`, `find`, recursive listings, or
+  multi-file reads, agents MUST first use the `mcp__codegraph__*` tool that
+  matches the question (`search`, `context`, `explore`, `callers`,
+  `callees`, or `impact`).
+- Before refactoring production code, agents MUST run a CodeGraph impact,
+  caller/callee, context, or explore query and record the affected files in
+  the implementation note. If CodeGraph is stale, unavailable, or outside
+  declared scope, record the fallback reason before native spidering.
+
 ## Required Mapping
 
 - `core/*` policies map directly to project governance docs.
 - Adapter-specific preferences must be declared in governance manifest under `adapters`.
 - RTK-specific setup, exceptions, and evidence requirements map to `adapters/tooling/RTK_CONTEXT_ADAPTER.md`.
+- CodeGraph-specific setup, tool selection, and fallback discipline map to
+  `adapters/providers/codex/CODEGRAPH.md`.

@@ -31,9 +31,9 @@ Codex consumers that enable CG should apply the template fragments under
 
 The MCP server should be invoked through `templates/codegraph/scripts/codegraph-mcp`
 or an equivalent consumer-local wrapper that preserves the hardening matrix
-from the template. Codex sessions should prefer lightweight CG lookups for
-source navigation, especially before broad `rg`, `find`, or targeted file-read
-passes.
+from the template. In consumers that declare CG, Codex sessions MUST perform
+lightweight CG lookups for source navigation before broad `rg`, `find`,
+recursive listing, or multi-file read passes whose purpose is discovery.
 
 ## Tool Selection
 
@@ -42,6 +42,11 @@ passes.
 - Use `mcp__codegraph__impact` before changing shared functions.
 - Use `mcp__codegraph__context` for compact file or project context.
 - Use `mcp__codegraph__explore` for delegated source-navigation exploration.
+
+For refactoring, use `mcp__codegraph__impact` or caller/callee/context queries
+before the first production edit and list the affected files in the
+implementation note required by
+`core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md`.
 
 When CG is absent, stale, or outside declared scope, continue with native
 repository tools and record the fallback in the work log.
@@ -58,17 +63,19 @@ treated as proof of acceptance.
 <!-- CODEGRAPH_EXPLORE_ADDENDUM_START -->
 When CodeGraph is available and inside the declared path scope, begin
 source-navigation exploration with `mcp__codegraph__explore` or
-`mcp__codegraph__context`. Treat returned file snippets as already-read
+`mcp__codegraph__context` before token-heavy native spidering. Treat returned
+file snippets as already-read
 context for the immediate task: do not re-Read files that CodeGraph returned
 unless you need lines outside the returned range, are preparing a direct edit,
 or must verify freshness-sensitive evidence. Keep delegated exploration
 budgets small and explicit: ask for the narrowest symbol, caller/callee,
 impact, or file-context slice that can answer the question, and stop once the
-next implementation or review step is clear. If CodeGraph is unavailable,
-stale, ambiguous in scope, or blocked by missing evidence, fall back to native
-repository tools such as `rg`, `find`, language test runners, and targeted file
-reads; record that fallback in the work log before using CG-derived context as
-anything more than advisory navigation.
+next implementation or review step is clear. For refactoring, run an impact
+or caller/callee/context query before the first production edit. If CodeGraph
+is unavailable, stale, ambiguous in scope, or blocked by missing evidence,
+fall back to native repository tools such as `rg`, `find`, language test
+runners, and targeted file reads; record that fallback in the work log before
+using CG-derived context as anything more than advisory navigation.
 <!-- CODEGRAPH_EXPLORE_ADDENDUM_END -->
 
 ## Cross-References

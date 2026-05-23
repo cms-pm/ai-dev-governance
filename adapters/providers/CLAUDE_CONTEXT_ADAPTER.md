@@ -10,6 +10,8 @@ Defines recommended context conventions for teams using Claude-style assistants.
 - Keep provider-specific operational guidance in adapter docs, not in `core/`.
 - Preserve auditable human approvals in repository artifacts.
 - For strict baseline projects, use shell-first inspection and validation flows so RTK can compress Bash-visible command output before it reaches Claude context.
+- When CodeGraph is declared, source-code discovery and refactor impact
+  analysis MUST check CodeGraph before broad shell or built-in-tool spidering.
 
 ## Astaire Integration (port-of-first-resort)
 
@@ -40,8 +42,24 @@ Defines recommended context conventions for teams using Claude-style assistants.
 - Claude built-in tools such as `Read`, `Grep`, and `Glob` are allowed for narrow targeted inspection, but they do not benefit from RTK hook rewriting and SHOULD NOT be the default for broad repo exploration.
 - Release evidence for strict Claude consumers MUST include RTK setup verification plus `rtk gain` and `rtk discover` output or a documented no-op result.
 
+## CodeGraph Integration
+
+- Consumers that declare CodeGraph MUST load
+  `adapters/providers/claude/CODEGRAPH.md` into `CLAUDE.md` or an equivalent
+  agent bootstrap surface alongside the Astaire and RTK snippets.
+- Before broad source discovery with `Glob`, `Grep`, `Read`, recursive
+  listings, or multi-file reads, agents MUST first use the
+  `mcp__codegraph__*` tool that matches the question (`search`, `context`,
+  `explore`, `callers`, `callees`, or `impact`).
+- Before refactoring production code, agents MUST run a CodeGraph impact,
+  caller/callee, context, or explore query and record the affected files in
+  the implementation note. If CodeGraph is stale, unavailable, or outside
+  declared scope, record the fallback reason before native spidering.
+
 ## Required Mapping
 
 - `core/*` policies map directly to project governance docs.
 - Adapter-specific preferences must be declared in governance manifest under `adapters`.
 - RTK-specific setup, exceptions, and evidence requirements map to `adapters/tooling/RTK_CONTEXT_ADAPTER.md`.
+- CodeGraph-specific setup, tool selection, and fallback discipline map to
+  `adapters/providers/claude/CODEGRAPH.md`.

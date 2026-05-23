@@ -73,6 +73,32 @@ rtk discover          # find missed opportunities
 
 ---
 
+### CodeGraph — source-code intelligence (MANDATORY when declared)
+
+When `governance.yaml` declares CodeGraph evidence
+(`codegraphIndexFreshnessURI` and `codegraphImageDigestURI`) and the
+`codegraph` MCP server is available, source-code discovery MUST start with
+CodeGraph before token-heavy native spidering.
+
+Use the narrowest matching tool first:
+
+- `mcp__codegraph__search` for symbols, files, and text.
+- `mcp__codegraph__context` or `mcp__codegraph__explore` for compact
+  source-navigation context.
+- `mcp__codegraph__callers` and `mcp__codegraph__callees` for call paths.
+- `mcp__codegraph__impact` before changing shared functions or refactoring.
+
+For production refactors, record the CodeGraph impact/caller/callee/context
+query and affected files in the implementation note before the first edit. If
+CodeGraph is stale, unavailable, or outside scope, record that fallback before
+using broad `rg`, `find`, `Glob`, `Grep`, `Read`, or recursive listings.
+
+Full surface:
+`.governance/ai-dev-governance/adapters/providers/codex/CODEGRAPH.md` or
+`.governance/ai-dev-governance/adapters/providers/claude/CODEGRAPH.md`
+
+---
+
 ### Governance context
 
 - Planning artifacts: `docs/planning/**`

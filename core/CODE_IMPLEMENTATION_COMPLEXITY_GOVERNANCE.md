@@ -243,6 +243,11 @@ exception.
 Before implementing nontrivial production code, the agent MUST write or update
 a brief implementation note containing:
 
+- CodeGraph refactor/source-navigation check: for a consumer that declares
+  CodeGraph, list the `mcp__codegraph__impact`, caller/callee, context, or
+  explore query used before token-heavy native source spidering. If CodeGraph
+  is unavailable, stale, or outside declared scope, record the fallback reason
+  before using broad native repository tools.
 - Component owner: the file/module that owns the behavior.
 - Component placement: why the chosen path matches domain ownership.
 - Naming check: existing near-duplicate names and why the selected name is
@@ -349,6 +354,16 @@ restructures existing production code, agents MUST produce a refactor
 plan that includes both of the following before any production edit
 lands:
 
+0. **CodeGraph impact check.** In a consumer that declares CodeGraph,
+   agents MUST run the CG-first source-navigation check from
+   `core/CODE_INTELLIGENCE_GOVERNANCE.md` before writing the seam map or
+   reading broadly with native tools. The refactor plan MUST name the
+   CG query type used (`impact`, `callers`, `callees`, `context`, or
+   `explore`), the target symbol/path, and the resulting affected-file
+   set. If CG cannot be used, the plan MUST record the stale/unavailable/
+   out-of-scope reason before falling back to `rg`, `find`, `Glob`,
+   `Grep`, or broad `Read` passes.
+
 1. **Seam map.** A markdown artifact enumerating every seam in the
    target code by type (constructor injection, fixture, monkeypatch,
    module-level singleton, conditional import, environment-variable
@@ -400,11 +415,14 @@ monolith growth.
 
 Agents MUST use this sequence for applicable work:
 
-1. Inspect current file sizes and module ownership before editing.
-2. If the target file is over cap, prefer extraction over addition.
-3. Declare state, task, resource, naming, and placement ownership before code
+1. When CodeGraph is declared, perform the CG-first source-navigation check
+   before token-heavy native spidering; for refactors, run a CG impact or
+   caller/callee/context query before production edits.
+2. Inspect current file sizes and module ownership before editing.
+3. If the target file is over cap, prefer extraction over addition.
+4. Declare state, task, resource, naming, and placement ownership before code
    changes.
-4. Keep public APIs narrow and role-specific.
-5. Add or update boundary tests while moving behavior.
-6. Update diagrams and line-count evidence.
-7. Report complexity scores in the final validation note.
+5. Keep public APIs narrow and role-specific.
+6. Add or update boundary tests while moving behavior.
+7. Update diagrams and line-count evidence.
+8. Report complexity scores in the final validation note.

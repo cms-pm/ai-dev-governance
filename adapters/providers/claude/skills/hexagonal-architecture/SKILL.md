@@ -19,6 +19,16 @@ rule from the source-of-truth document.
   `analyzers.architectureFitness` block.
 - Reviewing a PR for dependency-direction compliance.
 
+## CodeGraph-first refactor check
+
+When the consumer declares CodeGraph, run `mcp__codegraph__impact`,
+`mcp__codegraph__callers`, `mcp__codegraph__callees`,
+`mcp__codegraph__context`, or `mcp__codegraph__explore` against the target
+module or symbol before broad native spidering and before production edits.
+Use the result to seed the ports/adapters affected-file list. If CodeGraph is
+unavailable, stale, or outside declared scope, record that fallback before
+using `Read`, `Grep`, `Glob`, `rg`, `find`, or recursive listings.
+
 ## Layout idiom
 
 ```

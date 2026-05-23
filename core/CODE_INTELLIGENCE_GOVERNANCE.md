@@ -24,10 +24,23 @@ artifacts before falling back to direct reads under the exceptions in
 `core/PLANNING_METHODOLOGY.md`.
 
 Tier 2 is an optional local source-code intelligence layer. When a consumer
-declares CG support, agents MAY use it for symbol lookup, call/reference
-navigation, file-impact discovery, and source-structure exploration inside
-the declared path scope. CG results are advisory context; final changes and
-evidence MUST still bind to repository files and acceptance IDs.
+declares CG support, agents MUST check CG before token-heavy native
+repository spidering for source-code discovery inside the declared path
+scope. Token-heavy spidering includes broad `Glob`, `Grep`, `Read`, `find`,
+`rg`, recursive listing, and exploratory multi-file reads whose purpose is
+to discover symbols, call paths, ownership, or file impact. Agents use CG for
+symbol lookup, call/reference navigation, file-impact discovery, and
+source-structure exploration inside the declared path scope. CG results are
+advisory context; final changes and evidence MUST still bind to repository
+files and acceptance IDs.
+
+For refactoring work in a CG-declared consumer, the CG-first check is a hard
+pre-edit requirement. Before any production refactor edit, agents MUST use
+`mcp__codegraph__impact`, `mcp__codegraph__callers`,
+`mcp__codegraph__callees`, `mcp__codegraph__context`, or
+`mcp__codegraph__explore` to identify affected files and dependencies, unless
+CG is unavailable, stale, or outside declared scope. Any fallback MUST be
+recorded in the implementation note before native spidering begins.
 
 ## Bounded-Context Glossary
 
@@ -109,6 +122,11 @@ entirely. When omitted, agents use Astaire for governance context and native
 repo tools (`rg`, file reads, language test runners, and compiler output) for
 source discovery.
 
+When CG is declared, required-presence is no longer advisory for source-code
+navigation practice: agents MUST perform the CG-first check before broad
+native source discovery and MUST perform the refactor impact check before
+production refactor edits.
+
 ## Path-Scope Contract
 
 CG MUST operate only inside its declared path scope. Generated artifacts,
@@ -155,6 +173,10 @@ See `core/EVIDENCE_CONTRACT.md` for requiredness by evidence type.
 3. Declaring CG without a path scope.
 4. Citing a mutable image tag such as `latest` instead of an immutable digest.
 5. Letting CG replace Astaire for governance artifact reads.
+6. Broad native source-code spidering before a CG-first check in a
+   CG-declared consumer.
+7. Starting a production refactor in a CG-declared consumer without a CG
+   impact/caller/callee/context check or an explicit fallback note.
 
 ## Cross-References
 

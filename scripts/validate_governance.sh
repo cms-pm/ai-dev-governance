@@ -245,6 +245,30 @@ rg -q "Astaire-first read discipline" core/PLANNING_METHODOLOGY.md || fail "PLAN
 [[ -f templates/ASTAIRE_CLI_SNIPPET.md ]] || fail "templates/ASTAIRE_CLI_SNIPPET.md must exist"
 pass "Astaire-first provider adapter carriage"
 
+rg -q "agents MUST check CG before token-heavy native" core/CODE_INTELLIGENCE_GOVERNANCE.md \
+  || fail "Code intelligence policy must require CG before token-heavy native spidering"
+rg -q "CodeGraph impact check" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md \
+  || fail "Code complexity policy must require a CodeGraph impact check for refactors"
+rg -q "source-code discovery MUST start with" templates/AGENTS_BOOTSTRAP_TEMPLATE.md \
+  || fail "Agent bootstrap template must expose CodeGraph-first source discovery"
+rg -q "Before refactoring production code" adapters/providers/CLAUDE_CONTEXT_ADAPTER.md \
+  || fail "Claude context adapter must require CodeGraph before refactoring"
+rg -q "Before refactoring production code" adapters/providers/CODEX_CONTEXT_ADAPTER.md \
+  || fail "Codex context adapter must require CodeGraph before refactoring"
+rg -q "source navigation before broad" adapters/providers/claude/CODEGRAPH.md \
+  || fail "Claude CodeGraph adapter must require CG before broad source discovery"
+rg -q "source navigation before broad" adapters/providers/codex/CODEGRAPH.md \
+  || fail "Codex CodeGraph adapter must require CG before broad source discovery"
+rg -q "CodeGraph-first refactor check" adapters/providers/claude/skills/hexagonal-architecture/SKILL.md \
+  || fail "Hexagonal architecture skill must expose CodeGraph-first refactor check"
+rg -q "mcp__codegraph__impact" adapters/providers/claude/skills/finding-seams/SKILL.md \
+  || fail "Finding-seams skill must require a CodeGraph impact/call query before spidering"
+rg -q "Before selecting fixtures or reading broadly" adapters/providers/claude/skills/characterisation-tests/SKILL.md \
+  || fail "Characterisation skill must require CodeGraph before broad legacy reads"
+rg -q "CodeGraph-declared consumer" adapters/providers/claude/skills/tdd/SKILL.md \
+  || fail "TDD skill must require CodeGraph before production refactor edits"
+pass "CodeGraph-first agent wiring"
+
 rg -q "\[${version}\]" CHANGELOG.md || fail "CHANGELOG missing current version entry"
 pass "CHANGELOG includes current version"
 
