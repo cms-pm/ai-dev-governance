@@ -9,7 +9,7 @@ so agents can choose the right surface without scope drift.
 
 Keywords `MUST`, `SHOULD`, and `MAY` are normative.
 
-## Three-Tier Doctrine
+## Two-Tier Doctrine
 
 ADG recognizes two code-intelligence tiers:
 

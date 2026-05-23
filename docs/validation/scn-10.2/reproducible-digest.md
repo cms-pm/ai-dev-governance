@@ -13,7 +13,8 @@ Expected evidence:
 
 - `.codegraph/image.digest` is identical after both runs.
 - `.codegraph/evidence/build-metadata.json` records the BuildKit image digest.
-- `.codegraph/evidence/sbom.spdx.json` records the image package reference.
+- `.codegraph/evidence/sbom.spdx.json` records the image package reference as
+  an ADG Makefile SBOM fixture.
 
 Result:
 

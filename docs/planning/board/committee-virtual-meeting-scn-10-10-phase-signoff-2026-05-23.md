@@ -7,6 +7,9 @@ ratified for 2026-05-23.
 The devil's-advocate review confirms the only material caution is the
 explicit host-platform default on SCN-10.2, which is documented as an
 opt-in multi-platform path rather than a silent default.
+The fine-tooth re-review found that the first board pass underweighted
+several real contradictions; those contradictions were corrected before
+the ratification state was allowed to stand.
 
 ---
 meetingId: MTG-0006
@@ -17,6 +20,7 @@ cadenceLane: Accountability Review
 chair: Will Larson (BM-012)
 packetRef: docs/planning/board/committee-review-packet-2026-05-23-scn-10-10.md
 devilsAdvocateRef: docs/planning/board/committee-devils-advocate-review-scn-10-10.md
+fineToothReviewRef: docs/planning/board/committee-fine-tooth-review-scn-10-10.md
 priorMeetingRef: docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-2026-05-20.md
 ---
 
@@ -28,6 +32,7 @@ priorMeetingRef: docs/planning/board/committee-virtual-meeting-scn-9-7-phase-sig
 | DEC-0007 | Adopted | Phase 10 sign-off is approved with 0 open critical findings and the monitor-lane carry-forward for downstream adoption and CockpitVM pilot evidence. |
 | DEC-0008 | Adopted | The devil's-advocate review is accepted as a supplementary test-design artifact; SCN-10.2's host-platform default is permitted because the opt-in attested path remains documented and explicit. |
 | DEC-0009 | Adopted | The devil's-advocate findings are incorporated into the Phase 10 packet as low-severity compliance cautions, with no new blockers introduced. |
+| DEC-0010 | Adopted | The fine-tooth re-review supersedes the first devil's-advocate severity assessment for SCN-10.9/10.10 closeout quality; FND-0028 through FND-0034 are accepted and must be closed before Phase 11 consumes Phase 10 as clean input. |
 
 ## Risk Disposition
 
@@ -48,3 +53,4 @@ priorMeetingRef: docs/planning/board/committee-virtual-meeting-scn-9-7-phase-sig
 |---|---|---|---|
 | ACT-011 | Accountable Delivery Lead | 2026-05-23 | Date the Phase 10 sign-off row and close SCN-10.10 traceability. |
 | ACT-012 | Accountable Delivery Lead | Phase 11 bootstrap | Re-open carried-forward downstream-adoption monitoring and pilot evidence capture. |
+| ACT-013 | Accountable Delivery Lead | 2026-05-23 | Close FND-0028 through FND-0034 corrective edits and rerun Astaire lint. |

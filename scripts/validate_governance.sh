@@ -341,6 +341,14 @@ bash validation/fixtures/codegraph/run.sh \
   || fail "CodeGraph wiring fixtures failed"
 pass "CodeGraph wiring fixtures"
 
+if [[ "${ADG_CODEGRAPH_MCP_SHAPE_SMOKE:-0}" == "1" ]]; then
+  bash "$ROOT_DIR/scripts/validation/run_codegraph_mcp_shape_smoke.sh" \
+    || fail "CodeGraph MCP direct shape smoke failed"
+  pass "CodeGraph MCP direct shape smoke"
+else
+  pass "CodeGraph MCP direct shape smoke skipped"
+fi
+
 negative_fixture="validation/fixtures/embedded-missing-evidence/governance.yaml"
 [[ -f "$negative_fixture" ]] || fail "Negative fixture missing: $negative_fixture"
 if python3 - "$negative_fixture" <<'PY'

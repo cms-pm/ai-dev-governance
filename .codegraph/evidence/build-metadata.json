@@ -1,0 +1,5 @@
+{
+  "buildx.build.ref": "orbstack/orbstack/0fe365om8bjmkmm4b8h9f9e77",
+  "containerimage.config.digest": "sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1",
+  "containerimage.digest": "sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1"
+}

@@ -76,7 +76,13 @@ digest=$(tr -d '[:space:]' < "$digest_file")
 
 case "$digest" in
   *@sha256:*) image_ref=$digest ;;
-  sha256:*) image_ref="${ADG_CODEGRAPH_IMAGE:-localhost/codegraph-mcp}@$digest" ;;
+  sha256:*)
+    if "$runtime" image inspect "$digest" >/dev/null 2>&1; then
+      image_ref=$digest
+    else
+      image_ref="${ADG_CODEGRAPH_IMAGE:-localhost/codegraph-mcp}@$digest"
+    fi
+    ;;
   *) die "image digest must be sha256:<hex> or image@sha256:<hex>: $digest" ;;
 esac
 

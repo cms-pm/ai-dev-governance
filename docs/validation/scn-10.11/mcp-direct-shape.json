@@ -1,0 +1,87 @@
+{
+  "projectRoot": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.JH626B/corpus",
+  "rootUri": "file:///private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.JH626B/corpus",
+  "toolProjectPath": "/workspace",
+  "serverCommand": [
+    "/Users/cms/proj/agentic/ai-dev-governance/templates/codegraph/scripts/codegraph-mcp",
+    "serve",
+    "--mcp",
+    "--no-watch"
+  ],
+  "checks": [
+    {
+      "name": "initialize",
+      "status": "pass"
+    },
+    {
+      "name": "tools/list",
+      "status": "pass",
+      "toolCount": 9
+    },
+    {
+      "name": "representative-tool-matrix",
+      "status": "pass",
+      "matrix": [
+        {
+          "task": "index health",
+          "nativeAvoided": "manual .codegraph/db inspection",
+          "calls": [
+            "codegraph_status"
+          ]
+        },
+        {
+          "task": "project layout",
+          "nativeAvoided": "find/ls tree walk",
+          "calls": [
+            "codegraph_files"
+          ]
+        },
+        {
+          "task": "function/type definition lookup",
+          "nativeAvoided": "rg + Read definition chase",
+          "calls": [
+            "codegraph_search",
+            "codegraph_node"
+          ]
+        },
+        {
+          "task": "compact task context",
+          "nativeAvoided": "recursive grep plus multi-file Read",
+          "calls": [
+            "codegraph_context"
+          ]
+        },
+        {
+          "task": "refactor blast-radius check",
+          "nativeAvoided": "manual caller/callee graph via rg",
+          "calls": [
+            "codegraph_callers",
+            "codegraph_callees",
+            "codegraph_impact"
+          ]
+        },
+        {
+          "task": "seam/refactor survey",
+          "nativeAvoided": "broad Read loop over related files",
+          "calls": [
+            "codegraph_explore"
+          ]
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "status": "pass",
+    "toolCalls": [
+      "codegraph_status",
+      "codegraph_files",
+      "codegraph_search",
+      "codegraph_node",
+      "codegraph_context",
+      "codegraph_callers",
+      "codegraph_callees",
+      "codegraph_impact",
+      "codegraph_explore"
+    ]
+  }
+}

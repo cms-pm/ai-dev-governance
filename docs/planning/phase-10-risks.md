@@ -12,7 +12,6 @@ Linked to: `docs/planning/pool_questions/phase-10-codegraph.md`,
 
 | ID | Title | Severity | Likelihood | Trigger SCN(s) | Mitigation | Owner | Review Window |
 |---|---|---|---|---|---|---|---|
-| R-10-01 | Code-intelligence bounded-context glossary ambiguity — Astaire vs CodeGraph vs Graphify scope drift in downstream consumers | Low | Medium | SCN-10.1, SCN-10.6 | New `core/CODE_INTELLIGENCE_GOVERNANCE.md` lands the two-tier doctrine and bounded-context glossary entries under the `DOMAIN_LANGUAGE_GOVERNANCE.md` pattern (per-context authoring authority + naming-correspondence rule). SCN-10.6 removes Graphify from ADG entirely: no submodule, no wrapper scripts, no manifest block, and no active consumer install/invocation guidance. Doctrine + removal evidence close the ambiguity slice; final phase ratification remains at SCN-10.10. | Accountable Delivery Lead | Closed at SCN-10.10 |
 | R-10-02 | Downstream CG adoption — `.mcp.json` wiring, `.codegraphignore` discipline, freshness-gate compliance lag behind Phase 10 sign-off | Medium | Medium | First consumer adoption (CockpitVM expected) | `scripts/validate_codegraph_wiring.sh` is consumer-side and fail-closed at the wiring level; the release-evidence gate in `RELEASE_PROCESS.md` activates *only* for consumers that declare CG in `governance.yaml`, so non-CG consumers (Plan B / no-tool) are not coerced. Closure cadence mirrors R-8.2-02 (sprint-critique re-check until first downstream adoption produces evidence). | Accountable Delivery Lead | At first downstream consumer adoption; sprint critique each Phase 11 iteration |
 | R-10-03 | Removed Graphify fallback — consumers without CG rely on native repository tools for code discovery | Medium | Medium | First consumer not yet on CG; SCN-10.6 removal landing | SCN-10.6 removes Graphify instead of demoting it. Plan B (LSDF) is documented at `templates/codegraph/PLAN_B_LSDF.md` for Python-only / no-Docker consumers. Non-CG consumers are not coerced into Tier-2 adoption; they use Astaire for governance reads and native tools (`rg`, direct file reads, test runners, compiler output) for source discovery per `CLAUDE.md.fragment`. | Accountable Delivery Lead | At SCN-10.6 review; first consumer adoption window |
 | R-10-04 | CockpitVM pilot — token/tool-call delta evidence not yet captured; benchmark assumptions (~35% cost / ~70% tool-call reduction from upstream README) unvalidated for embedded C/C++ corpora | Medium | Low | Post-SCN-10.10 monitor lane | The evidence *contract* (capture format) lands in `runbooks/RELEASE_PROCESS.md` at SCN-10.9 without requiring the evidence itself. The pilot is registered as monitor lane per the R-8.2-02 / R-9-04 precedent — Phase 10 sign-off does not block on pilot benchmark. Carries to Phase 11 monitor lane with explicit close-or-rebaseline decision at the first CockpitVM release that adopts CG. | Accountable Delivery Lead | At first CockpitVM release post-CG adoption |
@@ -28,7 +27,9 @@ Linked to: `docs/planning/pool_questions/phase-10-codegraph.md`,
 
 ## Closed Risks
 
-(none — phase newly opened)
+| ID | Closure reason | Closure evidence |
+|---|---|---|
+| R-10-01 | Code-intelligence bounded-context ambiguity closed by the SCN-10.1 two-tier doctrine and SCN-10.6 Graphify removal. | `core/CODE_INTELLIGENCE_GOVERNANCE.md`; `docs/planning/board/committee-virtual-meeting-scn-10-10-phase-signoff-2026-05-23.md` |
 
 ## Rollback Strategy Notes
 

@@ -147,19 +147,19 @@ appended in `(parens)` after each box is checked.
 
 ## SCN-10.10 — Board review + signoff
 
-- [ ] Phase 10 board packet on disk at
+- [x] Phase 10 board packet on disk at
       `docs/planning/board/committee-review-packet-<date>-scn-10-10.md`.
-- [ ] Board meeting record on disk at
+- [x] Board meeting record on disk at
       `docs/planning/board/committee-virtual-meeting-scn-10-10-phase-signoff-<date>.md`.
-- [ ] Eight board lenses applied (incl. test-design per SCN-9.1).
-- [ ] Three-tier doctrine ratified.
-- [ ] R-10-01 closed in `phase-10-risks.md`.
-- [ ] R-10-02 / R-10-03 / R-10-04 handed to monitor lane.
-- [ ] `signoffs.md` Phase 10 row flipped to `ratified` with approver
+- [x] Eight board lenses applied (incl. test-design per SCN-9.1).
+- [x] Two-tier doctrine ratified.
+- [x] R-10-01 closed in `phase-10-risks.md`.
+- [x] R-10-02 / R-10-03 / R-10-04 handed to monitor lane.
+- [x] `signoffs.md` Phase 10 row flipped to `ratified` with approver
       `cms-pm` and date.
-- [ ] `traceability.md` rows for SCN-10.0..SCN-10.10 all show `done`.
-- [ ] `.astaire/astaire lint` 0/0.
-- [ ] Phase 9 carry-forward risks (R-8.2-02, R-8.2-05, R-9-04, R-9-05)
+- [x] `traceability.md` rows for SCN-10.0..SCN-10.10 all show `done`.
+- [x] `.astaire/astaire lint` 0/0.
+- [x] Phase 9 carry-forward risks (R-8.2-02, R-8.2-05, R-9-04, R-9-05)
       disposition recorded.
 
 ## Follow-ups (deferred to Phase 11)

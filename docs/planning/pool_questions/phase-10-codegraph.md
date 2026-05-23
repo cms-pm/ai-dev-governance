@@ -41,7 +41,7 @@ R-10-04, not gating phase signoff.
   11 per R-10-02 outcome); same backward-compat discipline inherited if
   it eventually lands.
 - R-9-05 (Medium / Medium) — glossary authoring authority drift. The
-  Phase 10 three-tier doctrine adds a new bounded context
+  Phase 10 two-tier doctrine adds a new bounded context
   (code-intelligence) under `DOMAIN_LANGUAGE_GOVERNANCE.md`; closure
   of the code-intelligence slice is owned by SCN-10.1 / SCN-10.10.
 

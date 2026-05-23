@@ -54,7 +54,7 @@ codegraph-image:
 		"$(CODEGRAPH_CONTEXT)"
 	@awk -F'"' '/containerimage.digest/ { print $$4; found=1 } END { if (!found) exit 1 }' \
 		"$(CODEGRAPH_METADATA)" > "$(CODEGRAPH_DIGEST)"
-	@printf '{\n  "spdxVersion": "SPDX-2.3",\n  "dataLicense": "CC0-1.0",\n  "SPDXID": "SPDXRef-DOCUMENT",\n  "name": "codegraph-mcp-image-sbom",\n  "documentNamespace": "https://github.com/cms-pm/ai-dev-governance/codegraph/sbom/%s",\n  "creationInfo": {\n    "created": "1970-01-01T00:00:00Z",\n    "creators": ["Tool: docker-buildx-sbom-attestation"]\n  },\n  "packages": [{\n    "name": "%s",\n    "SPDXID": "SPDXRef-Package-codegraph-mcp-image",\n    "downloadLocation": "NOASSERTION",\n    "filesAnalyzed": false,\n    "externalRefs": [{\n      "referenceCategory": "PACKAGE-MANAGER",\n      "referenceType": "purl",\n      "referenceLocator": "pkg:docker/%s@%s"\n    }]\n  }]\n}\n' \
+	@printf '{\n  "spdxVersion": "SPDX-2.3",\n  "dataLicense": "CC0-1.0",\n  "SPDXID": "SPDXRef-DOCUMENT",\n  "name": "codegraph-mcp-image-sbom",\n  "documentNamespace": "https://github.com/cms-pm/ai-dev-governance/codegraph/sbom/%s",\n  "creationInfo": {\n    "created": "1970-01-01T00:00:00Z",\n    "creators": ["Tool: adg-codegraph-makefile-sbom-fixture"]\n  },\n  "packages": [{\n    "name": "%s",\n    "SPDXID": "SPDXRef-Package-codegraph-mcp-image",\n    "downloadLocation": "NOASSERTION",\n    "filesAnalyzed": false,\n    "externalRefs": [{\n      "referenceCategory": "PACKAGE-MANAGER",\n      "referenceType": "purl",\n      "referenceLocator": "pkg:docker/%s@%s"\n    }]\n  }]\n}\n' \
 		"$$(tr -d '\n' < "$(CODEGRAPH_DIGEST)")" \
 		"$(CODEGRAPH_REF)" \
 		"$(CODEGRAPH_IMAGE)" \

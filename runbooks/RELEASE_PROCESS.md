@@ -50,6 +50,15 @@ its release evidence must include the SCN-10.1 CodeGraph URIs from
 The gate is intentionally consumer-scoped. Non-CG releases continue to use the
 standard checklist above and do not need CG-specific evidence.
 
+For declared CG releases, run the consumer wiring validator before tagging:
+
+```bash
+scripts/validate_codegraph_wiring.sh --root <consumer-root>
+```
+
+The release is blocked if the validator fails or if either CG evidence URI is
+present in `governance.yaml` without the matching local evidence artifact.
+
 ## CockpitVM Pilot Evidence Contract
 
 For the CockpitVM monitor lane, capture tool-call delta evidence in the format
