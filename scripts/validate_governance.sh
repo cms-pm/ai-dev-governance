@@ -49,6 +49,7 @@ required_files=(
   "templates/BOARD_REVIEW_MEETING_TEMPLATE.md"
   "templates/BOARD_OPPORTUNITY_REGISTER_TEMPLATE.md"
   "templates/AGENTS_RTK_SNIPPET_TEMPLATE.md"
+  "templates/CODEGRAPH_CONTRACT_TEMPLATE.md"
   "templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md"
   "templates/RTK_INSTRUCTIONS_TEMPLATE.md"
   "templates/RTK_LOCAL_WRAPPER_TEMPLATE.sh"
@@ -251,6 +252,16 @@ rg -q "CodeGraph impact check" core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md
   || fail "Code complexity policy must require a CodeGraph impact check for refactors"
 rg -q "source-code discovery MUST start with" templates/AGENTS_BOOTSTRAP_TEMPLATE.md \
   || fail "Agent bootstrap template must expose CodeGraph-first source discovery"
+rg -q "strict Docker/container wrapper path" templates/CODEGRAPH_CONTRACT_TEMPLATE.md \
+  || fail "CodeGraph contract template must expose strict Docker/container wrapper contract"
+rg -q "Upgrade Decision" templates/CODEGRAPH_CONTRACT_TEMPLATE.md \
+  || fail "CodeGraph contract template must expose pre-v1.1.0 upgrade decision"
+rg -q "docs/governance/codegraph-contract.md" runbooks/SUBMODULE_CONSUMER_RUNBOOK.md \
+  || fail "Submodule runbook must expose CodeGraph contract during v1.1.0+ upgrades"
+rg -q "CodeGraph contract doc present" scripts/bootstrap_project.sh \
+  || fail "Bootstrap evidence must report CodeGraph contract visibility"
+rg -q "CodeGraph consumer contract visible" scripts/validate_bootstrap.sh \
+  || fail "Bootstrap validator must check CodeGraph contract visibility"
 rg -q "Before refactoring production code" adapters/providers/CLAUDE_CONTEXT_ADAPTER.md \
   || fail "Claude context adapter must require CodeGraph before refactoring"
 rg -q "Before refactoring production code" adapters/providers/CODEX_CONTEXT_ADAPTER.md \

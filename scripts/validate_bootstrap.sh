@@ -72,14 +72,55 @@ else
   fail "Governance submodule not found at $GOVERNANCE_MOUNT"
 fi
 
-# ── 7. Astaire DB initialized (soft check) ──────────────────────────────────
+# ── 7. CodeGraph contract visibility ────────────────────────────────────────
+CG_CONTRACT="docs/governance/codegraph-contract.md"
+CG_DECLARED=false
+CG_PARTIAL=false
+if [[ -f "governance.yaml" ]] && \
+   grep -q "codegraphIndexFreshnessURI:" governance.yaml && \
+   grep -q "codegraphImageDigestURI:" governance.yaml; then
+  CG_DECLARED=true
+elif [[ -f "governance.yaml" ]] && \
+     { grep -q "codegraphIndexFreshnessURI:" governance.yaml || \
+       grep -q "codegraphImageDigestURI:" governance.yaml; }; then
+  CG_PARTIAL=true
+fi
+
+if [[ -f "$CG_CONTRACT" ]]; then
+  pass "CodeGraph consumer contract visible at $CG_CONTRACT"
+else
+  if [[ "$CG_DECLARED" == true || "$CG_PARTIAL" == true ]]; then
+    fail "CodeGraph is declared but $CG_CONTRACT is missing"
+  else
+    warn "$CG_CONTRACT not found — v1.1.0+ consumers should retain this optional-CG decision record"
+  fi
+fi
+
+if [[ "$CG_PARTIAL" == true ]]; then
+  fail "CodeGraph declaration is incomplete — declare both codegraphIndexFreshnessURI and codegraphImageDigestURI, or remove both"
+elif [[ "$CG_DECLARED" == true ]]; then
+  CG_WIRING_SCRIPT="$GOVERNANCE_MOUNT/scripts/validate_codegraph_wiring.sh"
+  if [[ -x "$CG_WIRING_SCRIPT" ]]; then
+    if bash "$CG_WIRING_SCRIPT" --root "$CONSUMER_ROOT"; then
+      pass "CodeGraph wiring validated (declared CG consumer)"
+    else
+      fail "CodeGraph wiring check failed — run $CG_WIRING_SCRIPT --root . for details"
+    fi
+  else
+    fail "CodeGraph is declared but $CG_WIRING_SCRIPT is missing or not executable"
+  fi
+else
+  pass "CodeGraph not declared; CG wiring validation not required"
+fi
+
+# ── 8. Astaire DB initialized (soft check) ──────────────────────────────────
 if [[ -f ".astaire/memory_palace.db" ]]; then
   pass ".astaire/memory_palace.db exists (Astaire initialized)"
 else
   warn ".astaire/memory_palace.db not found — run: .astaire/astaire startup --root ."
 fi
 
-# ── 8. Tentacle pin verification ─────────────────────────────────────────────
+# ── 9. Tentacle pin verification ─────────────────────────────────────────────
 MATRIX="$GOVERNANCE_MOUNT/runbooks/COMPATIBILITY_MATRIX.md"
 if [[ -f "$MATRIX" ]]; then
   # Extract expected astaire SHA from matrix (tag + parenthesized SHA, or bare SHA).
@@ -96,7 +137,7 @@ if [[ -f "$MATRIX" ]]; then
   fi
 fi
 
-# ── 9. Astaire wiring (provider-aware) ──────────────────────────────────────
+# ── 10. Astaire wiring (provider-aware) ─────────────────────────────────────
 WIRING_SCRIPT="$GOVERNANCE_MOUNT/scripts/validate_astaire_wiring.sh"
 if [[ -x "$WIRING_SCRIPT" ]]; then
   if bash "$WIRING_SCRIPT" --root "$CONSUMER_ROOT"; then

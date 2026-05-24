@@ -90,6 +90,8 @@ What this gives the consumer repo:
 - repo-local Astaire wrapper at `.astaire/astaire`
 - generated `governance.yaml`
 - provider-appropriate bootstrap instructions in `AGENTS.md` / `CLAUDE.md`
+- visible optional-CodeGraph decision record at
+  `docs/governance/codegraph-contract.md`
 - bootstrap directories under `docs/`
 - recursive tentacle initialization for nested submodules such as Astaire
 

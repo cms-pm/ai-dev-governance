@@ -63,6 +63,37 @@ git commit -m "Rollback governance submodule pin"
 - If the consumer needs stricter project-local interpretation, place it in `docs/governance/amendments/` instead of editing the shared submodule.
 - When using a local overlay, create `docs/governance/amendments/README.md` from `templates/GOVERNANCE_AMENDMENTS_README_TEMPLATE.md`.
 - Run `scripts/validate_governance.sh` from the consumer root when possible so optional overlay checks run against `docs/governance/amendments/`.
+- For ADG v1.1.0+ pins, retain `docs/governance/codegraph-contract.md` as
+  the project-visible CodeGraph decision record even when CG remains
+  undeclared.
+
+## Upgrade to v1.1.0+ CodeGraph Contract
+
+Consumers upgrading from a pre-v1.1.0 ADG release MUST make the CodeGraph
+contract visible during the submodule bump, even when they do not enable CG.
+
+```bash
+.governance/ai-dev-governance/scripts/bootstrap_project.sh --retrofit --force
+scripts/validate_bootstrap.sh
+```
+
+After retrofit, review `docs/governance/codegraph-contract.md` and choose one
+path:
+
+- Leave CG undeclared: keep both `codegraphIndexFreshnessURI` and
+  `codegraphImageDigestURI` absent from `governance.yaml`. Native source tools
+  remain valid, and CG wiring validation is not required.
+- Enable CG: declare both evidence URIs, apply the fragments under
+  `.governance/ai-dev-governance/templates/codegraph/`, keep the strict
+  Docker wrapper invocation intact, and run:
+
+```bash
+.governance/ai-dev-governance/scripts/validate_codegraph_wiring.sh --root .
+```
+
+The ADG CodeGraph contract has no npm fallback. Declared-CG consumers must use
+the wrapper-backed container path and the published MCP invocation
+`serve --mcp --no-watch`.
 
 ## Wire Astaire Access
 

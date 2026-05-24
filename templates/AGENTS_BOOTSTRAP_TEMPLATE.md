@@ -75,6 +75,8 @@ rtk discover          # find missed opportunities
 
 ### CodeGraph — source-code intelligence (MANDATORY when declared)
 
+Contract record: `docs/governance/codegraph-contract.md`.
+
 When `governance.yaml` declares CodeGraph evidence
 (`codegraphIndexFreshnessURI` and `codegraphImageDigestURI`) and the
 `codegraph` MCP server is available, source-code discovery MUST start with

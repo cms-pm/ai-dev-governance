@@ -114,9 +114,11 @@ Checks performed:
 | `governance.yaml` with required keys | Manifest is structurally valid |
 | `AGENTS.md` / `CLAUDE.md` bootstrap block | Astaire CLI surface loaded at session start |
 | Required directory structure | `docs/planning/`, `docs/releases/`, `docs/governance/` |
+| CodeGraph contract visibility | `docs/governance/codegraph-contract.md` exists as the optional-CG decision record |
 | Governance submodule initialized | Submodule checked out, not empty |
 | Astaire DB initialized (soft) | `.astaire/astaire startup` has been run |
 | Tentacle pin (soft) | Astaire SHA matches `COMPATIBILITY_MATRIX.md` |
+| CodeGraph wiring (conditional) | Runs `validate_codegraph_wiring.sh` only when CG evidence URIs are declared |
 
 ---
 
@@ -150,6 +152,7 @@ git commit -m "Pin astaire to <expected-sha>"
 | `docs/planning/pool_questions/` | Created if missing |
 | `docs/releases/` | Created if missing |
 | `docs/governance/amendments/` | Created if missing |
+| `docs/governance/codegraph-contract.md` | Created if missing; records the optional CG decision and activation contract |
 | `docs/governance/board/**` | Created only with `--with-board` |
 | `docs/releases/bootstrap/<date>-bundle.md` | Evidence written on every `--new` or `--retrofit --force` |
 
@@ -162,6 +165,15 @@ bundle to `docs/releases/bootstrap/<ISO-date>-bundle.md`. The bundle
 enumerates every wire-up check with pass/fail and timestamps. It is the
 release evidence artifact for SCN-D-04.
 
+For ADG v1.1.0+ consumers, the bundle also records whether CodeGraph is
+declared in `governance.yaml`. Review `docs/governance/codegraph-contract.md`
+after bootstrap or retrofit; either keep CG undeclared, or apply the activation
+contract and run:
+
+```bash
+.governance/ai-dev-governance/scripts/validate_codegraph_wiring.sh --root .
+```
+
 ---
 
 ## References
@@ -169,6 +181,7 @@ release evidence artifact for SCN-D-04.
 - `scripts/bootstrap_project.sh` — the bootstrap script
 - `scripts/validate_bootstrap.sh` — consumer-side completeness check
 - `templates/AGENTS_BOOTSTRAP_TEMPLATE.md` — the managed bootstrap block template
+- `templates/CODEGRAPH_CONTRACT_TEMPLATE.md` — optional CodeGraph decision record template
 - `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md` — submodule add/pin/bump/rollback
 - `runbooks/ASTAIRE_ACCESS.md` — full Astaire CLI surface reference
 - `runbooks/COMPATIBILITY_MATRIX.md` — tentacle pin table

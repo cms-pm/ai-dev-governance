@@ -2,6 +2,18 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [Unreleased]
+
+### Added
+- Added a consumer-visible CodeGraph contract template and bootstrap/retrofit
+  wiring so v1.1.0+ consumers explicitly retain a CG decision record whether
+  or not they enable CG.
+
+### Changed
+- Bootstrap evidence now reports CodeGraph contract visibility and declaration
+  state, and bootstrap validation conditionally runs CG wiring checks only for
+  declared-CG consumers.
+
 ## [1.1.1] - 2026-05-24
 
 ### Fixed
