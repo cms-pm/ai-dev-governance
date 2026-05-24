@@ -11,6 +11,8 @@ Environment:
   ADG_CODEGRAPH_DIGEST    Digest file. Default: .codegraph/image.digest.
   ADG_CODEGRAPH_SOURCE    Source tree to mount read-only. Default: current dir.
   ADG_CODEGRAPH_VOLUME    Named volume for /workspace/.codegraph.
+  ADG_CODEGRAPH_PREPARE_VOLUME
+                          Set to 0 to skip one-shot volume ownership prep.
   ADG_CODEGRAPH_PLATFORM  Platform override. Default: host-derived linux/amd64 or linux/arm64.
 USAGE
 }
@@ -61,6 +63,29 @@ volume_name() {
   printf 'adg_codegraph_%s_%s\n' "$base" "$stamp"
 }
 
+prepare_volume_owner() {
+  [ "${ADG_CODEGRAPH_PREPARE_VOLUME:-1}" = "0" ] && return 0
+
+  "$runtime" volume create "$cache_volume" >/dev/null 2>&1 || true
+  "$runtime" run --rm \
+    --platform "$platform" \
+    --network=none \
+    --cap-drop=ALL \
+    --cap-add=CHOWN \
+    --security-opt=no-new-privileges:true \
+    --pids-limit=64 \
+    --memory=128m \
+    --cpus=1 \
+    --ipc=none \
+    --user 0:0 \
+    --mount "type=bind,src=$source_dir,dst=/workspace,readonly" \
+    --mount "type=volume,src=$cache_volume,dst=/workspace/.codegraph" \
+    --workdir /workspace \
+    --entrypoint /bin/sh \
+    "$image_ref" -c "mkdir -p /workspace/.codegraph && chown -R $uid_gid /workspace/.codegraph" \
+    >/dev/null
+}
+
 if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
   usage
   exit 0
@@ -89,6 +114,8 @@ esac
 platform=${ADG_CODEGRAPH_PLATFORM:-$(host_platform)}
 cache_volume=${ADG_CODEGRAPH_VOLUME:-$(volume_name "$source_dir")}
 uid_gid="$(id -u):$(id -g)"
+
+prepare_volume_owner
 
 exec "$runtime" run --rm -i \
   --platform "$platform" \

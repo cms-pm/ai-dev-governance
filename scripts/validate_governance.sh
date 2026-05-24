@@ -262,6 +262,14 @@ rg -q "CodeGraph contract doc present" scripts/bootstrap_project.sh \
   || fail "Bootstrap evidence must report CodeGraph contract visibility"
 rg -q "CodeGraph consumer contract visible" scripts/validate_bootstrap.sh \
   || fail "Bootstrap validator must check CodeGraph contract visibility"
+rg -q "governanceVersion matches installed ADG" scripts/validate_bootstrap.sh \
+  || fail "Bootstrap validator must detect consumer governanceVersion drift"
+rg -q "ADG_CODEGRAPH_PREPARE_VOLUME" templates/codegraph/scripts/codegraph-mcp \
+  || fail "CodeGraph wrapper must expose named-volume ownership preparation"
+rg -q "locally loaded.*image IDs" templates/CODEGRAPH_CONTRACT_TEMPLATE.md \
+  || fail "CodeGraph contract must document local SHA-256 image ID acceptance"
+rg -q "CodeGraph live status reports zero indexed files" scripts/validate_codegraph_wiring.sh \
+  || fail "CodeGraph validator must fail empty live indexes"
 rg -q "Before refactoring production code" adapters/providers/CLAUDE_CONTEXT_ADAPTER.md \
   || fail "Claude context adapter must require CodeGraph before refactoring"
 rg -q "Before refactoring production code" adapters/providers/CODEX_CONTEXT_ADAPTER.md \

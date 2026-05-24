@@ -3,7 +3,16 @@ set -euo pipefail
 
 if [[ "${1:-}" = "image" && "${2:-}" = "inspect" ]]; then
   image_ref="${3:-}"
+  if [[ "${ADG_FAKE_RUNTIME_REJECT_REPODIGEST:-0}" == "1" && "$image_ref" == *@sha256:* ]]; then
+    echo "fake-runtime: no such image by RepoDigest: $image_ref" >&2
+    exit 1
+  fi
   digest="${image_ref##*@}"
+  if [[ "$image_ref" == sha256:* ]]; then
+    digest="$image_ref"
+    printf '{"RepoDigests":[],"Id":"%s"}\n' "$digest"
+    exit 0
+  fi
   printf '{"RepoDigests":["%s"],"Id":"%s"}\n' "$image_ref" "$digest"
   exit 0
 fi

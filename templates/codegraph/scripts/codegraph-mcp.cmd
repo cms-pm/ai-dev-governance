@@ -56,7 +56,12 @@ if not errorlevel 1 (
     >&2 echo codegraph-mcp: image digest must be sha256:^<hex^> or image@sha256:^<hex^>: %DIGEST%
     exit /b 1
   )
-  set "IMAGE_REF=%IMAGE_NAME%@%DIGEST%"
+  "%RUNTIME%" image inspect "%DIGEST%" >nul 2>nul
+  if errorlevel 1 (
+    set "IMAGE_REF=%IMAGE_NAME%@%DIGEST%"
+  ) else (
+    set "IMAGE_REF=%DIGEST%"
+  )
 )
 
 set "PLATFORM=%ADG_CODEGRAPH_PLATFORM%"
@@ -72,6 +77,27 @@ if not defined CACHE_VOLUME (
 
 set "CONTAINER_USER=%ADG_CONTAINER_USER%"
 if not defined CONTAINER_USER set "CONTAINER_USER=10001:10001"
+
+if not "%ADG_CODEGRAPH_PREPARE_VOLUME%"=="0" (
+  "%RUNTIME%" volume create "%CACHE_VOLUME%" >nul 2>nul
+  "%RUNTIME%" run --rm ^
+    --platform "%PLATFORM%" ^
+    --network=none ^
+    --cap-drop=ALL ^
+    --cap-add=CHOWN ^
+    --security-opt=no-new-privileges:true ^
+    --pids-limit=64 ^
+    --memory=128m ^
+    --cpus=1 ^
+    --ipc=none ^
+    --user 0:0 ^
+    --mount "type=bind,src=%SOURCE_DIR%,dst=/workspace,readonly" ^
+    --mount "type=volume,src=%CACHE_VOLUME%,dst=/workspace/.codegraph" ^
+    --workdir /workspace ^
+    --entrypoint /bin/sh ^
+    "%IMAGE_REF%" -c "mkdir -p /workspace/.codegraph && chown -R %CONTAINER_USER% /workspace/.codegraph"
+  if errorlevel 1 exit /b %ERRORLEVEL%
+)
 
 "%RUNTIME%" run --rm -i ^
   --platform "%PLATFORM%" ^
@@ -100,6 +126,7 @@ exit /b %ERRORLEVEL%
 >&2 echo   ADG_CODEGRAPH_DIGEST    Digest file. Default: .codegraph\image.digest.
 >&2 echo   ADG_CODEGRAPH_SOURCE    Source tree to mount read-only. Default: current dir.
 >&2 echo   ADG_CODEGRAPH_VOLUME    Named volume for /workspace/.codegraph.
+>&2 echo   ADG_CODEGRAPH_PREPARE_VOLUME  Set to 0 to skip one-shot volume ownership prep.
 >&2 echo   ADG_CODEGRAPH_PLATFORM  Platform override. Default: linux/amd64.
 >&2 echo   ADG_CONTAINER_USER      Windows container user override. Default: 10001:10001.
 exit /b 0

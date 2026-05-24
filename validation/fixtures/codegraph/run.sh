@@ -5,12 +5,16 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/../../.." && pwd)"
 cd "$ROOT_DIR"
 
 export ADG_CONTAINER_RUNTIME="$ROOT_DIR/validation/fixtures/codegraph/fake-runtime"
+export ADG_CODEGRAPH_SKIP_LIVE_STATUS=1
 
 # Keep the fixture index fresher than source files while running in an
 # uncommitted working tree.
 touch validation/fixtures/codegraph/positive/.codegraph
 
 bash scripts/validate_codegraph_wiring.sh \
+  --root validation/fixtures/codegraph/positive
+
+ADG_FAKE_RUNTIME_REJECT_REPODIGEST=1 bash scripts/validate_codegraph_wiring.sh \
   --root validation/fixtures/codegraph/positive
 
 check_negative() {

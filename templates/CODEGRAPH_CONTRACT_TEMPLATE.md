@@ -42,6 +42,8 @@ To enable CodeGraph, the consumer must provide:
 - `.codegraph/image.digest` containing an immutable SHA-256 digest.
 - `.codegraph/evidence/sbom.spdx.json` for runtime/image provenance.
 - A fresh `.codegraph/` index for the declared source path scope.
+- Nonzero `codegraph_status` output for indexed files/nodes after
+  `codegraph-mcp init --index`.
 
 The ADG-published MCP fragment invokes the pinned CodeGraph image with:
 
@@ -54,6 +56,15 @@ The ADG-published MCP fragment invokes the pinned CodeGraph image with:
 There is no npm fallback in the ADG CG contract. Consumers must use the
 strict Docker/container wrapper path or leave CG undeclared.
 
+The wrapper performs a one-shot named-volume ownership preparation step before
+starting the non-root hardened container. Set `ADG_CODEGRAPH_PREPARE_VOLUME=0`
+only when a consumer has an equivalent local volume-ownership control.
+
+`Backend: wasm` in CodeGraph status is acceptable for consumer MCP operation
+when the pinned image otherwise starts and indexes the declared source scope.
+Native SQLite remains preferable for performance, but WASM fallback is not a
+release blocker by itself.
+
 ## Required Validation
 
 For CG-declared consumers, run this before release or before citing CG as
@@ -64,7 +75,9 @@ evidence:
 ```
 
 The release is blocked if the validator fails or if either CG evidence URI is
-present without matching local evidence artifacts.
+present without matching local evidence artifacts. The validator accepts both
+`image@sha256:<hex>` RepoDigests and locally loaded `sha256:<hex>` image IDs
+when they match `.codegraph/image.digest`.
 
 ## Provider Wiring
 

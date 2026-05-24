@@ -4,6 +4,17 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.1.3] - 2026-05-24
+
+### Fixed
+- Prepared the CodeGraph named volume before launching the hardened non-root
+  container so first consumer init does not require a manual `chown`.
+- Updated CodeGraph wiring validation to accept locally loaded SHA-256 image
+  IDs without RepoDigests and to fail declared-CG consumers whose live status
+  reports an empty index.
+- Added bootstrap validation for consumer `governanceVersion` drift against
+  the installed ADG submodule version, with an explicit local-exception path.
+
 ## [1.1.2] - 2026-05-24
 
 ### Added

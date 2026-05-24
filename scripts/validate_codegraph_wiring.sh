@@ -21,6 +21,7 @@ cd "$ROOT"
 FAILED=0
 fail() { echo "[FAIL] $1" >&2; FAILED=1; }
 pass() { echo "[PASS] $1"; }
+warn() { echo "[WARN] $1"; }
 
 mtime() {
   if stat -f %m "$1" >/dev/null 2>&1; then
@@ -61,6 +62,95 @@ find_runtime() {
     fi
   done
   return 1
+}
+
+inspect_image_matches_digest() {
+  local runtime="$1"
+  local digest="$2"
+  shift 2
+
+  local candidate
+  for candidate in "$@"; do
+    [[ -n "$candidate" ]] || continue
+    if inspect_output="$("$runtime" image inspect "$candidate" 2>&1)"; then
+      if [[ "$candidate" == "$digest" ]] || grep -F "$digest" <<<"$inspect_output" >/dev/null; then
+        return 0
+      fi
+    fi
+  done
+  return 1
+}
+
+check_live_codegraph_status() {
+  if [[ "${ADG_CODEGRAPH_SKIP_LIVE_STATUS:-0}" == "1" ]]; then
+    pass "CodeGraph live status check skipped by ADG_CODEGRAPH_SKIP_LIVE_STATUS"
+    return 0
+  fi
+
+  python3 - <<'PY'
+import json
+import os
+import re
+import subprocess
+import sys
+from pathlib import Path
+
+config = Path(".mcp.json")
+try:
+    data = json.loads(config.read_text(encoding="utf-8"))
+except Exception as exc:
+    print(f"[FAIL] unable to parse .mcp.json for live CodeGraph status: {exc}")
+    raise SystemExit(1)
+
+server = data.get("mcpServers", {}).get("codegraph", {})
+command = server.get("command")
+if not isinstance(command, str) or not command:
+    print("[FAIL] .mcp.json missing mcpServers.codegraph.command for live status")
+    raise SystemExit(1)
+
+env = os.environ.copy()
+server_env = server.get("env", {})
+if isinstance(server_env, dict):
+    env.update({str(key): str(value) for key, value in server_env.items()})
+
+try:
+    proc = subprocess.run(
+        [command, "status"],
+        cwd=Path.cwd(),
+        env=env,
+        text=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        timeout=float(os.environ.get("ADG_CODEGRAPH_STATUS_TIMEOUT", "60")),
+    )
+except Exception as exc:
+    print(f"[FAIL] CodeGraph live status command failed to start: {exc}")
+    raise SystemExit(1)
+
+output = proc.stdout or ""
+if proc.returncode != 0:
+    print(output.rstrip())
+    print(f"[FAIL] CodeGraph live status exited {proc.returncode}")
+    raise SystemExit(1)
+
+files_match = re.search(r"Files indexed:\s*([0-9][0-9,]*)", output)
+nodes_match = re.search(r"Total nodes:\s*([0-9][0-9,]*)", output)
+if files_match:
+    files = int(files_match.group(1).replace(",", ""))
+    nodes = int(nodes_match.group(1).replace(",", "")) if nodes_match else None
+    if files <= 0:
+        print(output.rstrip())
+        print("[FAIL] CodeGraph live status reports zero indexed files")
+        raise SystemExit(1)
+    if nodes is not None and nodes <= 0:
+        print(output.rstrip())
+        print("[FAIL] CodeGraph live status reports zero nodes")
+        raise SystemExit(1)
+    print(f"[PASS] CodeGraph live status reports indexed files ({files})")
+    raise SystemExit(0)
+
+print("[WARN] CodeGraph live status output did not expose a Files indexed count")
+PY
 }
 
 codegraph_command="$(
@@ -167,17 +257,18 @@ if [[ -n "$digest" ]]; then
   if [[ -z "$runtime" ]]; then
     fail "No supported container runtime found for CodeGraph image inspect"
   else
-    case "$digest" in
-      *@sha256:*) image_ref="$digest" ;;
-      sha256:*) image_ref="${ADG_CODEGRAPH_IMAGE:-localhost/codegraph-mcp}@$digest" ;;
-      *) image_ref="" ;;
-    esac
-    if [[ -n "$image_ref" ]] && inspect_output="$("$runtime" image inspect "$image_ref" 2>&1)"; then
-      if grep -F "$digest" <<<"$inspect_output" >/dev/null || grep -F "$image_ref" <<<"$inspect_output" >/dev/null; then
-        pass "CodeGraph image is present and matches .codegraph/image.digest"
-      else
-        fail "CodeGraph image inspect did not report the digest from .codegraph/image.digest"
-      fi
+    if [[ "$digest" == *@sha256:* ]]; then
+      digest_id="${digest##*@}"
+      image_ref="$digest"
+    elif [[ "$digest" == sha256:* ]]; then
+      digest_id="$digest"
+      image_ref="${ADG_CODEGRAPH_IMAGE:-localhost/codegraph-mcp}@$digest"
+    else
+      digest_id=""
+      image_ref=""
+    fi
+    if inspect_image_matches_digest "$runtime" "$digest_id" "$image_ref" "$digest_id"; then
+      pass "CodeGraph image is present and matches .codegraph/image.digest"
     else
       fail "CodeGraph image is not present for digest from .codegraph/image.digest"
     fi
@@ -230,6 +321,8 @@ if [[ -f ".codegraph/evidence/sbom.spdx.json" ]]; then
 else
   fail ".codegraph/evidence/sbom.spdx.json missing"
 fi
+
+check_live_codegraph_status
 
 echo ""
 if [[ $FAILED -ne 0 ]]; then

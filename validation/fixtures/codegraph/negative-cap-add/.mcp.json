@@ -2,7 +2,7 @@
   "mcpServers": {
     "codegraph": {
       "command": "./adg/templates/codegraph/scripts/codegraph-mcp",
-      "args": ["--transport", "stdio", "--cap-add=SYS_ADMIN"],
+      "args": ["serve", "--mcp", "--no-watch", "--cap-add=SYS_ADMIN"],
       "env": {
         "ADG_CODEGRAPH_DIGEST": ".codegraph/image.digest",
         "ADG_CODEGRAPH_IMAGE": "localhost/codegraph-mcp",

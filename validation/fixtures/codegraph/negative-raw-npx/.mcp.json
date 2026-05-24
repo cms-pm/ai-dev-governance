@@ -2,7 +2,7 @@
   "mcpServers": {
     "codegraph": {
       "command": "npx",
-      "args": ["codegraph", "--transport", "stdio"]
+      "args": ["codegraph", "serve", "--mcp", "--no-watch"]
     }
   }
 }

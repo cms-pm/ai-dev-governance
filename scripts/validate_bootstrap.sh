@@ -35,6 +35,24 @@ for key in apiVersion governanceVersion profile adapters evidence automation boa
 done
 pass "governance.yaml present with required keys"
 
+if [[ -f "governance.yaml" && -f "$GOVERNANCE_MOUNT/VERSION" ]]; then
+  MANIFEST_VERSION="$(sed -nE 's/^governanceVersion:[[:space:]]*([^[:space:]]+).*/\1/p' governance.yaml | head -1)"
+  EXPECTED_GOVERNANCE_VERSION="v$(tr -d '[:space:]' < "$GOVERNANCE_MOUNT/VERSION")"
+  if [[ -n "$MANIFEST_VERSION" && "$MANIFEST_VERSION" != "$EXPECTED_GOVERNANCE_VERSION" ]]; then
+    EXCEPTION_FILE="docs/governance/exceptions.yaml"
+    if [[ -f "$EXCEPTION_FILE" ]] && \
+       grep -qF "$MANIFEST_VERSION" "$EXCEPTION_FILE" && \
+       grep -qF "$EXPECTED_GOVERNANCE_VERSION" "$EXCEPTION_FILE" && \
+       grep -qi "governanceVersion" "$EXCEPTION_FILE"; then
+      warn "governanceVersion $MANIFEST_VERSION differs from installed ADG $EXPECTED_GOVERNANCE_VERSION; local exception documented"
+    else
+      fail "governanceVersion $MANIFEST_VERSION does not match installed ADG $EXPECTED_GOVERNANCE_VERSION; update governance.yaml or document a governanceVersion exception"
+    fi
+  else
+    pass "governanceVersion matches installed ADG ($EXPECTED_GOVERNANCE_VERSION)"
+  fi
+fi
+
 # ── 4. Agent bootstrap block ────────────────────────────────────────────────
 BOOTSTRAP_FILE=""
 for f in AGENTS.md CLAUDE.md; do
