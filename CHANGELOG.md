@@ -4,6 +4,8 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.1.2] - 2026-05-24
+
 ### Added
 - Added a consumer-visible CodeGraph contract template and bootstrap/retrofit
   wiring so v1.1.0+ consumers explicitly retain a CG decision record whether
