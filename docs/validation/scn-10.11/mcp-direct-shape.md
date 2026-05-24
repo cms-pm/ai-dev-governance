@@ -1,8 +1,9 @@
 # SCN-10.11 CodeGraph MCP Direct Shape Smoke
 
-- Generated: 2026-05-24T03:04:01Z
+- Generated: 2026-05-24T09:35:03Z
 - Corpus: `raw/codegraph` copied to an isolated temp tree
 - Runtime: strict Docker only through `templates/codegraph/scripts/codegraph-mcp`
+- MCP server command source: `templates/codegraph/.mcp.json.fragment`
 - Image digest: `sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1`
 - Evidence JSON: `docs/validation/scn-10.11/mcp-direct-shape.json`
 - Index log: `docs/validation/scn-10.11/mcp-direct-shape-index.log`
@@ -10,9 +11,9 @@
 ## Result
 
 PASS. The smoke initialized a digest-pinned Docker CodeGraph index for the
-larger CodeGraph corpus, started `serve --mcp --no-watch`, and exercised the
-MCP JSON-RPC stdio surface directly without npm, local node, SDK, or host
-fallback.
+larger CodeGraph corpus, loaded the published MCP fragment command/env, started
+`serve --mcp --no-watch`, and exercised the MCP JSON-RPC stdio surface
+directly without npm, local node, SDK, or host fallback.
 
 ## Representative Native-Tool Churn Covered
 

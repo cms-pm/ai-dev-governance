@@ -14,6 +14,7 @@ log() {
 }
 
 WRAPPER="$ROOT_DIR/templates/codegraph/scripts/codegraph-mcp"
+FRAGMENT="$ROOT_DIR/templates/codegraph/.mcp.json.fragment"
 CLIENT="$ROOT_DIR/scripts/validation/codegraph_mcp_jsonrpc_client.py"
 CORPUS_SOURCE="$ROOT_DIR/raw/codegraph"
 DIGEST_FILE="$ROOT_DIR/.codegraph/image.digest"
@@ -23,6 +24,7 @@ EVIDENCE_MD="$EVIDENCE_DIR/mcp-direct-shape.md"
 INDEX_LOG="$EVIDENCE_DIR/mcp-direct-shape-index.log"
 
 [[ -x "$WRAPPER" ]] || fail "CodeGraph Docker wrapper is not executable: $WRAPPER"
+[[ -f "$FRAGMENT" ]] || fail "CodeGraph MCP fragment is missing: $FRAGMENT"
 [[ -x "$CLIENT" ]] || fail "MCP JSON-RPC client is not executable: $CLIENT"
 [[ -d "$CORPUS_SOURCE" ]] || fail "larger corpus missing: $CORPUS_SOURCE"
 [[ -f "$DIGEST_FILE" ]] || fail "image digest missing: $DIGEST_FILE"
@@ -46,6 +48,10 @@ trap cleanup EXIT
 mkdir -p "$EVIDENCE_DIR"
 cp -R "$CORPUS_SOURCE" "$corpus"
 mkdir -p "$corpus/.codegraph"
+cp "$DIGEST_FILE" "$corpus/.codegraph/image.digest"
+mkdir -p "$corpus/adg/templates/codegraph/scripts"
+cp "$WRAPPER" "$corpus/adg/templates/codegraph/scripts/codegraph-mcp"
+chmod +x "$corpus/adg/templates/codegraph/scripts/codegraph-mcp"
 
 export ADG_CONTAINER_RUNTIME=docker
 export ADG_CODEGRAPH_SOURCE="$corpus"
@@ -90,8 +96,10 @@ log "calling MCP server directly over JSON-RPC stdio"
 "$CLIENT" \
   --project-root "$corpus" \
   --tool-project-path /workspace \
+  --mcp-fragment "$FRAGMENT" \
+  --server-cwd "$corpus" \
   --evidence-json "$EVIDENCE_JSON" \
-  -- "$WRAPPER" serve --mcp --no-watch
+  --
 
 generated_at="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 tool_calls="$(
@@ -111,6 +119,7 @@ cat > "$EVIDENCE_MD" <<EOF
 - Generated: $generated_at
 - Corpus: \`raw/codegraph\` copied to an isolated temp tree
 - Runtime: strict Docker only through \`templates/codegraph/scripts/codegraph-mcp\`
+- MCP server command source: \`templates/codegraph/.mcp.json.fragment\`
 - Image digest: \`$digest\`
 - Evidence JSON: \`docs/validation/scn-10.11/mcp-direct-shape.json\`
 - Index log: \`docs/validation/scn-10.11/mcp-direct-shape-index.log\`
@@ -118,9 +127,9 @@ cat > "$EVIDENCE_MD" <<EOF
 ## Result
 
 PASS. The smoke initialized a digest-pinned Docker CodeGraph index for the
-larger CodeGraph corpus, started \`serve --mcp --no-watch\`, and exercised the
-MCP JSON-RPC stdio surface directly without npm, local node, SDK, or host
-fallback.
+larger CodeGraph corpus, loaded the published MCP fragment command/env, started
+\`serve --mcp --no-watch\`, and exercised the MCP JSON-RPC stdio surface
+directly without npm, local node, SDK, or host fallback.
 
 ## Representative Native-Tool Churn Covered
 

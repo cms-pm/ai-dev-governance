@@ -1,9 +1,16 @@
 {
-  "projectRoot": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.pN8ILz/corpus",
-  "rootUri": "file:///private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.pN8ILz/corpus",
+  "projectRoot": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.BGhhnc/corpus",
+  "rootUri": "file:///private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.BGhhnc/corpus",
   "toolProjectPath": "/workspace",
+  "mcpFragment": "/Users/cms/proj/agentic/ai-dev-governance/templates/codegraph/.mcp.json.fragment",
+  "serverCwd": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.BGhhnc/corpus",
+  "serverEnvKeys": [
+    "ADG_CODEGRAPH_DIGEST",
+    "ADG_CODEGRAPH_IMAGE",
+    "ADG_CODEGRAPH_SOURCE"
+  ],
   "serverCommand": [
-    "/Users/cms/proj/agentic/ai-dev-governance/templates/codegraph/scripts/codegraph-mcp",
+    "./adg/templates/codegraph/scripts/codegraph-mcp",
     "serve",
     "--mcp",
     "--no-watch"

@@ -2,6 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required | Tentacle Pins |
 |--------------------|------------------------|--------------------|---------------|
+| v1.1.1             | strict                 | No (patch over v1.1.0 - corrects the CodeGraph MCP fragment invocation for the pinned v0.8.0 image and adds fragment-driven strict Docker MCP shape validation) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.1.0             | strict                 | Yes (adds optional CodeGraph Tier-2 code-intelligence prescription, removes Graphify from the supported ADG integration surface, and adds declared-CG release evidence gates without requiring CG for non-declared consumers) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.0.0             | strict                 | Yes (ratifies Phase 9 empirical governance: mutation testing thresholds and release evidence, glossary/domain-language coverage, test design review, architecture fitness declarations, implementation handoffs, and Astaire-first release consumption) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v0.7.4             | strict                 | Yes (adds code implementation complexity governance for production-code changes, including ownership, naming/placement, line-count, state/task, complexity-rubric, and exception evidence) | `astaire` @ `v0.4.2` (`d6a49fc`) |

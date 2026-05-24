@@ -33,9 +33,18 @@ EXPECTED_TOOLS = {
 
 
 class RpcClient:
-    def __init__(self, argv: list[str], project_root: Path, timeout: float) -> None:
+    def __init__(
+        self,
+        argv: list[str],
+        project_root: Path,
+        timeout: float,
+        cwd: Path | None,
+        env_overlay: dict[str, str],
+    ) -> None:
         self.project_root = project_root
         self.timeout = timeout
+        env = os.environ.copy()
+        env.update(env_overlay)
         self.proc = subprocess.Popen(
             argv,
             stdin=subprocess.PIPE,
@@ -43,6 +52,8 @@ class RpcClient:
             stderr=subprocess.PIPE,
             text=True,
             bufsize=1,
+            cwd=str(cwd) if cwd else None,
+            env=env,
         )
         self.next_id = 1
 
@@ -131,34 +142,66 @@ def require_contains(text: str, expected: str, label: str) -> None:
         raise AssertionError(f"{label} missing {expected!r}; preview={text[:800]!r}")
 
 
+def server_from_fragment(fragment_path: Path, server_name: str) -> tuple[list[str], dict[str, str]]:
+    fragment = json.loads(fragment_path.read_text(encoding="utf-8"))
+    servers = fragment.get("mcpServers")
+    if not isinstance(servers, dict):
+        raise AssertionError(f"{fragment_path} missing mcpServers object")
+    server = servers.get(server_name)
+    if not isinstance(server, dict):
+        raise AssertionError(f"{fragment_path} missing mcpServers.{server_name}")
+    command = server.get("command")
+    args = server.get("args", [])
+    env = server.get("env", {})
+    if not isinstance(command, str) or not command:
+        raise AssertionError(f"{fragment_path} mcpServers.{server_name}.command must be a string")
+    if not isinstance(args, list) or not all(isinstance(item, str) for item in args):
+        raise AssertionError(f"{fragment_path} mcpServers.{server_name}.args must be a string list")
+    if not isinstance(env, dict) or not all(isinstance(k, str) and isinstance(v, str) for k, v in env.items()):
+        raise AssertionError(f"{fragment_path} mcpServers.{server_name}.env must be a string map")
+    return [command, *args], dict(env)
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--project-root", required=True)
     parser.add_argument("--tool-project-path")
     parser.add_argument("--root-uri")
     parser.add_argument("--evidence-json", required=True)
+    parser.add_argument("--mcp-fragment")
+    parser.add_argument("--mcp-server-name", default="codegraph")
+    parser.add_argument("--server-cwd")
     parser.add_argument("--timeout", type=float, default=45.0)
     parser.add_argument("server_argv", nargs=argparse.REMAINDER)
     args = parser.parse_args()
 
-    server_argv = args.server_argv
-    if server_argv and server_argv[0] == "--":
-        server_argv = server_argv[1:]
+    env_overlay: dict[str, str] = {}
+    fragment_path = Path(args.mcp_fragment).resolve() if args.mcp_fragment else None
+    if fragment_path:
+        server_argv, env_overlay = server_from_fragment(fragment_path, args.mcp_server_name)
+    else:
+        server_argv = args.server_argv
+        if server_argv and server_argv[0] == "--":
+            server_argv = server_argv[1:]
     if not server_argv:
-        raise SystemExit("server command is required after --")
+        raise SystemExit("server command is required after -- or via --mcp-fragment")
 
     project_root = Path(args.project_root).resolve()
+    server_cwd = Path(args.server_cwd).resolve() if args.server_cwd else None
     root_uri = args.root_uri or project_root.as_uri()
     tool_project_path = args.tool_project_path
     evidence: dict[str, Any] = {
         "projectRoot": str(project_root),
         "rootUri": root_uri,
         "toolProjectPath": tool_project_path,
+        "mcpFragment": str(fragment_path) if fragment_path else None,
+        "serverCwd": str(server_cwd) if server_cwd else None,
+        "serverEnvKeys": sorted(env_overlay),
         "serverCommand": server_argv,
         "checks": [],
     }
 
-    client = RpcClient(server_argv, project_root, args.timeout)
+    client = RpcClient(server_argv, project_root, args.timeout, server_cwd, env_overlay)
     try:
         init = client.request(
             "initialize",

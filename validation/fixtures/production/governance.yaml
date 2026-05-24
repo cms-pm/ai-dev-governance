@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v1.1.0
+governanceVersion: v1.1.1
 profile: strict-baseline+embedded
 adapters:
   - providers/codex

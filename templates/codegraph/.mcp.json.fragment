@@ -3,8 +3,9 @@
     "codegraph": {
       "command": "./adg/templates/codegraph/scripts/codegraph-mcp",
       "args": [
-        "--transport",
-        "stdio"
+        "serve",
+        "--mcp",
+        "--no-watch"
       ],
       "env": {
         "ADG_CODEGRAPH_DIGEST": ".codegraph/image.digest",

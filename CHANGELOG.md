@@ -2,6 +2,16 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [1.1.1] - 2026-05-24
+
+### Fixed
+- Corrected the CodeGraph MCP template fragment to invoke the pinned v0.8.0
+  CLI with `serve --mcp --no-watch` instead of the unsupported
+  `--transport stdio` top-level option.
+- Extended the strict Docker MCP direct shape smoke to load the published
+  `.mcp.json.fragment` command, args, and env so future fragment/image CLI
+  drift fails validation instead of hiding behind a hand-built invocation.
+
 ## [1.1.0] - 2026-05-24
 
 ### Added
