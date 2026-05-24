@@ -2,6 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required | Tentacle Pins |
 |--------------------|------------------------|--------------------|---------------|
+| v1.1.4             | strict                 | No (patch over v1.1.3 - fixes declared-CG empty indexing by staging sanitized `/workspace`, parses JSON/CLI/MCP status counts, and uses live status instead of host `.codegraph/` mtime for Docker named-volume freshness) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.1.3             | strict                 | No (patch over v1.1.2 - fixes declared-CG consumer usability gates: volume ownership prep, local SHA image-ID validation, live empty-index failure, and consumer governanceVersion drift detection) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.1.2             | strict                 | No (patch over v1.1.1 - surfaces the optional CodeGraph consumer contract during bootstrap/retrofit and validates declared vs undeclared CG state) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.1.1             | strict                 | No (patch over v1.1.0 - corrects the CodeGraph MCP fragment invocation for the pinned v0.8.0 image and adds fragment-driven strict Docker MCP shape validation) | `astaire` @ `v0.5.0` (`ed16f6d`) |

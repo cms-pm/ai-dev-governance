@@ -99,6 +99,30 @@ if not "%ADG_CODEGRAPH_PREPARE_VOLUME%"=="0" (
   if errorlevel 1 exit /b %ERRORLEVEL%
 )
 
+if "%ADG_CODEGRAPH_STAGE_SOURCE%"=="0" goto :direct_run
+
+"%RUNTIME%" run --rm -i ^
+  --platform "%PLATFORM%" ^
+  --read-only ^
+  --tmpfs /tmp:size=64m,mode=1777 ^
+  --tmpfs /workspace:size=32m,mode=1777 ^
+  --network=none ^
+  --cap-drop=ALL ^
+  --security-opt=no-new-privileges:true ^
+  --pids-limit=512 ^
+  --memory=2g ^
+  --cpus=2 ^
+  --ulimit nofile=4096:4096 ^
+  --ipc=none ^
+  --user "%CONTAINER_USER%" ^
+  --mount "type=bind,src=%SOURCE_DIR%,dst=/workspace-source,readonly" ^
+  --mount "type=volume,src=%CACHE_VOLUME%,dst=/workspace/.codegraph" ^
+  --workdir /workspace ^
+  --entrypoint /bin/sh ^
+  "%IMAGE_REF%" -c "set -eu; for entry in /workspace-source/.[!.]* /workspace-source/..?* /workspace-source/*; do [ -e ""$entry"" ] || continue; name=${entry##*/}; case ""$name"" in .|..|.codegraph|.codegraphignore|.git|.governance|adg|ai-dev-governance|raw|docs|secrets|node_modules|dist|build|out|target|coverage|.venv|venv|.pytest_cache|.mypy_cache|.ruff_cache|__pycache__) continue ;; esac; ln -s ""$entry"" ""/workspace/$name""; done; exec node /app/dist/bin/codegraph.js ""$@""" _ %*
+exit /b %ERRORLEVEL%
+
+:direct_run
 "%RUNTIME%" run --rm -i ^
   --platform "%PLATFORM%" ^
   --read-only ^
@@ -127,6 +151,7 @@ exit /b %ERRORLEVEL%
 >&2 echo   ADG_CODEGRAPH_SOURCE    Source tree to mount read-only. Default: current dir.
 >&2 echo   ADG_CODEGRAPH_VOLUME    Named volume for /workspace/.codegraph.
 >&2 echo   ADG_CODEGRAPH_PREPARE_VOLUME  Set to 0 to skip one-shot volume ownership prep.
+>&2 echo   ADG_CODEGRAPH_STAGE_SOURCE    Set to 0 to mount source directly instead of sanitized staging.
 >&2 echo   ADG_CODEGRAPH_PLATFORM  Platform override. Default: linux/amd64.
 >&2 echo   ADG_CONTAINER_USER      Windows container user override. Default: 10001:10001.
 exit /b 0

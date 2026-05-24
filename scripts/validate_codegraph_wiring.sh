@@ -113,31 +113,65 @@ server_env = server.get("env", {})
 if isinstance(server_env, dict):
     env.update({str(key): str(value) for key, value in server_env.items()})
 
-try:
-    proc = subprocess.run(
-        [command, "status"],
+def run_status(args):
+    return subprocess.run(
+        [command, *args],
         cwd=Path.cwd(),
         env=env,
         text=True,
         stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
+        stderr=subprocess.PIPE,
         timeout=float(os.environ.get("ADG_CODEGRAPH_STATUS_TIMEOUT", "60")),
     )
+
+def strip_ansi(text):
+    return re.sub(r"\x1b\[[0-9;]*[A-Za-z]", "", text)
+
+def parse_text_status(text):
+    clean = strip_ansi(text)
+    files_match = re.search(r"(?:\*\*)?(?:Files indexed|Files):(?:\*\*)?\s*([0-9][0-9,]*)", clean, re.IGNORECASE)
+    nodes_match = re.search(r"(?:\*\*)?(?:Total nodes|Nodes):(?:\*\*)?\s*([0-9][0-9,]*)", clean, re.IGNORECASE)
+    if not files_match:
+        return None, None
+    files_value = int(files_match.group(1).replace(",", ""))
+    nodes_value = int(nodes_match.group(1).replace(",", "")) if nodes_match else None
+    return files_value, nodes_value
+
+try:
+    proc = run_status(["status", "--json"])
 except Exception as exc:
     print(f"[FAIL] CodeGraph live status command failed to start: {exc}")
     raise SystemExit(1)
 
-output = proc.stdout or ""
-if proc.returncode != 0:
-    print(output.rstrip())
-    print(f"[FAIL] CodeGraph live status exited {proc.returncode}")
-    raise SystemExit(1)
+output = (proc.stdout or "") + (proc.stderr or "")
+files = None
+nodes = None
+if proc.returncode == 0:
+    try:
+        status = json.loads(proc.stdout or "{}")
+        if status.get("initialized") is False:
+            print(proc.stdout.rstrip())
+            print("[FAIL] CodeGraph live status reports project is not initialized")
+            raise SystemExit(1)
+        files = int(status["fileCount"])
+        nodes = int(status["nodeCount"])
+    except (KeyError, TypeError, ValueError, json.JSONDecodeError):
+        files, nodes = parse_text_status(output)
 
-files_match = re.search(r"Files indexed:\s*([0-9][0-9,]*)", output)
-nodes_match = re.search(r"Total nodes:\s*([0-9][0-9,]*)", output)
-if files_match:
-    files = int(files_match.group(1).replace(",", ""))
-    nodes = int(nodes_match.group(1).replace(",", "")) if nodes_match else None
+if proc.returncode != 0 or files is None:
+    try:
+        fallback = run_status(["status"])
+    except Exception as exc:
+        print(f"[FAIL] CodeGraph live status command failed to start: {exc}")
+        raise SystemExit(1)
+    output = (fallback.stdout or "") + (fallback.stderr or "")
+    if fallback.returncode != 0:
+        print(output.rstrip())
+        print(f"[FAIL] CodeGraph live status exited {fallback.returncode}")
+        raise SystemExit(1)
+    files, nodes = parse_text_status(output)
+
+if files is not None:
     if files <= 0:
         print(output.rstrip())
         print("[FAIL] CodeGraph live status reports zero indexed files")
@@ -149,7 +183,9 @@ if files_match:
     print(f"[PASS] CodeGraph live status reports indexed files ({files})")
     raise SystemExit(0)
 
-print("[WARN] CodeGraph live status output did not expose a Files indexed count")
+print(output.rstrip())
+print("[FAIL] CodeGraph live status output did not expose a parseable indexed file count")
+raise SystemExit(1)
 PY
 }
 
@@ -277,40 +313,44 @@ fi
 
 if [[ -f ".codegraphignore" ]]; then
   if grep -Eq '(^|/)(adg|ai-dev-governance|vendor/ai-dev-governance|submodules/ai-dev-governance)/\*\*' ".codegraphignore"; then
-    pass ".codegraphignore denies the ADG submodule path"
+    pass ".codegraphignore legacy boundary includes the ADG submodule path"
   else
-    fail ".codegraphignore must deny the ADG submodule path (for example: adg/**)"
+    fail ".codegraphignore legacy boundary must deny the ADG submodule path (for example: adg/**)"
   fi
 else
-  fail ".codegraphignore missing"
+  pass ".codegraphignore legacy boundary file absent; wrapper source staging enforces the default ADG boundary"
 fi
 
 if [[ -d ".codegraph" ]]; then
-  index_time="$(mtime ".codegraph")"
-  source_time="$(
-    if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-      git ls-files -z -- . \
-        ':(exclude).codegraph/**' \
-        ':(exclude).git/**' \
-        ':(exclude)docs/**' \
-        2>/dev/null \
-        | max_mtime_from_stdin
-    fi
-  )"
-  if [[ -z "$source_time" ]]; then
-    source_time="$(find . \
-      -path './.git' -prune -o \
-      -path './.codegraph' -prune -o \
-      -path './docs' -prune -o \
-      -type f -print0 \
-      | max_mtime_from_stdin)"
-  fi
-  if [[ -z "$source_time" ]]; then
-    pass "No tracked source files found for CodeGraph freshness comparison"
-  elif (( index_time >= source_time )); then
-    pass ".codegraph/ index timestamp is current with tracked source"
+  if [[ "${ADG_CODEGRAPH_SKIP_LIVE_STATUS:-0}" != "1" && "$codegraph_command" == *"codegraph-mcp"* ]]; then
+    pass ".codegraph/ metadata directory present; index freshness enforced by live CodeGraph status"
   else
-    fail ".codegraph/ index timestamp is older than tracked source"
+    index_time="$(mtime ".codegraph")"
+    source_time="$(
+      if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+        git ls-files -z -- . \
+          ':(exclude).codegraph/**' \
+          ':(exclude).git/**' \
+          ':(exclude)docs/**' \
+          2>/dev/null \
+          | max_mtime_from_stdin
+      fi
+    )"
+    if [[ -z "$source_time" ]]; then
+      source_time="$(find . \
+        -path './.git' -prune -o \
+        -path './.codegraph' -prune -o \
+        -path './docs' -prune -o \
+        -type f -print0 \
+        | max_mtime_from_stdin)"
+    fi
+    if [[ -z "$source_time" ]]; then
+      pass "No tracked source files found for CodeGraph freshness comparison"
+    elif (( index_time >= source_time )); then
+      pass ".codegraph/ index timestamp is current with tracked source"
+    else
+      fail ".codegraph/ index timestamp is older than tracked source"
+    fi
   fi
 else
   fail ".codegraph/ index directory missing"

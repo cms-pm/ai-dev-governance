@@ -5,7 +5,7 @@
 # shape (embedded profile + key absent) is proved, demonstrating the
 # manifest pattern that the gate refuses.
 apiVersion: ai-dev-governance/v1
-governanceVersion: v1.1.3
+governanceVersion: v1.1.4
 profile: strict-baseline+embedded
 adapters:
   - providers/codex

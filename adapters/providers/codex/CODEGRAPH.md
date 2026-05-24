@@ -27,7 +27,9 @@ Codex consumers that enable CG should apply the template fragments under
 - `.mcp.json.fragment` for the wrapper-invoked `codegraph` MCP server.
 - `CLAUDE.md.fragment` as the source stanza to adapt into `AGENTS.md` or an
   equivalent Codex instruction file.
-- `.codegraphignore` for path-scope exclusions.
+- The wrapper's default sanitized source staging for path-scope exclusions.
+  Legacy root `.codegraphignore` files are hidden before CodeGraph runs because
+  CodeGraph treats them as directory markers, not pattern files.
 
 The MCP server should be invoked through `templates/codegraph/scripts/codegraph-mcp`
 or an equivalent consumer-local wrapper that preserves the hardening matrix

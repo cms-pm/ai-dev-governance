@@ -4,6 +4,20 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.1.4] - 2026-05-24
+
+### Fixed
+- Updated the CodeGraph wrapper to stage a sanitized container `/workspace`
+  from the read-only `/workspace-source` bind mount so root `.codegraphignore`
+  marker files and out-of-scope governance/docs paths do not cause empty
+  indexes in declared-CG consumers.
+- Hardened CodeGraph live-status validation to parse JSON status, CLI
+  `Files:` status, and MCP `Files indexed:` status, and to fail closed on
+  unparseable or zero-index output.
+- Stopped treating host `.codegraph/` directory mtime as the freshness source
+  for wrapper-backed Docker named-volume indexes; live status is now the
+  declared freshness gate for that storage model.
+
 ## [1.1.3] - 2026-05-24
 
 ### Fixed

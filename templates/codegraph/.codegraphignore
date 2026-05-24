@@ -1,7 +1,11 @@
-# CodeGraph Tier-2 ignore template.
+# ADG CodeGraph Tier-2 legacy boundary template.
 #
-# Copy to the consumer repository root and replace the ADG submodule paths
-# below with the actual local submodule path before enabling CodeGraph.
+# CodeGraph itself treats a file named .codegraphignore as a directory marker,
+# not as a gitignore-style pattern file. ADG's hardened wrapper therefore
+# stages a sanitized /workspace and hides this root file before invoking
+# CodeGraph. Keep this file only for ADG consumer-boundary documentation and
+# validator compatibility; do not place .codegraphignore marker files in
+# directories that should be indexed.
 
 # Tier boundaries: Astaire owns ADG governance artifacts; Graphify owns raw.
 adg/**

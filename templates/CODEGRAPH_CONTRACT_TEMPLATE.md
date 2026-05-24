@@ -37,8 +37,13 @@ To enable CodeGraph, the consumer must provide:
   - `codegraphImageDigestURI`
 - `.mcp.json` with `mcpServers.codegraph.command` invoking the
   `codegraph-mcp` wrapper, not raw `npx` or a mutable host install.
-- `.codegraphignore` excluding the ADG submodule path and other out-of-scope
-  generated, vendored, or secret-bearing paths.
+- The `codegraph-mcp` wrapper's default sanitized source staging, which hides
+  root `.codegraphignore` marker files from CodeGraph and excludes ADG/raw/docs
+  boundary paths before indexing.
+- Optional legacy `.codegraphignore` boundary documentation. CodeGraph treats
+  `.codegraphignore` as a directory marker, not a gitignore-style pattern file;
+  ADG's wrapper strips a root marker before invoking CodeGraph so older
+  consumers do not accidentally hide the entire repository.
 - `.codegraph/image.digest` containing an immutable SHA-256 digest.
 - `.codegraph/evidence/sbom.spdx.json` for runtime/image provenance.
 - A fresh `.codegraph/` index for the declared source path scope.
@@ -59,6 +64,15 @@ strict Docker/container wrapper path or leave CG undeclared.
 The wrapper performs a one-shot named-volume ownership preparation step before
 starting the non-root hardened container. Set `ADG_CODEGRAPH_PREPARE_VOLUME=0`
 only when a consumer has an equivalent local volume-ownership control.
+
+The wrapper also stages a sanitized `/workspace` by default. It bind-mounts the
+consumer source read-only at `/workspace-source`, creates top-level symlinks for
+indexable product paths, omits `.codegraph`, `.git`, `.governance`, ADG
+submodule aliases, `raw`, `docs`, and common cache/build/secret roots, and
+mounts the writable named volume at `/workspace/.codegraph`. Set
+`ADG_CODEGRAPH_STAGE_SOURCE=0` only for a consumer that has independently
+verified direct source mounting does not expose a root `.codegraphignore` marker
+or out-of-scope governance/docs paths to the indexer.
 
 `Backend: wasm` in CodeGraph status is acceptable for consumer MCP operation
 when the pinned image otherwise starts and indexes the declared source scope.

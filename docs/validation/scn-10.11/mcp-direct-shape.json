@@ -1,9 +1,9 @@
 {
-  "projectRoot": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.rF56VQ/corpus",
-  "rootUri": "file:///private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.rF56VQ/corpus",
+  "projectRoot": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.DGF0yz/corpus",
+  "rootUri": "file:///private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.DGF0yz/corpus",
   "toolProjectPath": "/workspace",
   "mcpFragment": "/Users/cms/proj/agentic/ai-dev-governance/templates/codegraph/.mcp.json.fragment",
-  "serverCwd": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.rF56VQ/corpus",
+  "serverCwd": "/private/var/folders/xj/7ckgrh_n4vzdr63tbfm73dtw0000gn/T/adg-codegraph-mcp-shape.DGF0yz/corpus",
   "serverEnvKeys": [
     "ADG_CODEGRAPH_DIGEST",
     "ADG_CODEGRAPH_IMAGE",
