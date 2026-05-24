@@ -2,6 +2,7 @@
 
 | Governance Version | Consumer Compatibility | Migration Required | Tentacle Pins |
 |--------------------|------------------------|--------------------|---------------|
+| v1.1.0             | strict                 | Yes (adds optional CodeGraph Tier-2 code-intelligence prescription, removes Graphify from the supported ADG integration surface, and adds declared-CG release evidence gates without requiring CG for non-declared consumers) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v1.0.0             | strict                 | Yes (ratifies Phase 9 empirical governance: mutation testing thresholds and release evidence, glossary/domain-language coverage, test design review, architecture fitness declarations, implementation handoffs, and Astaire-first release consumption) | `astaire` @ `v0.5.0` (`ed16f6d`) |
 | v0.7.4             | strict                 | Yes (adds code implementation complexity governance for production-code changes, including ownership, naming/placement, line-count, state/task, complexity-rubric, and exception evidence) | `astaire` @ `v0.4.2` (`d6a49fc`) |
 | v0.7.3             | strict                 | No (patch over v0.7.2 — bumps the bundled Astaire submodule to v0.4.2 to fix legacy `source.source_type` taxonomy migration when existing rows still reference `source` through foreign keys) | `astaire` @ `v0.4.2` (`d6a49fc`) |
@@ -24,4 +25,4 @@
 
 - Minor and patch versions are backward compatible unless explicitly declared otherwise.
 - Major versions may require manifest and policy migration.
-- Strict baseline consumers should keep board review and automation controls enabled from v0.3.x onward, enforce chunk-scope validation from v0.4.x onward, enable `tooling/rtk` for Claude/Codex workflows from v0.5.x onward, adopt the Scenario Status Vocabulary plus scenario-ledger emission from v0.7.0 onward, collect implementation complexity evidence for production-code changes from v0.7.4 onward, and adopt Phase 9 empirical governance evidence from v1.0.0 onward.
+- Strict baseline consumers should keep board review and automation controls enabled from v0.3.x onward, enforce chunk-scope validation from v0.4.x onward, enable `tooling/rtk` for Claude/Codex workflows from v0.5.x onward, adopt the Scenario Status Vocabulary plus scenario-ledger emission from v0.7.0 onward, collect implementation complexity evidence for production-code changes from v0.7.4 onward, adopt Phase 9 empirical governance evidence from v1.0.0 onward, and remove Graphify integration in favor of Astaire plus optional CodeGraph from v1.1.0 onward.

@@ -2,6 +2,25 @@
 
 All notable changes to this governance repository are documented in this file.
 
+## [1.1.0] - 2026-05-24
+
+### Added
+- Phase 10 CodeGraph Tier-2 code-intelligence prescription, including
+  rootless container templates, provider adapter specs, consumer wiring
+  validator, release-gate evidence fields, and direct MCP shape smoke
+  evidence.
+
+### Changed
+- Promoted the public consumer baseline to `v1.1.0` with
+  `consumer/bootstrap-v1.1.0`.
+- Refreshed manifest examples and validation fixtures to `v1.1.0`.
+- Kept CodeGraph optional for strict consumers; non-CG consumers remain on
+  Astaire plus native repository tools.
+
+### Removed
+- Removed Graphify from the active ADG integration surface, including manifest
+  support, wrapper/validator scripts, fixtures, and install guidance.
+
 ## [1.0.0] - 2026-05-20
 
 ### Added

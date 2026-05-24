@@ -196,7 +196,7 @@ write_governance_yaml() {
   if [[ -f "${CONSUMER_ROOT}/${GOVERNANCE_MOUNT}/VERSION" ]]; then
     gov_version="v$(cat "${CONSUMER_ROOT}/${GOVERNANCE_MOUNT}/VERSION" | tr -d '[:space:]')"
   else
-    gov_version="v1.0.0"
+    gov_version="v1.1.0"
   fi
   if [[ "$MODE" == "new" ]] || [[ "$FORCE" == true ]]; then
     cat > "$path" << YAML

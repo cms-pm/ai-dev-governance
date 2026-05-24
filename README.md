@@ -69,8 +69,8 @@ This repository provides a strict baseline that teams can reuse across projects 
 
 Recommended consumer entrypoints for the current release:
 
-- stable tag: `v1.0.0`
-- dedicated bootstrap branch: `consumer/bootstrap-v1.0.0`
+- stable tag: `v1.1.0`
+- dedicated bootstrap branch: `consumer/bootstrap-v1.1.0`
 
 Downstream consumers should use the tag for stable pins and treat the
 `consumer/bootstrap-*` branch as the human-readable bootstrap surface that the
@@ -79,7 +79,7 @@ release points to.
 ### New or Existing Project Bootstrap
 
 ```bash
-git submodule add -b consumer/bootstrap-v1.0.0 https://github.com/cms-pm/ai-dev-governance.git .governance/ai-dev-governance
+git submodule add -b consumer/bootstrap-v1.1.0 https://github.com/cms-pm/ai-dev-governance.git .governance/ai-dev-governance
 git submodule update --init --recursive
 .governance/ai-dev-governance/scripts/bootstrap_project.sh --retrofit --force
 .governance/ai-dev-governance/scripts/validate_bootstrap.sh
@@ -109,7 +109,7 @@ For submodule pinning guidance after bootstrap, see
 
 Current published tentacle releases used by the consumer baseline:
 
-- `ai-dev-governance` — `v1.0.0`
+- `ai-dev-governance` — `v1.1.0`
 - `astaire` — `v0.5.0`
 
 ## Repository Layout

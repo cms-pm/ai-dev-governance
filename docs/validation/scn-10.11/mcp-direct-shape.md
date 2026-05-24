@@ -1,6 +1,6 @@
 # SCN-10.11 CodeGraph MCP Direct Shape Smoke
 
-- Generated: 2026-05-23T11:51:50Z
+- Generated: 2026-05-24T03:04:01Z
 - Corpus: `raw/codegraph` copied to an isolated temp tree
 - Runtime: strict Docker only through `templates/codegraph/scripts/codegraph-mcp`
 - Image digest: `sha256:8755b3e13adb17159e0154e750f0af56d2159ffb7847818c6871c2c3ddc3ded1`
