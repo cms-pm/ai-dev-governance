@@ -38,7 +38,7 @@ To enable CodeGraph, the consumer must provide:
 - `.mcp.json` with `mcpServers.codegraph.command` invoking the
   `codegraph-mcp` wrapper, not raw `npx` or a mutable host install.
 - The `codegraph-mcp` wrapper's default sanitized source staging, which hides
-  root `.codegraphignore` marker files from CodeGraph and excludes ADG/raw/docs
+  root `.codegraphignore` marker files from CodeGraph and excludes ADG/docs
   boundary paths before indexing.
 - Optional legacy `.codegraphignore` boundary documentation. CodeGraph treats
   `.codegraphignore` as a directory marker, not a gitignore-style pattern file;
@@ -68,11 +68,19 @@ only when a consumer has an equivalent local volume-ownership control.
 The wrapper also stages a sanitized `/workspace` by default. It bind-mounts the
 consumer source read-only at `/workspace-source`, creates top-level symlinks for
 indexable product paths, omits `.codegraph`, `.git`, `.governance`, ADG
-submodule aliases, `raw`, `docs`, and common cache/build/secret roots, and
+submodule aliases, `docs`, and common cache/build/secret roots, and
 mounts the writable named volume at `/workspace/.codegraph`. Set
 `ADG_CODEGRAPH_STAGE_SOURCE=0` only for a consumer that has independently
 verified direct source mounting does not expose a root `.codegraphignore` marker
 or out-of-scope governance/docs paths to the indexer.
+
+Rapid agent-driven CodeGraph calls can observe transient database lock
+contention while a previous container is still releasing `.codegraph` state.
+The wrapper waits for `.codegraph/codegraph.lock` to clear before launch and
+retries non-stdio CLI calls when CodeGraph reports lock contention. Tune with
+`ADG_CODEGRAPH_LOCK_RETRIES` and `ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS`; `serve
+--mcp` keeps stdout unbuffered for JSON-RPC and only uses the pre-launch lock
+wait.
 
 `Backend: wasm` in CodeGraph status is acceptable for consumer MCP operation
 when the pinned image otherwise starts and indexes the declared source scope.

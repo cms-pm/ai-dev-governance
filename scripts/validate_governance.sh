@@ -268,6 +268,14 @@ rg -q "ADG_CODEGRAPH_PREPARE_VOLUME" templates/codegraph/scripts/codegraph-mcp \
   || fail "CodeGraph wrapper must expose named-volume ownership preparation"
 rg -q "ADG_CODEGRAPH_STAGE_SOURCE" templates/codegraph/scripts/codegraph-mcp \
   || fail "CodeGraph wrapper must expose sanitized source staging"
+rg -q "ADG_CODEGRAPH_LOCK_RETRIES" templates/codegraph/scripts/codegraph-mcp \
+  || fail "CodeGraph wrapper must expose lock-contention retry tuning"
+if rg -q 'ai-dev-governance|raw|docs' templates/codegraph/scripts/codegraph-mcp; then
+  rg -q 'ai-dev-governance|docs' templates/codegraph/scripts/codegraph-mcp \
+    || fail "CodeGraph wrapper must retain ADG/docs staging exclusions"
+  ! rg -q '[|]raw[|]' templates/codegraph/scripts/codegraph-mcp \
+    || fail "CodeGraph wrapper must not exclude raw/ by default"
+fi
 rg -q "CodeGraph itself treats a file named .codegraphignore as a directory marker" templates/codegraph/.codegraphignore \
   || fail "CodeGraph ignore template must document marker semantics"
 rg -q "locally loaded.*image IDs" templates/CODEGRAPH_CONTRACT_TEMPLATE.md \

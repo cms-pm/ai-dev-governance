@@ -77,6 +77,10 @@ if not defined CACHE_VOLUME (
 
 set "CONTAINER_USER=%ADG_CONTAINER_USER%"
 if not defined CONTAINER_USER set "CONTAINER_USER=10001:10001"
+set "LOCK_RETRIES=%ADG_CODEGRAPH_LOCK_RETRIES%"
+if not defined LOCK_RETRIES set "LOCK_RETRIES=6"
+set "LOCK_BACKOFF=%ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS%"
+if not defined LOCK_BACKOFF set "LOCK_BACKOFF=1"
 
 if not "%ADG_CODEGRAPH_PREPARE_VOLUME%"=="0" (
   "%RUNTIME%" volume create "%CACHE_VOLUME%" >nul 2>nul
@@ -115,11 +119,13 @@ if "%ADG_CODEGRAPH_STAGE_SOURCE%"=="0" goto :direct_run
   --ulimit nofile=4096:4096 ^
   --ipc=none ^
   --user "%CONTAINER_USER%" ^
+  --env "ADG_CODEGRAPH_LOCK_RETRIES=%LOCK_RETRIES%" ^
+  --env "ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS=%LOCK_BACKOFF%" ^
   --mount "type=bind,src=%SOURCE_DIR%,dst=/workspace-source,readonly" ^
   --mount "type=volume,src=%CACHE_VOLUME%,dst=/workspace/.codegraph" ^
   --workdir /workspace ^
   --entrypoint /bin/sh ^
-  "%IMAGE_REF%" -c "set -eu; for entry in /workspace-source/.[!.]* /workspace-source/..?* /workspace-source/*; do [ -e ""$entry"" ] || continue; name=${entry##*/}; case ""$name"" in .|..|.codegraph|.codegraphignore|.git|.governance|adg|ai-dev-governance|raw|docs|secrets|node_modules|dist|build|out|target|coverage|.venv|venv|.pytest_cache|.mypy_cache|.ruff_cache|__pycache__) continue ;; esac; ln -s ""$entry"" ""/workspace/$name""; done; exec node /app/dist/bin/codegraph.js ""$@""" _ %*
+  "%IMAGE_REF%" -c "set -eu; retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}; delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}; i=0; while [ -e /workspace/.codegraph/codegraph.lock ] && [ ""$i"" -lt ""$retries"" ]; do i=$((i+1)); printf 'codegraph-mcp: CodeGraph lock present; retrying in %ss (%s/%s)\n' ""$delay"" ""$i"" ""$retries"" >&2; sleep ""$delay""; done; for entry in /workspace-source/.[!.]* /workspace-source/..?* /workspace-source/*; do [ -e ""$entry"" ] || continue; name=${entry##*/}; case ""$name"" in .|..|.codegraph|.codegraphignore|.git|.governance|adg|ai-dev-governance|docs|secrets|node_modules|dist|build|out|target|coverage|.venv|venv|.pytest_cache|.mypy_cache|.ruff_cache|__pycache__) continue ;; esac; ln -s ""$entry"" ""/workspace/$name""; done; exec node /app/dist/bin/codegraph.js ""$@""" _ %*
 exit /b %ERRORLEVEL%
 
 :direct_run
@@ -136,10 +142,13 @@ exit /b %ERRORLEVEL%
   --ulimit nofile=4096:4096 ^
   --ipc=none ^
   --user "%CONTAINER_USER%" ^
+  --env "ADG_CODEGRAPH_LOCK_RETRIES=%LOCK_RETRIES%" ^
+  --env "ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS=%LOCK_BACKOFF%" ^
   --mount "type=bind,src=%SOURCE_DIR%,dst=/workspace,readonly" ^
   --mount "type=volume,src=%CACHE_VOLUME%,dst=/workspace/.codegraph" ^
   --workdir /workspace ^
-  "%IMAGE_REF%" %*
+  --entrypoint /bin/sh ^
+  "%IMAGE_REF%" -c "set -eu; retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}; delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}; i=0; while [ -e /workspace/.codegraph/codegraph.lock ] && [ ""$i"" -lt ""$retries"" ]; do i=$((i+1)); printf 'codegraph-mcp: CodeGraph lock present; retrying in %ss (%s/%s)\n' ""$delay"" ""$i"" ""$retries"" >&2; sleep ""$delay""; done; exec node /app/dist/bin/codegraph.js ""$@""" _ %*
 exit /b %ERRORLEVEL%
 
 :usage
@@ -152,6 +161,8 @@ exit /b %ERRORLEVEL%
 >&2 echo   ADG_CODEGRAPH_VOLUME    Named volume for /workspace/.codegraph.
 >&2 echo   ADG_CODEGRAPH_PREPARE_VOLUME  Set to 0 to skip one-shot volume ownership prep.
 >&2 echo   ADG_CODEGRAPH_STAGE_SOURCE    Set to 0 to mount source directly instead of sanitized staging.
+>&2 echo   ADG_CODEGRAPH_LOCK_RETRIES    Lock-contention retries before giving up. Default: 6.
+>&2 echo   ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS  Seconds between lock retries. Default: 1.
 >&2 echo   ADG_CODEGRAPH_PLATFORM  Platform override. Default: linux/amd64.
 >&2 echo   ADG_CONTAINER_USER      Windows container user override. Default: 10001:10001.
 exit /b 0

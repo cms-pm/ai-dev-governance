@@ -82,7 +82,8 @@ appended in `(parens)` after each box is checked.
 - [x] `templates/codegraph/.mcp.json.fragment` on disk (Docker-invoked
       via wrapper, digest-pinned).
 - [x] `templates/codegraph/.codegraphignore` on disk (excludes ADG
-      submodule path, `raw/`, `docs/`, build artifacts).
+      submodule path, `docs/`, build artifacts; `raw/` is not excluded by
+      default after v1.1.5 consumer feedback).
 - [x] `templates/codegraph/CLAUDE.md.fragment` on disk (Tier-2 stanza
       in Astaire idiom).
 - [x] `templates/codegraph/settings.json.fragment` on disk (eight

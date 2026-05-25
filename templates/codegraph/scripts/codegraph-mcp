@@ -16,6 +16,10 @@ Environment:
   ADG_CODEGRAPH_STAGE_SOURCE
                           Set to 0 to mount source directly instead of staging
                           a sanitized /workspace inside the container.
+  ADG_CODEGRAPH_LOCK_RETRIES
+                          Lock-contention retries before giving up. Default: 6.
+  ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS
+                          Seconds between lock retries. Default: 1.
   ADG_CODEGRAPH_PLATFORM  Platform override. Default: host-derived linux/amd64 or linux/arm64.
 USAGE
 }
@@ -134,10 +138,70 @@ if [ "${ADG_CODEGRAPH_STAGE_SOURCE:-1}" = "0" ]; then
     --ulimit nofile=4096:4096 \
     --ipc=none \
     --user "$uid_gid" \
+    --env "ADG_CODEGRAPH_LOCK_RETRIES=${ADG_CODEGRAPH_LOCK_RETRIES:-6}" \
+    --env "ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}" \
     --mount "type=bind,src=$source_dir,dst=/workspace,readonly" \
     --mount "type=volume,src=$cache_volume,dst=/workspace/.codegraph" \
     --workdir /workspace \
-    "$image_ref" "$@"
+    --entrypoint /bin/sh \
+    "$image_ref" -c '
+set -eu
+
+is_mcp_serve() {
+  [ "${1:-}" = "serve" ] || return 1
+  shift
+  for arg in "$@"; do
+    [ "$arg" = "--mcp" ] && return 0
+  done
+  return 1
+}
+
+wait_for_codegraph_lock() {
+  retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}
+  delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}
+  attempt=0
+  while [ -e /workspace/.codegraph/codegraph.lock ] && [ "$attempt" -lt "$retries" ]; do
+    attempt=$((attempt + 1))
+    printf "codegraph-mcp: CodeGraph lock present; retrying in %ss (%s/%s)\n" "$delay" "$attempt" "$retries" >&2
+    sleep "$delay"
+  done
+}
+
+run_with_lock_retry() {
+  retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}
+  delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}
+  attempt=0
+  while :; do
+    out=/tmp/codegraph-mcp.$$.out
+    err=/tmp/codegraph-mcp.$$.err
+    if node /app/dist/bin/codegraph.js "$@" >"$out" 2>"$err"; then
+      cat "$out"
+      cat "$err" >&2
+      rm -f "$out" "$err"
+      return 0
+    fi
+    status=$?
+    if cat "$out" "$err" | grep -qiE "database is locked|locked by another process|SQLITE_BUSY|codegraph.lock" \
+      && [ "$attempt" -lt "$retries" ]; then
+      attempt=$((attempt + 1))
+      rm -f "$out" "$err"
+      printf "codegraph-mcp: CodeGraph lock contention; retrying in %ss (%s/%s)\n" "$delay" "$attempt" "$retries" >&2
+      sleep "$delay"
+      continue
+    fi
+    cat "$out"
+    cat "$err" >&2
+    rm -f "$out" "$err"
+    return "$status"
+  done
+}
+
+wait_for_codegraph_lock
+if is_mcp_serve "$@"; then
+  exec node /app/dist/bin/codegraph.js "$@"
+fi
+run_with_lock_retry "$@"
+' _ "$@"
 fi
 
 exec "$runtime" run --rm -i \
@@ -154,6 +218,8 @@ exec "$runtime" run --rm -i \
   --ulimit nofile=4096:4096 \
   --ipc=none \
   --user "$uid_gid" \
+  --env "ADG_CODEGRAPH_LOCK_RETRIES=${ADG_CODEGRAPH_LOCK_RETRIES:-6}" \
+  --env "ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}" \
   --mount "type=bind,src=$source_dir,dst=/workspace-source,readonly" \
   --mount "type=volume,src=$cache_volume,dst=/workspace/.codegraph" \
   --workdir /workspace \
@@ -164,11 +230,65 @@ for entry in /workspace-source/.[!.]* /workspace-source/..?* /workspace-source/*
   [ -e "$entry" ] || continue
   name=${entry##*/}
   case "$name" in
-    .|..|.codegraph|.codegraphignore|.git|.governance|adg|ai-dev-governance|raw|docs|secrets|node_modules|dist|build|out|target|coverage|.venv|venv|.pytest_cache|.mypy_cache|.ruff_cache|__pycache__)
+    .|..|.codegraph|.codegraphignore|.git|.governance|adg|ai-dev-governance|docs|secrets|node_modules|dist|build|out|target|coverage|.venv|venv|.pytest_cache|.mypy_cache|.ruff_cache|__pycache__)
       continue
       ;;
   esac
   ln -s "$entry" "/workspace/$name"
 done
-exec node /app/dist/bin/codegraph.js "$@"
+
+is_mcp_serve() {
+  [ "${1:-}" = "serve" ] || return 1
+  shift
+  for arg in "$@"; do
+    [ "$arg" = "--mcp" ] && return 0
+  done
+  return 1
+}
+
+wait_for_codegraph_lock() {
+  retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}
+  delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}
+  attempt=0
+  while [ -e /workspace/.codegraph/codegraph.lock ] && [ "$attempt" -lt "$retries" ]; do
+    attempt=$((attempt + 1))
+    printf "codegraph-mcp: CodeGraph lock present; retrying in %ss (%s/%s)\n" "$delay" "$attempt" "$retries" >&2
+    sleep "$delay"
+  done
+}
+
+run_with_lock_retry() {
+  retries=${ADG_CODEGRAPH_LOCK_RETRIES:-6}
+  delay=${ADG_CODEGRAPH_LOCK_BACKOFF_SECONDS:-1}
+  attempt=0
+  while :; do
+    out=/tmp/codegraph-mcp.$$.out
+    err=/tmp/codegraph-mcp.$$.err
+    if node /app/dist/bin/codegraph.js "$@" >"$out" 2>"$err"; then
+      cat "$out"
+      cat "$err" >&2
+      rm -f "$out" "$err"
+      return 0
+    fi
+    status=$?
+    if cat "$out" "$err" | grep -qiE "database is locked|locked by another process|SQLITE_BUSY|codegraph.lock" \
+      && [ "$attempt" -lt "$retries" ]; then
+      attempt=$((attempt + 1))
+      rm -f "$out" "$err"
+      printf "codegraph-mcp: CodeGraph lock contention; retrying in %ss (%s/%s)\n" "$delay" "$attempt" "$retries" >&2
+      sleep "$delay"
+      continue
+    fi
+    cat "$out"
+    cat "$err" >&2
+    rm -f "$out" "$err"
+    return "$status"
+  done
+}
+
+wait_for_codegraph_lock
+if is_mcp_serve "$@"; then
+  exec node /app/dist/bin/codegraph.js "$@"
+fi
+run_with_lock_retry "$@"
 ' _ "$@"

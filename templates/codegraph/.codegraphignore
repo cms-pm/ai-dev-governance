@@ -7,12 +7,12 @@
 # validator compatibility; do not place .codegraphignore marker files in
 # directories that should be indexed.
 
-# Tier boundaries: Astaire owns ADG governance artifacts; Graphify owns raw.
+# Tier boundaries: Astaire owns ADG governance artifacts; docs stay out of the
+# default CodeGraph product-code scope.
 adg/**
 ai-dev-governance/**
 vendor/ai-dev-governance/**
 submodules/ai-dev-governance/**
-raw/**
 docs/**
 
 # Build, dependency, cache, and generated output.

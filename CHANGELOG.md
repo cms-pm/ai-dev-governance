@@ -4,6 +4,16 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.1.5] - 2026-05-25
+
+### Fixed
+- Removed `raw/` from the CodeGraph wrapper's default sanitized-workspace
+  exclusions so consumers can index product code or fixture corpora that live
+  under a top-level `raw` directory.
+- Added lock-contention wait/retry behavior to the CodeGraph wrapper for rapid
+  agent-driven calls that can observe delayed `.codegraph/codegraph.lock`
+  teardown.
+
 ## [1.1.4] - 2026-05-24
 
 ### Fixed
