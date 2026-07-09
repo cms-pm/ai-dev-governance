@@ -254,25 +254,31 @@ else
   pass ".mcp.json invokes CodeGraph through codegraph-mcp wrapper"
 fi
 
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--privileged([[:space:]"'\'',\]]|$)' \
+# NOTE on boundary bracket expressions below: a literal "]" inside a POSIX
+# bracket expression MUST be the first character after "[" (or "[^") to be
+# treated as a literal rather than closing the bracket early, and "=" must
+# not be the first character after "[" (it opens an equivalence-class
+# construct instead of a literal "="). All boundary classes here are
+# ordered "[]...=...[:space:]]" / "[^]...[:space:]]" to avoid both traps.
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--privileged([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --privileged"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--network=host([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--network=host([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --network=host"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--pid=host([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--pid=host([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --pid=host"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--ipc=host([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--ipc=host([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --ipc=host"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--cap-add([=[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--cap-add([]"'\'',=[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --cap-add"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])--security-opt[=[:space:]][^[:space:]"'\'',\]]*seccomp=unconfined([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])--security-opt[[:space:]=][^]"'\'',[:space:]]*seccomp=unconfined([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use --security-opt seccomp=unconfined"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])/var/run/docker\.sock([:/[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])/var/run/docker\.sock([]"'\'',:/[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not mount /var/run/docker.sock"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])/run/docker\.sock([:/[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])/run/docker\.sock([]"'\'',:/[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not mount /run/docker.sock"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])[^[:space:]"'\'',@]+:latest([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])[^[:space:]"'\'',@]+:latest([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not use :latest image refs"
-deny_mcp_pattern '(^|[[:space:]"'\'',\[])npx[[:space:]]+codegraph([[:space:]"'\'',\]]|$)' \
+deny_mcp_pattern '(^|[[:space:]"'\'',=\[])npx[[:space:]]+codegraph([]"'\'',[:space:]]|$)' \
   ".mcp.json CodeGraph wiring must not invoke raw npx codegraph"
 
 digest_file=".codegraph/image.digest"
