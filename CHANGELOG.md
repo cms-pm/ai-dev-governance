@@ -4,6 +4,55 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-08
+
+### Scope
+This release is a **doctrine and contract release**: it defines the
+Specification-Evasion taxonomy, the M1-M4 blocking-mechanism vocabulary, and
+the `acceptanceIntegrity` manifest contract. It does **not** ship an
+ADG-side validator that enforces those mechanisms — `governance.yaml`'s
+`acceptanceIntegrity` block is illustrative-defaults only and is not yet
+consumed by any gate in this repo. Enforcement lands as a consumer-side
+prototype (see `core/ACCEPTANCE_INTEGRITY.md` §7 placement decision).
+Consumers adopting this contract must implement or wire their own gate
+before treating it as a live control.
+
+### Added
+- New `core/ACCEPTANCE_INTEGRITY.md` covering the Specification-Evasion
+  taxonomy, M1-M4 blocking mechanisms, the checker-is-not-the-maker keystone,
+  qualified verdicts, forced-waiver terminal states, boundary invariants,
+  read-gate-by-tier, and the acceptance trust boundary.
+
+### Changed
+- Extended `core/EVIDENCE_CONTRACT.md` with evidence-mode qualified verdicts.
+- Extended `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` with loop primitives,
+  checker-is-not-the-maker separation, PASS/WAIVE/FAIL terminal states, and
+  hollow-verdict handling.
+- Extended `core/PLANNING_METHODOLOGY.md` with `hard`/`predicate`/`antiProxy`
+  acceptance fields and the `requirements.lock` artifact.
+- Extended `core/MUTATION_EVIDENCE.md` to apply mutation evidence to gates.
+- Added the Specification Adherence clause to the Codex and Claude provider
+  context adapters.
+- Added the optional `requirementsLock` field to the implementation handoff
+  schema.
+- Added the `acceptanceIntegrity` block, gate state machine, and frozen-paths
+  concept to `governance.yaml`, and bumped `governanceVersion` to v1.2.0.
+- Added the corresponding `acceptanceIntegrity` property to
+  `contracts/governance-manifest.schema.json` (optional, `additionalProperties:
+  false` at the root previously left it unrepresentable).
+- Extended `validation/CONSISTENCY_RULES.md` to cover the new acceptance
+  integrity surface.
+
+### Fixed
+- Corrected malformed POSIX bracket expressions in
+  `scripts/validate_codegraph_wiring.sh`'s `.mcp.json` denylist checks
+  (`--privileged`, `--network=host`, `--cap-add`, docker-sock mounts,
+  `:latest` images, raw `npx codegraph`). A pre-existing, unrelated bug: the
+  denylist only reliably matched a flagged pattern when it was the last
+  element in the `.mcp.json` args array. Bundled into this release for
+  release-readiness since `validate_governance.sh` runs this script as part
+  of the gate; not part of the v1.2.0 doctrine.
+
 ## [1.1.5] - 2026-05-25
 
 ### Fixed

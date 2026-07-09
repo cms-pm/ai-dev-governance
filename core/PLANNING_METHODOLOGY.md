@@ -139,6 +139,44 @@ the latter case requires a planning-note amendment.
 - Non-functional requirements (performance, memory, reliability) MUST include measurable acceptance checks.
 - Acceptance checks MAY be encoded as Gherkin, executable test suites, or both.
 
+Each acceptance-criterion trace record MAY declare `hard: true` to mark
+it as a hard (non-negotiable) requirement. A trace record marked
+`hard: true` MUST additionally declare:
+
+- `predicate` — a machine-checkable condition that constitutes
+  satisfaction of the requirement, not a prose description.
+- `antiProxy` — the adversarial, non-triviality, or source-authority
+  check(s) that rule out cheap-path satisfaction of `predicate` (for
+  example, a stub substituted for real behavior, or a mocked-away check).
+  See `core/ACCEPTANCE_INTEGRITY.md` for the check taxonomy.
+
+A trace record MUST NOT be marked `hard: true` without a `predicate`.
+
+## Requirement Lock (`requirements.lock`)
+
+Hard requirements (`hard: true`, see §Acceptance Criteria Mapping above)
+MUST be captured as a hashed block, `requirements.lock`, inside the
+implementation-handoff artifact
+(`contracts/implementation-handoff.schema.json`). The lock records the
+human-approved content hash of the hard-requirement set at the moment
+planning sign-off completes.
+
+- The hash MUST be computed over the normalized hard-requirement set
+  (acceptance ID, `predicate`, `antiProxy`) at approval time.
+- Any subsequent edit to a hard requirement's `predicate` or `antiProxy`
+  — including an edit made to bring the requirement doc in line with an
+  already-built implementation rather than the other way around — MUST
+  change the computed hash.
+- A mismatch between the recomputed hash and the approved
+  `requirements.lock` value MUST be detectable by any downstream gate
+  that reads the handoff artifact. Gate-side blocking behavior on a
+  mismatch is specified in `core/ACCEPTANCE_INTEGRITY.md` (M2).
+- `requirements.lock` MUST be placed such that the party producing the
+  implementation cannot re-author both the requirement and its approved
+  hash within the same change. This policy defines the concept and its
+  detectability requirement; placement/enforcement mechanics (protected
+  location, CI verification) are specified downstream.
+
 ## Board Review Integration
 
 - Strict baseline projects MUST run board review using `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md`.

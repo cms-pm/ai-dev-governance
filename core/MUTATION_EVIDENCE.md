@@ -25,6 +25,34 @@ surviving mutant is direct evidence that some line of production code
 can be silently broken without any test failing. Mutation score is the
 percentage of generated mutants the suite kills.
 
+## Extension to Gates
+
+The Core Principle above — a passing test suite is necessary but not
+sufficient evidence that behavior is validated — generalizes beyond test
+suites to governance gates themselves. A governance gate (an acceptance
+checker, an evidence-contract validator, a boundary-invariant check, and
+so on) that has never been observed to FAIL against a deliberately
+planted violation of the requirement it purports to check is not
+evidence the gate works; it may simply never have exercised its own
+failure path.
+
+**Doctrine statement:** a gate MUST FAIL when evaluated against a
+planted violation of the requirement it purports to check, in the same
+way a test MUST fail against a planted defect (mutant) in the code it
+purports to check.
+
+This is a doctrinal requirement on the design and self-verification of
+gates, not a description of a periodic mutation-testing program for
+gates. Whether and how gate mutation-resistance is exercised on an
+ongoing basis is out of scope for this policy and is a downstream,
+execution-environment concern. A gate that has never been exercised
+against a planted violation of its own target requirement SHOULD be
+treated with the same suspicion as an untested test suite: a PASS from
+it is not yet evidence of anything. See `core/ACCEPTANCE_INTEGRITY.md`
+for the mechanical classification of untrustworthy verdicts, and
+`core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §Hollow Verdicts for the
+related doctrine on verdicts computed from maker-controlled values.
+
 ## Definitions
 
 - **Mutant.** An automated modification of production code (e.g.
@@ -171,6 +199,10 @@ mutation report defined here.
   evidence field.
 - `core/MODULARITY_GOVERNANCE.md` — domain core is the highest-priority
   mutation target.
+- `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` §Hollow Verdicts — a gate that
+  cannot fail a planted violation risks producing a hollow PASS.
+- `core/ACCEPTANCE_INTEGRITY.md` — mechanical classification of gate and
+  acceptance-verdict trustworthiness (see §Extension to Gates above).
 - `validation/CONSISTENCY_RULES.md` §17 — fail-closed
   required-presence of the `analyzers.mutation` block by risk tier.
 - `contracts/governance-manifest.schema.json` — schema for the

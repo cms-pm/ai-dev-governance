@@ -144,6 +144,35 @@
           "uniqueItems": true
         }
       }
+    },
+    "requirementsLock": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Locked hard-requirement contract hash (the 'requirements.lock' concept). Carries a hash over the hard-requirement set (hard:true predicates declared under core/PLANNING_METHODOLOGY.md's acceptance trace) that a maker cannot silently change. A gate's M2 lock verifier recomputes the hash from the enforced requirements and compares it to this block; a mismatch is a gate FAIL. The approved hash is intended to be authored/approved outside the maker's write scope (see governance.yaml acceptanceIntegrity and the trust-boundary discussion it implements) so the same change that edits a requirement cannot also re-approve its own lock.",
+      "required": ["algorithm", "hash", "lockedRequirementIds", "approvedBy", "approvedDate"],
+      "properties": {
+        "algorithm": {
+          "type": "string",
+          "enum": ["sha256"]
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "lockedRequirementIds": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "approvedBy": {"type": "string", "minLength": 1},
+        "approvedDate": {"type": "string", "format": "date"},
+        "sourcePath": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Path to the human-approved artifact that holds the locked hash of record, expected to live outside the maker's write scope."
+        }
+      }
     }
   }
 }

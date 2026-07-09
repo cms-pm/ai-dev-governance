@@ -27,6 +27,15 @@ Each acceptance item MUST include:
 - checker/test identifier
 - pass/fail status
 - artifact URI/path
+- `evidence_mode` — the verification-depth tier the pass/fail status was
+  observed under. See §Evidence-Mode Qualified Verdicts.
+- `intentAssertions` — the set of adversarial/non-triviality/source-authority
+  checks executed for this acceptance item's hard requirements, and their
+  outcomes. See `core/ACCEPTANCE_INTEGRITY.md` for the check taxonomy.
+- `acceptanceIntegrity` — the classification of whether this acceptance
+  record's verdict is trustworthy (for example `sound`, `hollow`,
+  `mode_gated_mock`, `no_intent_assertion`). See
+  `core/ACCEPTANCE_INTEGRITY.md` for the classification rules.
 
 The following per-acceptance evidence URIs are REQUIRED at the risk
 tier where the corresponding analyzer block becomes required (see
@@ -141,6 +150,33 @@ Acceptance-item `pass/fail status` MUST resolve to one of:
 acceptance criteria. Runners MAY produce `skipped` as an intermediate
 state (for example, an environment-unavailable HiL probe) but evidence
 records MUST resolve to one of the values above before sign-off.
+
+## Evidence-Mode Qualified Verdicts
+
+Every acceptance record MUST declare `evidence_mode`, the
+verification-depth tier under which its pass/fail status was observed.
+Tiers, ordered least to most rigorous:
+
+1. `mock` — no real target/environment; stubbed or simulated inputs.
+2. `sil` — software-in-the-loop against real production code, no target
+   hardware.
+3. `hil_record_only` — hardware/target-in-the-loop, evidence captured but
+   not yet promoted through the full board/release path.
+4. `board_passing` — hardware/target-in-the-loop evidence that has cleared
+   board review and is release-eligible.
+
+A recorded terminal status from §Scenario Status Vocabulary MUST be
+qualified by its `evidence_mode` wherever both fields are present, using
+the form `<status>@<evidence_mode>` (for example `passing@sil`,
+`passing@mock`). A bare `passing` with no `evidence_mode` qualifier is not
+a valid acceptance record at strict-baseline profile.
+
+Downstream consumers (dashboards, release evidence, board packets) MUST
+NOT collapse a lower-tier verdict such as `passing@mock` into an
+unqualified `passing` claim or represent it as equivalent to
+`passing@board_passing`. Doing so discards the verification-depth signal
+this field exists to preserve; see `core/ACCEPTANCE_INTEGRITY.md` for the
+mechanical detection of this failure mode.
 
 ## Format
 

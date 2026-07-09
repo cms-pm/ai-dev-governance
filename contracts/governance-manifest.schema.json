@@ -318,6 +318,65 @@
           }
         }
       }
+    },
+    "acceptanceIntegrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Preventive-core gate contract (ADG v1.2.0, core/ACCEPTANCE_INTEGRITY.md). OPTIONAL at v1 -- no ADG-side gate consumes these values yet; enforcement lands as a consumer-side prototype per ADG v1.2.0 SS7 placement decision.",
+      "properties": {
+        "nonTriviality": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "minEvidenceBytes": {"type": "integer", "minimum": 0},
+            "minAssertionsPerHardRequirement": {"type": "integer", "minimum": 0}
+          }
+        },
+        "intentCoverage": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "minAntiProxyCoveragePercent": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["medium", "high", "critical"],
+              "properties": {
+                "medium": {"type": "number", "minimum": 0, "maximum": 100},
+                "high": {"type": "number", "minimum": 0, "maximum": 100},
+                "critical": {"type": "number", "minimum": 0, "maximum": 100}
+              }
+            }
+          }
+        },
+        "gateStateMachine": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "states": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "enum": ["PASS", "WAIVED", "FAIL"]}
+            },
+            "terminalStates": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "items": {"type": "string", "enum": ["PASS", "WAIVED", "FAIL"]}
+            },
+            "onUnresolvedRequirement": {"type": "string", "enum": ["PASS", "WAIVED", "FAIL"]},
+            "onSelfGradedVerdict": {"type": "string", "enum": ["PASS", "WAIVED", "FAIL"]}
+          }
+        },
+        "frozenPaths": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "manifestPath": {"type": "string", "minLength": 1},
+            "enforcement": {"type": "string", "enum": ["fail-closed", "fail-open"]}
+          }
+        }
+      }
     }
   },
   "$defs": {

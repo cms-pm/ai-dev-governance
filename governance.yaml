@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v1.1.0
+governanceVersion: v1.2.0
 profile: strict-baseline
 adapters:
   - providers/claude
@@ -93,5 +93,41 @@ analyzers:
   architectureFitness:
     rulesPath: validation/architecture-fitness.yaml
     engine: scripts/validators/architecture_fitness.py
+# acceptanceIntegrity: preventive-core gate contract (ADG v1.2.0). Blocks
+# proxy-substitution, spec-mutation, self-grading, and frozen-boundary
+# evasion. See core/ACCEPTANCE_INTEGRITY.md for mechanics; no metrics/
+# feedback-loop block is declared here (out of scope for v1.2.0).
+acceptanceIntegrity:
+  # NOTE: the numeric values below are illustrative defaults, not values
+  # derived from a measured baseline. No ADG-side gate consumes them yet
+  # (enforcement lands as a ForgeVM-side prototype, per ADG v1.2.0 §7
+  # placement decision). Consumers adopting acceptanceIntegrity enforcement
+  # MUST tune these to their own project's evidence characteristics before
+  # treating them as a live gate threshold.
+  nonTriviality:
+    # Minimum evidence size / assertion count below which a hard
+    # requirement's evidence is presumed a stub and FAILs closed.
+    minEvidenceBytes: 256
+    minAssertionsPerHardRequirement: 1
+  intentCoverage:
+    # Minimum percentage of hard requirements that must carry an
+    # antiProxy / intent assertion (core/PLANNING_METHODOLOGY.md
+    # hard:true predicates), tiered like analyzers.mutation.threshold.
+    minAntiProxyCoveragePercent:
+      medium: 50
+      high: 80
+      critical: 100
+  gateStateMachine:
+    states: [PASS, WAIVED, FAIL]
+    terminalStates: [PASS, WAIVED, FAIL]
+    # Any hard requirement lacking a qualified (@<evidence_mode>) verdict,
+    # a passing intent assertion, or a waiver record resolves to FAIL.
+    onUnresolvedRequirement: FAIL
+    onSelfGradedVerdict: FAIL
+  frozenPaths:
+    # Manifest of paths owned by closed chunks. A diff touching a
+    # declared path with no matching waiver is a gate FAIL (M4).
+    manifestPath: docs/governance/frozen-paths.yaml
+    enforcement: fail-closed
 updateCadence: monthly
 compatibility: strict
