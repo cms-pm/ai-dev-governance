@@ -11,6 +11,12 @@ export ADG_CODEGRAPH_SKIP_LIVE_STATUS=1
 # uncommitted working tree.
 touch validation/fixtures/codegraph/positive/.codegraph
 
+# Force the stale-index negative fixture's .codegraph strictly older than
+# its tracked source, regardless of checkout mtime ordering (integer-second
+# stat resolution means same-second checkouts can otherwise tie and mask
+# the staleness this fixture is meant to exercise).
+touch -d "1970-01-01" validation/fixtures/codegraph/negative-stale-index/.codegraph
+
 bash scripts/validate_codegraph_wiring.sh \
   --root validation/fixtures/codegraph/positive
 
