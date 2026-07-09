@@ -4,6 +4,31 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.0] - 2026-07-08
+
+### Added
+- New `core/ACCEPTANCE_INTEGRITY.md` covering the Specification-Evasion
+  taxonomy, M1-M4 blocking mechanisms, the checker-is-not-the-maker keystone,
+  qualified verdicts, forced-waiver terminal states, boundary invariants,
+  read-gate-by-tier, and the acceptance trust boundary.
+
+### Changed
+- Extended `core/EVIDENCE_CONTRACT.md` with evidence-mode qualified verdicts.
+- Extended `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` with loop primitives,
+  checker-is-not-the-maker separation, PASS/WAIVE/FAIL terminal states, and
+  hollow-verdict handling.
+- Extended `core/PLANNING_METHODOLOGY.md` with `hard`/`predicate`/`antiProxy`
+  acceptance fields and the `requirements.lock` artifact.
+- Extended `core/MUTATION_EVIDENCE.md` to apply mutation evidence to gates.
+- Added the Specification Adherence clause to the Codex and Claude provider
+  context adapters.
+- Added the optional `requirementsLock` field to the implementation handoff
+  schema.
+- Added the `acceptanceIntegrity` block, gate state machine, and frozen-paths
+  concept to `governance.yaml`, and bumped `governanceVersion` to v1.2.0.
+- Extended `validation/CONSISTENCY_RULES.md` to cover the new acceptance
+  integrity surface.
+
 ## [1.1.5] - 2026-05-25
 
 ### Fixed

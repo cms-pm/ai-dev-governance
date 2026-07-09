@@ -93,3 +93,29 @@ If upgrading from v0.7.3 or earlier:
    product paths in the shared ADG baseline.
 5. Update release readiness checks to confirm production-code changes include
    implementation complexity evidence or a documented not-applicable rationale.
+
+## v1.2.0 Acceptance Integrity
+
+If upgrading from v1.1.5:
+
+This is an additive minor release with no breaking changes. Nothing existing
+was removed or renamed; all new fields and manifest blocks are optional.
+Consumers who do not adopt them are unaffected.
+
+1. Read `core/ACCEPTANCE_INTEGRITY.md`, the new normative document covering
+   the Specification-Evasion taxonomy, M1-M4 blocking mechanisms, the
+   checker-is-not-the-maker keystone, qualified verdicts, forced-waiver
+   terminal states, boundary invariants, read-gate-by-tier, and the
+   acceptance trust boundary.
+2. Bump `governanceVersion` to `v1.2.0` in the consumer governance manifest.
+3. To opt into enforcement, adopt the new optional fields (required-if-used
+   pattern — each field is only required once you adopt it):
+   - Add the `acceptanceIntegrity` block to the governance manifest and wire
+     the gate state machine and frozen-paths concept per `governance.yaml`.
+   - Emit `hard`/`predicate`/`antiProxy` acceptance fields and a
+     `requirements.lock` artifact per `core/PLANNING_METHODOLOGY.md`.
+   - Populate the optional `requirementsLock` field in implementation
+     handoff artifacts.
+   - Record evidence-mode qualified verdicts per `core/EVIDENCE_CONTRACT.md`.
+4. Consumers who skip step 3 continue to validate cleanly against the
+   v1.1.5-era surface.

@@ -124,6 +124,30 @@
     the same module. WARN (exit 0) for absent blocks on
     strict-baseline profiles; structural violations fail-close.
 
+19. Acceptance/evidence records MUST report **qualified verdicts**. A
+    `status` (or per-acceptance) value of `"passing"` with no
+    `@<evidence_mode>` suffix (e.g. `passing@sil`, `passing@board_passing`)
+    MUST be flagged as an unqualified/hollow verdict. A bare `"passing"`
+    hides the verification-depth tier and is treated the same as a
+    missing verdict for gate purposes (see `core/ACCEPTANCE_INTEGRITY.md`
+    and `governance.yaml` `acceptanceIntegrity.gateStateMachine`).
+
+20. A change diff that touches any path declared under a closed chunk's
+    entry in the frozen-paths manifest
+    (`governance.yaml` `acceptanceIntegrity.frozenPaths.manifestPath`)
+    MUST be flagged as a frozen-boundary violation unless the change
+    carries a matching waiver record under
+    `core/EXCEPTIONS_AND_WAIVERS.md`. This is the mechanical form of
+    "closed chunks are frozen" (see `core/ACCEPTANCE_INTEGRITY.md`).
+
+21. A hard requirement (`hard:true` in `core/PLANNING_METHODOLOGY.md`'s
+    acceptance trace) that carries no `antiProxy` or other intent
+    assertion MUST be flagged as missing intent coverage. Coverage is
+    measured against `governance.yaml`
+    `acceptanceIntegrity.intentCoverage.minAntiProxyCoveragePercent`
+    for the chunk's risk tier; a hard requirement below that floor
+    resolves to FAIL, not silent pass (see `core/ACCEPTANCE_INTEGRITY.md`).
+
 ## Release Rules
 
 1. `CHANGELOG.md` has entry for current version.

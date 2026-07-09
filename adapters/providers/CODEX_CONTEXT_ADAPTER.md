@@ -58,6 +58,26 @@ Defines recommended context conventions for teams using Codex-style assistants.
   the implementation note. If CodeGraph is stale, unavailable, or outside
   declared scope, record the fallback reason before native spidering.
 
+## Specification Adherence
+
+- Gate and acceptance verdicts MUST be **meet-or-waive**: a hard
+  requirement is either met on its own evidence or routed through the
+  documented waiver process (`core/EXCEPTIONS_AND_WAIVERS.md`). Silently
+  reporting a requirement as satisfied without meeting it or recording a
+  waiver is prohibited.
+- An agent MUST NOT **self-grade**: the identity/session that authors and
+  executes an implementation MUST NOT also be the identity/session that
+  grades the gate for that same implementation (checker ≠ maker; see
+  `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md`).
+- An agent MUST NOT edit a requirement, acceptance criterion, or its
+  locked requirement-contract hash to make it match what was built.
+  Requirements change only through the human-approved process that
+  produced them, not to accommodate a build in progress.
+- When a hard requirement cannot be met, the agent MUST surface the
+  blocker to a human or the waiver process rather than routing around it
+  (e.g. substituting a proxy, narrowing scope, or reinterpreting the
+  requirement). See `core/ACCEPTANCE_INTEGRITY.md` for the mechanics.
+
 ## Required Mapping
 
 - `core/*` policies map directly to project governance docs.
