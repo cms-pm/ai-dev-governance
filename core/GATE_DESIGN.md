@@ -20,8 +20,8 @@ This policy governs the design of acceptance gates and oracles at
 authoring time, before freeze. It does not license loosening a frozen
 gate after work has started: frozen gates stay frozen, recorded FAIL
 verdicts stand, and nothing here retroactively re-grades a closed
-verdict. See `core/AUTONOMOUS_DELIVERY_GOVERNANCE.md` for the
-boundary-invariant rule against reopening closed chunks.
+verdict. See `core/ACCEPTANCE_INTEGRITY.md`'s Boundary Invariants (§M4)
+for the rule against reopening closed chunks.
 
 ## Failure Modes This Policy Designs Against
 
@@ -84,7 +84,7 @@ Every acceptance gate or oracle authored under this policy MUST:
    under test — is the first suspect, and MUST be fixed before freeze.
 6. **Keep post-freeze discipline asymmetric.** Once a gate's thresholds
    are frozen (the SHA recorded per `core/ACCEPTANCE_INTEGRITY.md`'s
-   boundary-invariant discipline), they MUST NOT move in either
+   Boundary Invariants (§M4) discipline), they MUST NOT move in either
    direction. All judgment about statistic design is spent before freeze;
    none is available after.
 
@@ -102,8 +102,8 @@ Every acceptance gate or oracle authored under this policy MUST:
 
 ## Cross-References
 
-- `core/ACCEPTANCE_INTEGRITY.md` — the boundary-invariant rule against
-  reopening closed/frozen gates; the `PASS` / `WAIVED` / `FAIL` terminal
+- `core/ACCEPTANCE_INTEGRITY.md` — the Boundary Invariants (§M4) rule
+  against reopening closed/frozen gates; the `PASS` / `WAIVED` / `FAIL` terminal
   states this policy's `PARTIAL` verdict composes with.
 - `core/MUTATION_EVIDENCE.md` — test-suite effectiveness evidence; a
   parallel empirical-rigor policy for the test layer rather than the

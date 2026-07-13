@@ -156,6 +156,9 @@ Consuming repositories MAY also maintain an optional local overlay at `docs/gove
 - Exceptions and waivers: `core/EXCEPTIONS_AND_WAIVERS.md`
 - AI-assisted security controls: `core/SECURITY_CONTROLS.md`
 - Evidence contract: `core/EVIDENCE_CONTRACT.md`
+- Specification-evasion resistance, M1-M4 blocking mechanisms, and boundary invariants: `core/ACCEPTANCE_INTEGRITY.md`
+- Gate/oracle design: tiered checks, PARTIAL verdicts, and margin reporting: `core/GATE_DESIGN.md`
+- Harness metrics feedback loop and no-silent-zero rule: `core/HARNESS_METRICS.md`
 
 ## Publishing Baseline
 
