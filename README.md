@@ -67,6 +67,11 @@ This repository provides a strict baseline that teams can reuse across projects 
 
 ## Get Started
 
+Prerequisite: `scripts/validate_governance.sh` requires
+[ripgrep](https://github.com/BurntSushi/ripgrep#installation) (`rg`) on
+`PATH`. It preflight-checks for `rg` and fails with a clear message if
+missing.
+
 Recommended consumer entrypoints for the current release:
 
 - stable tag: `v1.1.5`

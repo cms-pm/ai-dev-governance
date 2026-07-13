@@ -14,6 +14,8 @@ pass() {
   echo "[PASS] $1"
 }
 
+command -v rg >/dev/null 2>&1 || fail "validate_governance.sh requires ripgrep ('rg') on PATH. Install: https://github.com/BurntSushi/ripgrep#installation"
+
 required_files=(
   "README.md"
   "LICENSE"
