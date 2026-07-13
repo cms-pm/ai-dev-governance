@@ -4,6 +4,45 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.1] - 2026-07-12
+
+### Scope
+This is a **completion release** for doctrine scope originally targeted for
+`v1.2.0` but deliberately deferred at that time (see the `[1.2.0]` Scope
+note above). It ships the gate-design canon and the metrics feedback-loop
+doctrine that were out of scope for `v1.2.0`. Like `v1.2.0`, this release
+ships doctrine and contracts only — no ADG-side collector, writer, or
+validator is shipped for `core/HARNESS_METRICS.md`; enforcement remains a
+consumer-side concern, consistent with `core/ACCEPTANCE_INTEGRITY.md`'s
+already-established precedent.
+
+### Added
+- New `core/GATE_DESIGN.md`: gate/oracle design doctrine — tiered
+  `load_bearing`/`refinement` checks with a first-class `PARTIAL` verdict,
+  floor-aware/separation-form ratio statistics, noise-relative (>=2 sigma)
+  tolerances, mandatory per-check margin reporting, pre-freeze dry-run
+  discipline against synthetic good/bad artifacts, and post-freeze
+  threshold immutability.
+- New `core/HARNESS_METRICS.md`: the metrics feedback system doctrine — six
+  metric families (verdict integrity, drift-catch, checker effectiveness,
+  harness integrity/gate-mutation, waiver health, leverage/cost), the
+  no-silent-zero rule, and a tuning cadence. Doctrine-only; no ADG-side
+  collector ships in this release.
+- New `contracts/harness-metrics-row.schema.json`: an engine-agnostic,
+  independently-versioned (`schemaVersion`) per-row schema for the
+  harness-metrics emit contract.
+- Added the `harnessMetrics` property to
+  `contracts/governance-manifest.schema.json` (optional; mirrors the
+  existing `acceptanceIntegrity` property's declare-your-instantiation
+  pattern).
+- Added an illustrative `harnessMetrics` block to this repo's own
+  `governance.yaml`; bumped `governanceVersion` to `v1.2.1`.
+
+### Changed
+- Updated the `governance.yaml` comment above `acceptanceIntegrity` that
+  previously stated no metrics/feedback-loop block was declared — that
+  block now exists (see Added, above).
+
 ## [1.2.0] - 2026-07-08
 
 ### Scope
