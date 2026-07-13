@@ -44,7 +44,6 @@
     },
     "analyzerDeclaration": {
       "type": "object",
-      "additionalProperties": false,
       "oneOf": [
         {
           "required": ["legacyString"],
@@ -103,7 +102,8 @@
         "validationPath": {"type": "string", "minLength": 1},
         "releasePath": {"type": "string", "minLength": 1},
         "codegraphIndexFreshnessURI": {"type": "string", "minLength": 1},
-        "codegraphImageDigestURI": {"type": "string", "minLength": 1}
+        "codegraphImageDigestURI": {"type": "string", "minLength": 1},
+        "embeddedVerificationChecklistPath": {"type": "string", "minLength": 1}
       }
     },
     "exceptions": {
@@ -375,6 +375,25 @@
             "manifestPath": {"type": "string", "minLength": 1},
             "enforcement": {"type": "string", "enum": ["fail-closed", "fail-open"]}
           }
+        }
+      }
+    },
+    "harnessMetrics": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Harness metrics declaration (ADG v1.2.1, core/HARNESS_METRICS.md). OPTIONAL -- no ADG-side collector consumes these values; each consumer implements its own writer against contracts/harness-metrics-row.schema.json.",
+      "properties": {
+        "schemaVersion": {
+          "type": "string",
+          "description": "Row schema version this consumer's writer targets, per contracts/harness-metrics-row.schema.json."
+        },
+        "engine": {
+          "type": "string",
+          "description": "Storage engine the consumer's writer uses (e.g. jsonl, sqlite). Not prescribed by ADG core."
+        },
+        "metricsPath": {
+          "type": "string",
+          "description": "Consumer-declared location of the metrics store."
         }
       }
     }

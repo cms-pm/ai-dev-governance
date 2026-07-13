@@ -1,5 +1,5 @@
 apiVersion: ai-dev-governance/v1
-governanceVersion: v1.2.0
+governanceVersion: v1.2.1
 profile: strict-baseline
 adapters:
   - providers/claude
@@ -96,7 +96,7 @@ analyzers:
 # acceptanceIntegrity: preventive-core gate contract (ADG v1.2.0). Blocks
 # proxy-substitution, spec-mutation, self-grading, and frozen-boundary
 # evasion. See core/ACCEPTANCE_INTEGRITY.md for mechanics; no metrics/
-# feedback-loop block is declared here (out of scope for v1.2.0).
+# feedback-loop block; see harnessMetrics: below, added in v1.2.1).
 acceptanceIntegrity:
   # NOTE: the numeric values below are illustrative defaults, not values
   # derived from a measured baseline. No ADG-side gate consumes them yet
@@ -129,5 +129,13 @@ acceptanceIntegrity:
     # declared path with no matching waiver is a gate FAIL (M4).
     manifestPath: docs/governance/frozen-paths.yaml
     enforcement: fail-closed
+# harnessMetrics: illustrative declaration only (ADG v1.2.1,
+# core/HARNESS_METRICS.md). This repo does not itself emit harness-metrics
+# rows; no ADG-side collector consumes these values. Real consumers declare
+# their own schemaVersion/engine/metricsPath in their own governance.yaml.
+harnessMetrics:
+  schemaVersion: v1
+  engine: jsonl
+  metricsPath: docs/governance/harness_metrics.jsonl
 updateCadence: monthly
 compatibility: strict

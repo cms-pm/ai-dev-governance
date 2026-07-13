@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ai-dev-governance/contracts/harness-metrics-row.schema.json",
+  "title": "Harness Metrics Row",
+  "description": "Engine-agnostic per-row schema for the core/HARNESS_METRICS.md emit contract. schemaVersion is versioned independently of governanceVersion. No storage-engine commitment (JSONL, SQLite, or otherwise) is implied by this schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "family", "emittedAt", "consumerId", "status"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "v1"
+    },
+    "family": {
+      "type": "string",
+      "enum": [
+        "verdict-integrity",
+        "drift-catch",
+        "checker-effectiveness",
+        "harness-integrity",
+        "waiver-health",
+        "leverage-cost"
+      ]
+    },
+    "emittedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "consumerId": {
+      "type": "string",
+      "description": "Declaring consumer's identifier, e.g. its governance manifest project name."
+    },
+    "gateRunId": {
+      "type": ["string", "null"],
+      "description": "Correlates this row to a specific gate run, audit, board review, or waiver event, where applicable."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["measured", "absent", "deferred"],
+      "description": "MUST be 'absent' or 'deferred' rather than a fabricated zero when the family was not run or is not yet instrumented (no-silent-zero rule, core/HARNESS_METRICS.md)."
+    },
+    "value": {
+      "type": ["number", "string", "boolean", "object", "null"],
+      "description": "Family-specific measured value. MUST be null when status is not 'measured'."
+    },
+    "unit": {
+      "type": ["string", "null"]
+    },
+    "notes": {
+      "type": ["string", "null"]
+    }
+  }
+}
