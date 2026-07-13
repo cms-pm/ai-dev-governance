@@ -162,6 +162,79 @@ for k in ("selection", "composition"):
 PY
 pass "Manifest schema keys"
 
+# Real JSON Schema validation (Draft 2020-12) of the canonical manifest
+# example and every top-level fixture manifest against
+# contracts/governance-manifest.schema.json. Nested fixture manifests
+# (validation/fixtures/codegraph/**, validation/fixtures/validators/**)
+# are intentionally partial documents that exercise individual gates,
+# so they are excluded by design.
+#
+# Preflight (same pattern as the rg check above): prefer a python3 that
+# can already import jsonschema + PyYAML; otherwise fall back to a
+# uv-provisioned ephemeral environment (uv is already relied on by
+# scripts/bootstrap_project.sh); fail loudly if neither is available.
+if python3 -c "import jsonschema, yaml" >/dev/null 2>&1; then
+  schema_validation_python() { python3 "$@"; }
+elif command -v uv >/dev/null 2>&1; then
+  schema_validation_python() {
+    uv run --quiet --no-project --with jsonschema --with pyyaml python "$@"
+  }
+else
+  fail "validate_governance.sh requires a JSON Schema validator: install the python3 packages 'jsonschema' and 'pyyaml' (e.g. python3 -m pip install jsonschema pyyaml), or install 'uv' (https://docs.astral.sh/uv/) so an ephemeral validator environment can be provisioned"
+fi
+
+schema_validation_python - <<'PY' || fail "Manifest JSON Schema validation failed (violations listed above)"
+import json
+import sys
+from pathlib import Path
+
+import jsonschema
+import yaml
+
+SCHEMA_PATH = Path("contracts/governance-manifest.schema.json")
+
+
+class ManifestLoader(yaml.SafeLoader):
+    """SafeLoader minus implicit timestamp resolution.
+
+    JSON Schema validates against the JSON data model, where dates are
+    strings. PyYAML would otherwise load unquoted dates (e.g.
+    attestationDate: 2026-05-19) as datetime.date objects and fail
+    "type": "string" checks spuriously.
+    """
+
+
+ManifestLoader.yaml_implicit_resolvers = {
+    key: [(tag, regexp) for tag, regexp in resolvers
+          if tag != "tag:yaml.org,2002:timestamp"]
+    for key, resolvers in yaml.SafeLoader.yaml_implicit_resolvers.items()
+}
+
+schema = json.loads(SCHEMA_PATH.read_text())
+validator_cls = jsonschema.validators.validator_for(schema)
+validator_cls.check_schema(schema)
+validator = validator_cls(schema)
+
+targets = [Path("contracts/governance-manifest.example.yaml")]
+targets += sorted(Path("validation/fixtures").glob("*/governance.yaml"))
+
+violations = 0
+for target in targets:
+    document = yaml.load(target.read_text(), Loader=ManifestLoader)
+    for error in sorted(validator.iter_errors(document),
+                        key=lambda e: list(e.absolute_path)):
+        location = "/".join(str(p) for p in error.absolute_path) or "<root>"
+        print(f"[SCHEMA-VIOLATION] {target}: {location}: {error.message}",
+              file=sys.stderr)
+        violations += 1
+
+if violations:
+    print(f"[SCHEMA-VIOLATION] {violations} violation(s) against "
+          f"{SCHEMA_PATH} (Draft 2020-12)", file=sys.stderr)
+    raise SystemExit(1)
+PY
+pass "Manifest JSON Schema validation (example + fixtures, Draft 2020-12)"
+
 if rg -n "^graphify:" contracts validation governance.yaml >/tmp/adg_graphify_manifest_hits.txt; then
   cat /tmp/adg_graphify_manifest_hits.txt >&2
   fail "Graphify manifest blocks are not supported in ADG"
