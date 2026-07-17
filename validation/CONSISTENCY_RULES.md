@@ -20,6 +20,16 @@
 
 1. `contracts/governance-manifest.schema.json` must exist.
 2. `contracts/governance-manifest.example.yaml` must include required keys.
+   In addition, the example and every top-level fixture manifest
+   (`validation/fixtures/*/governance.yaml`) MUST validate against
+   `contracts/governance-manifest.schema.json` under JSON Schema
+   Draft 2020-12. `scripts/validate_governance.sh` enforces this with a
+   real schema-validation pass (jsonschema + PyYAML, uv fallback), so
+   schema/example/fixture drift fails loudly instead of surviving
+   releases. Nested fixture manifests under
+   `validation/fixtures/codegraph/**` and
+   `validation/fixtures/validators/**` are intentionally partial gate
+   fixtures and are excluded from this full-document pass.
 3. Strict baseline examples must declare `automation`, `boardReview.selection`, and `boardReview.composition`.
 4. Board member/composition/finding/decision/handoff schemas must exist.
 5. Strict Claude/Codex manifests must declare `tooling/rtk`.
