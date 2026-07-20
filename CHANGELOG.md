@@ -4,6 +4,21 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.3] - 2026-07-19
+
+### Removed
+- The bundled `.claude/skills/` tree (30 vendor `SKILL.md` files, −19,477
+  lines). These were unrelated third-party tooling artifacts that arrived
+  with repo scaffolding and were never referenced by `core/`, `contracts/`,
+  `adapters/`, or the runbooks. Several described competing methodology or
+  verdict machinery, so removal also eliminates text that could contradict
+  ADG core if a consumer agent ingested the tree wholesale.
+  `adapters/providers/claude/skills/` (ADG's own adapter skills) is untouched.
+
+### Notes
+- `v1.2.2` was tagged as an astaire-submodule repin only and did not receive
+  a VERSION bump or changelog entry; this release resumes the convention.
+
 ## [1.2.1] - 2026-07-12
 
 ### Scope
