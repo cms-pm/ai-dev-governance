@@ -127,3 +127,54 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.10-03 | SCN-10.10 | `docs/planning/signoffs.md` (Phase 10 row flipped to `ratified`) | Phase 10 row now dated 2026-05-23 with MTG-0006 continuity, fine-tooth review reference, and monitor-lane dispositions. | done |
 | SCN-10.10-04 | SCN-10.10 | `docs/planning/traceability.md` (SCN-10.0..SCN-10.10 all `done`) | Traceability closes SCN-10.0..SCN-10.10 after the fine-tooth review corrected stale SCN-10.0 pending rows. | done |
 | SCN-10.10-05 | SCN-10.10 | `docs/planning/phase-10-risks.md` (R-10-01 closed; R-10-02/03/04 monitor lane) | R-10-01 closed at sign-off; downstream-adoption and pilot risks remain monitor-lane items. | done |
+| SCN-11.0-01 | SCN-11.0 | `docs/planning/pool_questions/phase-11-consumer-enforcement-surface.md` | Q1..Q6 resolved; strict-baseline gate `0.0252` <= `0.10`, conf `4.50` >= `4.5`. | pending |
+| SCN-11.0-02 | SCN-11.0 | `docs/planning/chunks/phase-11-chunks.md` | Phase 11 chunk plan, SCN-11.0..11.10, two threads with dependency order. | pending |
+| SCN-11.0-03 | SCN-11.0 | `docs/planning/phase-11-risks.md` | R-11-01..07 plus carry-forward R-10-02/03/04, R-8.2-02, R-8.2-05, R-9-04, R-9-05. | pending |
+| SCN-11.0-04 | SCN-11.0 | `docs/planning/phase-11-todo.md` | Running TO-DO with hard-requirement rows marked `[hard]`. | pending |
+| SCN-11.0-05 | SCN-11.0 | `.astaire/astaire scan` + `lint` | Phase 11 artifacts registered; `query --tag phase=11` returns four documents. | pending |
+| SCN-11.0-06 | SCN-11.0 | `docs/planning/signoffs.md`, `docs/planning/traceability.md` | Phase 11 sign-off row (`pending`) and SCN-11.0..11.10 traceability rows appended. | pending |
+| SCN-11.1-01 | SCN-11.1 | `templates/ci/governance-check.yml` | Consumer CI template on disk; parses as valid YAML. | pending |
+| SCN-11.1-02 | SCN-11.1 | `templates/ci/governance-check.yml` | Mandatory job depends only on `git`/`grep`/`sed` (stock runner). | pending |
+| SCN-11.1-03 | SCN-11.1 | `templates/ci/governance-check.yml` | Checkout declares `submodules: recursive`. | pending |
+| SCN-11.1-04 | SCN-11.1 | `templates/ci/governance-check.yml` | Both opt-in tiers present, commented, each citing its `core/` doc. | pending |
+| SCN-11.1-05 | SCN-11.1 | `templates/ci/README.md` | Non-GitHub CI wiring documented. | pending |
+| SCN-11.2-01 | SCN-11.2 | `scripts/bootstrap_project.sh` | `--new` writes the CI workflow by default. | pending |
+| SCN-11.2-02 | SCN-11.2 | `scripts/bootstrap_project.sh` | `--retrofit` does not write the workflow without `--with-ci`. | pending |
+| SCN-11.2-03 | SCN-11.2 | `scripts/bootstrap_project.sh` | `--retrofit --with-ci` writes the workflow. | pending |
+| SCN-11.2-04 | SCN-11.2 | `scripts/bootstrap_project.sh` | Existing consumer workflow never overwritten. | pending |
+| SCN-11.2-05 | SCN-11.2 | `scripts/bootstrap_project.sh` | `--verify` exec path fixed; returns a real verdict. | pending |
+| SCN-11.2-06 | SCN-11.2 | `scripts/bootstrap_project.sh` | Evidence bundle reports CI wiring state. | pending |
+| SCN-11.3-01 | SCN-11.3 | `runbooks/PROJECT_BOOTSTRAP.md`, `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`, `templates/AGENTS_BOOTSTRAP_TEMPLATE.md` | No bare `scripts/validate_bootstrap.sh` invocation remains in consumer-facing docs. | pending |
+| SCN-11.3-02 | SCN-11.3 | `runbooks/PROJECT_BOOTSTRAP.md` | CI wiring section covering mandatory + opt-in tiers. | pending |
+| SCN-11.3-03 | SCN-11.3 | `.astaire/astaire scan` + `lint` | Lint 0/0 after doc corrections. | pending |
+| SCN-11.4-01 | SCN-11.4 | `.github/workflows/governance-consistency.yml` | `submodules: recursive` present on checkout. | pending |
+| SCN-11.4-02 | SCN-11.4 | `.github/workflows/governance-consistency.yml`, `scripts/validators/architecture_fitness.py` | **hard** — audit reports >=1 scanned file; `protectedPath does not exist` absent from output. | pending |
+| SCN-11.4-03 | SCN-11.4 | `.github/workflows/governance-consistency.yml` | `bootstrap-smoke` job bootstraps and validates a generated consumer. | pending |
+| SCN-11.4-04 | SCN-11.4 | `.github/workflows/governance-consistency.yml` | Generated consumer carries `.github/workflows/governance-check.yml`. | pending |
+| SCN-11.4-05 | SCN-11.4 | `.github/workflows/governance-consistency.yml` | **hard** — planted violation exits non-zero; unmodified consumer exits 0 in the same job. | pending |
+| SCN-11.5-01 | SCN-11.5 | `scripts/validate_governance.sh` | Grep-the-source assertions retired or demoted, citing SCN-11.4. | pending |
+| SCN-11.5-02 | SCN-11.5 | `scripts/validate_governance.sh` | `templates/ci/` files enforced in `required_files`. | pending |
+| SCN-11.5-03 | SCN-11.5 | `scripts/validate_governance.sh` | README-vs-`VERSION` drift check fails on drift. | pending |
+| SCN-11.5-04 | SCN-11.5 | `scripts/validate_governance.sh` | Validator exits 0 on a clean tree. | pending |
+| SCN-11.6-01 | SCN-11.6 | `scripts/build_consumer_branch.sh` | Built branch contains every allowlisted path. | pending |
+| SCN-11.6-02 | SCN-11.6 | `scripts/build_consumer_branch.sh` | **hard** — denylist prefixes absent from built branch and present on `main`. | pending |
+| SCN-11.6-03 | SCN-11.6 | `scripts/build_consumer_branch.sh` | Path manifest + prior-release diff emitted. | pending |
+| SCN-11.6-04 | SCN-11.6 | `scripts/build_consumer_branch.sh` | Refuses a dirty working tree. | pending |
+| SCN-11.6-05 | SCN-11.6 | `scripts/build_consumer_branch.sh` | Refuses to overwrite a published branch. | pending |
+| SCN-11.7-01 | SCN-11.7 | `.github/workflows/governance-consistency.yml`, `scripts/build_consumer_branch.sh` | **hard** — consumer bootstrapped from the built branch passes with a non-zero executed-check count. | pending |
+| SCN-11.7-02 | SCN-11.7 | `.github/workflows/governance-consistency.yml` | Generated consumer carries the CI workflow. | pending |
+| SCN-11.7-03 | SCN-11.7 | `.github/workflows/governance-consistency.yml` | Planted-violation check bites on the built-branch path. | pending |
+| SCN-11.7-04 | SCN-11.7 | `docs/planning/phase-11-risks.md` | R-11-01 closed or re-scored with evidence. | pending |
+| SCN-11.8-01 | SCN-11.8 | `runbooks/PUBLISH_WORKFLOW.md` | Consumer-branch build step documented. | pending |
+| SCN-11.8-02 | SCN-11.8 | `runbooks/RELEASE_PROCESS.md` | Consumer-surface evidence required at the release gate. | pending |
+| SCN-11.8-03 | SCN-11.8 | `README.md` | Forward-only note + corrected stable tag. | pending |
+| SCN-11.8-04 | SCN-11.8 | `.astaire/astaire scan` + `lint` | Lint 0/0 after runbook updates. | pending |
+| SCN-11.9-01 | SCN-11.9 | `docs/planning/phase-11-find-gaps.md` | Find-Gaps Loop record with explicit exit rationale. | pending |
+| SCN-11.9-02 | SCN-11.9 | `docs/planning/board/` | Board review packet for Phase 11. | pending |
+| SCN-11.9-03 | SCN-11.9 | `docs/planning/board/` | Opportunity register seeded with R-11-06, R-11-07. | pending |
+| SCN-11.9-04 | SCN-11.9 | `docs/planning/phase-11-find-gaps.md` | Every find-gaps answer traceable to an artifact. | pending |
+| SCN-11.10-01 | SCN-11.10 | `docs/planning/board/` | Board meeting record with decision rows. | pending |
+| SCN-11.10-02 | SCN-11.10 | `docs/planning/traceability.md` | SCN-11.0..11.10 all `done`. | pending |
+| SCN-11.10-03 | SCN-11.10 | `docs/planning/signoffs.md` | Sign-off row dated with named human approver. | pending |
+| SCN-11.10-04 | SCN-11.10 | `docs/planning/phase-11-risks.md` | Risk dispositions recorded for R-11-01..07 + carry-forward. | pending |
+| SCN-11.10-05 | SCN-11.10 | `docs/releases/v1.3.0/evidence-bundle.md` | Evidence bundle present with RTK gain/discover output. | pending |
