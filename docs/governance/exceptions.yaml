@@ -1,5 +1,101 @@
 apiVersion: ai-dev-governance/v1
 exceptions:
+  - id: EXC-0002-phase-11-gate-and-scope
+    policyRef: >-
+      core/PLANNING_METHODOLOGY.md#ambiguity-model-normalized (strict-baseline
+      confidence gate >= 4.5); core/GIT_BRANCH_STRATEGY.md#atomic-scope-guardrails
+      (one acceptance target per PR); core/PLANNING_METHODOLOGY.md#chunk-readiness-gate
+    rationale: >-
+      Two deviations are covered by this single waiver, both arising from the
+      same session. (1) Phase 11's planning gate FAILS on confidence: re-scored
+      4.33 against a strict-baseline requirement of >= 4.5. The failure is
+      structural, not remediable by further effort — Q2 and Q3 now hold rubric-5
+      legitimately after verification, but Q1/Q4/Q5/Q6 are irreducibly judgement
+      calls for which no measurement exists. Manufacturing one to reach 4.5 would
+      be core/ACCEPTANCE_INTEGRITY.md Anti-Pattern 1. (2) The R-11-08 fix
+      (commit 06b1558) landed on branch SCN-11.0, whose declared scope is
+      "authoring only; no policy or code change", without the SCN-11.1 chunk
+      ceremony — no declared acceptance IDs, no traceability closure, no
+      high-tier board trigger, no closeout recheck.
+      The fix was landed ahead of ceremony deliberately: R-11-08 is a live
+      fail-open in a validator that Thread A is about to promote to a blocking
+      consumer CI gate, and shipping that gate over an undetected silent-pass
+      would have been the worse governance outcome.
+    risk: >-
+      Medium. The waived deviations are procedural, not evidentiary. The change
+      itself carries stronger evidence than a normal SCN-11.1 closeout would
+      have produced: four test cases across two independently bootstrapped
+      consumers, with two-directional discrimination on every failing case
+      (the same command passes on the unmodified consumer in the same
+      environment). Residual risk is concentrated in the executed-check floor
+      (MIN_CHECKS), which is the least-verified element and is documented in
+      compensatingControls below.
+    compensatingControls:
+      - >-
+        Independent audit already performed on the Phase 11 planning artifacts;
+        all three of its critical claims were reproduced independently before
+        acceptance. It rejected the original gate score, which is why this
+        waiver exists rather than a false PASS.
+      - >-
+        Executed verification with negative controls, recorded at
+        docs/validation/scn-11.0/allowlist-verification.md. Not a self-declared
+        verdict: the defective build was constructed and observed to fail.
+      - >-
+        Regression bounded by inspection: COMPATIBILITY_MATRIX.md confirmed
+        present on all three published consumer branches
+        (bootstrap-v0.6.0/v1.0.0/v1.1.0), so the MATRIX-missing FAIL cannot
+        regress an existing consumer.
+      - >-
+        MIN_CHECKS floor calibrated against three legitimate healthy consumer
+        configurations (control; CG contract absent; DB absent), all emitting
+        13 and passing.
+      - >-
+        The primary fix is independent of the floor: with MIN_CHECKS=0 the
+        broken consumer still exits 1. Defeating the floor does not restore
+        the silent pass.
+      - >-
+        Forward-only release policy (pool Q6) means no published consumer
+        branch or tag is mutated while this waiver is open.
+    owner: cms-pm
+    approver: PENDING — accountable human approver required. This waiver does
+      NOT self-approve and MUST NOT be treated as active until a named human
+      records approval here. Per core/EXCEPTIONS_AND_WAIVERS.md an exception
+      "MAY not remove accountable human approval requirements", and per
+      core/AI_ASSISTED_TDR_METHODOLOGY.md LLM-only approval is prohibited.
+    createdAt: '2026-07-26'
+    expiresAt: '2026-08-09'
+    expiryRationale: >-
+      14 days, matching exceptions.reviewCadenceDays in governance.yaml.
+    closureCriteria: >-
+      Closed when EITHER (a) the board dispositions R-11-04 — ruling which gate
+      governs Phase 11 and whether >= 4.5 is the correct confidence threshold
+      for doctrinal phases — and SCN-11.1 completes with its declared acceptance
+      IDs and traceability rows; OR (b) Phase 11 is re-planned under a
+      board-ratified gate. Expiry without either outcome fails governance checks
+      per core/EXCEPTIONS_AND_WAIVERS.md.
+    residualItemsNotWaived:
+      - >-
+        R-11-09 (new, this review): validate_bootstrap.sh check 1 emits
+        `pass ".astaire/astaire present and executable"` unconditionally, after
+        its own FAILs. Exit code is correct (FAILURES increments) but the output
+        is actively misleading — a broken consumer prints a PASS line for the
+        thing that is broken. Same fail-open family as R-11-08. Not fixed here;
+        must be scheduled.
+      - >-
+        MIN_CHECKS has zero headroom (a healthy consumer emits exactly 13, the
+        floor). Any future refactor merging two checks drops the count to 12 and
+        falsely fails every consumer. The durable fix is a required-check-ID set
+        rather than a numeric floor.
+      - >-
+        MIN_CHECKS is an environment override — a value the graded party
+        controls. Acceptable only because the primary fix does not depend on it.
+      - >-
+        Audit findings C-2 through C-6 (fourth bare path at
+        PROJECT_BOOTSTRAP.md:8; predicate/antiProxy absent from the four
+        hard:true trace records; SCN-11.4-02's antiProxy entailed by its
+        predicate; chunk-readiness and board-trigger gaps) remain open and are
+        NOT waived.
+    status: proposed
   - id: astaire-sha-bridge-v0.6.0
     reason: >-
       astaire had no upstream tag capturing the submodule-removed +
