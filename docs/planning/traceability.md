@@ -178,3 +178,7 @@ per `governance.yaml` (SCN-1.1).
 | SCN-11.10-03 | SCN-11.10 | `docs/planning/signoffs.md` | Sign-off row dated with named human approver. | pending |
 | SCN-11.10-04 | SCN-11.10 | `docs/planning/phase-11-risks.md` | Risk dispositions recorded for R-11-01..07 + carry-forward. | pending |
 | SCN-11.10-05 | SCN-11.10 | `docs/releases/v1.3.0/evidence-bundle.md` | Evidence bundle present with RTK gain/discover output. | pending |
+| EXC-0002-01 | EXC-0002 | `scripts/validate_bootstrap.sh` (checks 9, 9b, executed-check floor) | R-11-08 closed: tentacle presence is fail-closed; every pin-check branch emits a verdict. Landed out of order on `SCN-11.0` under waiver EXC-0002. Commit `06b1558`. | done |
+| EXC-0002-02 | EXC-0002 | `docs/validation/scn-11.0/allowlist-verification.md` | Executed verification, 4 cases across 2 bootstrapped consumers; two-directional discrimination on every failing case. | done |
+| EXC-0002-03 | EXC-0002 | `docs/governance/exceptions.yaml` | EXC-0002 approved by named accountable human 2026-07-26; status `active`; expires 2026-08-09. | done |
+| EXC-0002-04 | EXC-0002 | `docs/planning/phase-11-risks.md` | R-11-09 and R-11-10 registered from the EXC-0002 review; explicitly not waived; carried to SCN-11.1. | done |

@@ -57,11 +57,15 @@ exceptions:
         Forward-only release policy (pool Q6) means no published consumer
         branch or tag is mutated while this waiver is open.
     owner: cms-pm
-    approver: PENDING — accountable human approver required. This waiver does
-      NOT self-approve and MUST NOT be treated as active until a named human
-      records approval here. Per core/EXCEPTIONS_AND_WAIVERS.md an exception
-      "MAY not remove accountable human approval requirements", and per
-      core/AI_ASSISTED_TDR_METHODOLOGY.md LLM-only approval is prohibited.
+    approver: cms-pm <chris@praqsys.net>
+    approvedAt: '2026-07-26'
+    approvalNote: >-
+      Approved by the named accountable human in session on 2026-07-26,
+      satisfying core/EXCEPTIONS_AND_WAIVERS.md (an exception may not remove
+      accountable human approval) and core/AI_ASSISTED_TDR_METHODOLOGY.md
+      (LLM-only approval prohibited). Approval covers the two deviations in
+      `rationale` only; it does NOT constitute Phase 11 sign-off, which
+      remains PENDING and requires board review at high tier.
     createdAt: '2026-07-26'
     expiresAt: '2026-08-09'
     expiryRationale: >-
@@ -95,7 +99,7 @@ exceptions:
         hard:true trace records; SCN-11.4-02's antiProxy entailed by its
         predicate; chunk-readiness and board-trigger gaps) remain open and are
         NOT waived.
-    status: proposed
+    status: active
   - id: astaire-sha-bridge-v0.6.0
     reason: >-
       astaire had no upstream tag capturing the submodule-removed +

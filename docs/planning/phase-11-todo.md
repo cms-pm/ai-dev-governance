@@ -31,6 +31,31 @@ in `(parens)` after each box is checked.
       registered (`query --tag phase=11` returns 4 documents; initial
       lint reported a stale-L0 cache error, cleared by regeneration).
 
+## Landed Out of Order — covered by EXC-0002
+
+Recorded here for auditability rather than hidden in the SCN-11.1 rows.
+The R-11-08 fix landed on branch `SCN-11.0`, whose declared scope is
+"authoring only; no policy or code change", ahead of SCN-11.1's ceremony.
+Rationale: R-11-08 was a live fail-open in the validator Thread A promotes
+to a **blocking** consumer CI gate; shipping that gate over an undetected
+silent-pass was the worse outcome. Waiver `EXC-0002`
+(`docs/governance/exceptions.yaml`), approved 2026-07-26, expires
+2026-08-09.
+
+- [x] R-11-08 closed — tentacle presence is now a fail-closed check
+      (`scripts/validate_bootstrap.sh` check 9); commit `06b1558`.
+- [x] Every branch of the pin check (9b) emits a verdict; no silent exit.
+- [x] Executed-check floor added (`MIN_CHECKS`, default 13).
+- [x] Verified across 4 cases on 2 bootstrapped consumers with
+      two-directional discrimination
+      (`docs/validation/scn-11.0/allowlist-verification.md`).
+- [x] Regression bounded: `COMPATIBILITY_MATRIX.md` confirmed present on
+      `consumer/bootstrap-v0.6.0`, `-v1.0.0`, `-v1.1.0`.
+- [x] EXC-0002 approved by named human; status `active`.
+- [ ] **Carried to SCN-11.1:** R-11-09 (unconditional PASS in check 1).
+- [ ] **Carried to SCN-11.1:** R-11-10 (MIN_CHECKS headroom + maker-
+      controlled override; replace with required-check-ID set).
+
 ## Thread A — Enforcement Wiring
 
 ### SCN-11.1 — Consumer CI template
