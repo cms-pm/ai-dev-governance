@@ -1,0 +1,337 @@
+---
+schema: ai-dev-governance.handoff/v1
+phase: 8.3
+handoff_target: codex
+handoff_from: claude
+handoff_date: 2026-05-18
+trunk_branch: main
+current_main_sha: 3cde77c
+landed_chunks:
+  - SCN-8.3.0
+  - SCN-8.3.2
+remaining_chunks:
+  - SCN-8.3.1
+  - SCN-8.3.3
+  - SCN-8.3.4
+  - SCN-8.3.5
+authoritative_plan: docs/planning/chunks/phase-8.3-chunks.md
+todo_tracker: docs/planning/phase-8.3-todo.md
+risk_log: docs/planning/phase-8.3-risks.md
+pool_questions: docs/planning/pool_questions/phase-8.3-bootstrap.md
+traceability: docs/planning/traceability.md
+signoffs: docs/planning/signoffs.md
+
+# Global rules every chunk MUST satisfy. Fail-closed.
+governance:
+  branch_model: "one SCN per branch named SCN-8.3.<n>, single atomic commit"
+  commit_message_pattern: "SCN-8.3.<n>: <imperative summary>"
+  session_start_required: ".astaire/astaire startup --root ."
+  artifact_read_policy: "All docs/planning/** and docs/releases/** reads go through .astaire/astaire query|context. Direct Read/Grep only for files Astaire has no projection of, or in immediate service of an Edit/Write."
+  post_edit_required:
+    - ".astaire/astaire scan --root ."
+    - ".astaire/astaire lint   # must be 0 warnings / 0 errors"
+  rtk_required: "All Bash-visible high-volume commands run as-is; the Claude Code hook rewrites them. Do NOT bypass with built-in Read/Grep/Glob for broad sweeps."
+  validator_required: "scripts/validate_governance.sh exit 0; embedded-profile [PASS] line preserved; no agency-string [PASS] lines (sweep retired in SCN-8.3.2)."
+  do_not_modify_landed_artifacts:
+    - docs/planning/chunks/phase-8.3-chunks.md
+    - docs/planning/pool_questions/phase-8.3-bootstrap.md
+    - docs/planning/phase-8.3-risks.md
+    - scripts/validators/governance_gates.py     # SCN-8.3.2 deliverable; treat as frozen
+    - validation/fixtures/validators/             # SCN-8.3.2 deliverable
+    - validation/CONSISTENCY_RULES.md §14, §15   # SCN-8.3.2 wording is final
+  no_unilateral_risk_closure: "R-8.2-05 stays open until Phase 8.1 reciprocal entry lands on main. SCN-8.3.1 only authors the closure-request packet; it does NOT close the risk."
+  out_of_scope:
+    - Agency-string CI guard (retired in SCN-8.3.2 per OPP-8.2-004 closure)
+    - Repo-level agency-string sweep or fixtures
+    - Wider language style coverage (Rust/Go/Python — Phase 9+)
+    - Closing R-8.2-05 unilaterally
+
+sequencing:
+  description: "SCN-8.3.1, 8.3.3, 8.3.4 are independent and MAY run in parallel after main is at 3cde77c. SCN-8.3.5 requires all three plus SCN-8.3.2 landed."
+  graph:
+    - from: SCN-8.3.0
+      to:   SCN-8.3.1
+    - from: SCN-8.3.0
+      to:   SCN-8.3.3
+    - from: SCN-8.3.0
+      to:   SCN-8.3.4
+    - from: SCN-8.3.1
+      to:   SCN-8.3.5
+    - from: SCN-8.3.2
+      to:   SCN-8.3.5
+    - from: SCN-8.3.3
+      to:   SCN-8.3.5
+    - from: SCN-8.3.4
+      to:   SCN-8.3.5
+
+# -----------------------------------------------------------------------------
+chunks:
+
+  - id: SCN-8.3.1
+    title: "R-8.2-05 cross-phase closure-request packet"
+    branch: SCN-8.3.1
+    scope_summary: >
+      Author docs/planning/cross-phase/r-8.2-05-closure-request.md that
+      restates the R-8.2-05 closure criterion verbatim, cites SHA 5d47359,
+      and defines the per-sprint verification hook. This chunk does NOT
+      close R-8.2-05; closure depends on Phase 8.1 landing the reciprocal
+      entry on main.
+    new_files:
+      - path: docs/planning/cross-phase/r-8.2-05-closure-request.md
+        required_frontmatter:
+          phase: "8.3"
+          stage_produced: plan
+        required_content_elements:
+          - "Verbatim citation of SHA 5d47359"
+          - "Verbatim restatement of the §Cross-Phase In-Flight Coordination clause name from core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md"
+          - "Illustrative Phase 8.1 branch list: chunk-8.1.0-* through chunk-8.1.3-*"
+          - "Closure criterion identical to R-8.2-05 row in docs/planning/phase-8.2-risks.md line 14 (both halves: reciprocal entry AND clean-analyzer-or-waiver per chunk merge)"
+          - "Verification hook: every Phase 8.3 sprint critique re-reads docs/planning/phase-8.1-risks.md on main"
+          - "Explicit statement that Phase 8.3 cannot unilaterally close R-8.2-05"
+    modified_files: []
+    todo_rows_to_tick: docs/planning/phase-8.3-todo.md  "## SCN-8.3.1" section (5 boxes)
+    acceptance_ids:
+      - id: SCN-8.3.1-01
+        check: "File docs/planning/cross-phase/r-8.2-05-closure-request.md exists with required frontmatter and required content elements."
+      - id: SCN-8.3.1-02
+        check: "After .astaire/astaire scan --root ., document is registered. Type SHOULD be cross-phase-request; if that type is not supported by the ai_dev_governance plugin yet, accept the closest available type and note it in the commit body."
+    verification_commands:
+      - "test -f docs/planning/cross-phase/r-8.2-05-closure-request.md"
+      - "grep -F '5d47359' docs/planning/cross-phase/r-8.2-05-closure-request.md"
+      - "grep -F 'Cross-Phase In-Flight Coordination' docs/planning/cross-phase/r-8.2-05-closure-request.md"
+      - ".astaire/astaire scan --root ."
+      - ".astaire/astaire lint"
+      - "scripts/validate_governance.sh"
+
+  - id: SCN-8.3.3
+    title: "Astaire upstream enhancement bundle + pin bump"
+    branch: SCN-8.3.3
+    scope_summary: >
+      Land three independent upstream enhancements as one coordinated
+      commit in the astaire/ submodule, then bump the submodule pin in
+      this repo. Phase 8.2 §Follow-ups items 3-5 close on merge.
+    coordinated_commit_structure:
+      step_1_submodule:
+        cwd: astaire/
+        commit_message: "feat: phase tag fractional support + evaluations/profiles path-to-type entries"
+        changes:
+          - target: astaire/src/collections/ai_dev_governance.py
+            edit: |
+              Update _extract_phase_chunk_tags() to capture fractional
+              phase tags. Current behavior at lines 270-272 truncates
+              "phase-8.3-foo" to "phase=8". Replace the
+              `r"phase-(\d+)"` regex with `r"phase-(\d+(?:\.\d+)?)"` and
+              store the full match (e.g. "8.3") as the tag value. Apply
+              the same change to the SCN-X.Y branch at lines 280-283 so
+              SCN-8.3-prefixed filenames preserve the "8.3" phase tag
+              alongside the existing chunk tag. Phase tag values remain
+              strings; no integer parsing.
+          - target: astaire/src/collections/ai_dev_governance.py
+            edit: |
+              Add a SCAN_RULES entry mapping `docs/planning/evaluations/`
+              to doc_type `evaluation` with default tags
+              `{stage_produced: plan}`. Keep alphabetical / grouped
+              ordering consistent with the existing rules table.
+          - target: astaire/src/collections/governance_authoring.py
+            edit: |
+              Add a path_to_type entry mapping `adapters/profiles/` to
+              doc_type `adapter-profile`. Mirror the existing
+              `adapters/providers/` → `adapter-spec` entry shape at
+              line 55 (policy_area metadata key set to `profile`).
+        submodule_tests_required:
+          - "cd astaire && ./.astaire/uv run pytest -x"
+          - "Tag-extraction test: a fixture filename phase-8.3-foo.md must produce tags.phase == '8.3' (not '8')."
+      step_2_pin_bump:
+        cwd: <repo root>
+        action: |
+          git -C astaire rev-parse HEAD captured as <NEW_SHA>; in the
+          outer repo `git add astaire` and verify `git submodule status`
+          shows the new SHA. Do not edit .gitmodules (url/path
+          unchanged).
+        verification:
+          - "git submodule status | grep astaire | awk '{print $1}' equals <NEW_SHA prefixed with space>"
+          - ".astaire/astaire startup --root .  # must succeed on the bumped SHA"
+      step_3_rescan_with_new_plugin:
+        action: ".astaire/astaire scan --root ."
+        verifications:
+          - ".astaire/astaire query --tag phase=8.3 --json  # MUST return at least the four Phase 8.3 planning docs distinct from phase=8"
+          - ".astaire/astaire query -t evaluation --json   # MUST include docs/planning/evaluations/p10-and-cockpitvm-style-eval.md"
+          - ".astaire/astaire query -t adapter-profile --json  # MUST include all three of adapters/profiles/{CockpitVM_Embedded_Style.md,EMBEDDED_PROFILE.md,STRICT_BASELINE.md}"
+    new_files: []
+    modified_files:
+      - astaire/src/collections/ai_dev_governance.py
+      - astaire/src/collections/governance_authoring.py
+      - "<repo>/astaire (submodule pointer)"
+    todo_rows_to_tick: docs/planning/phase-8.3-todo.md  "## SCN-8.3.3" section (8 boxes)
+    follow_ups_to_close:
+      file: docs/planning/phase-8.2-todo.md
+      section: "§Follow-ups items 3, 4, 5"
+      action: "Mark each closed with cross-link to SCN-8.3.3"
+    acceptance_ids:
+      - id: SCN-8.3.3-01
+        check: "Submodule HEAD contains all three enhancements in one commit."
+      - id: SCN-8.3.3-02
+        check: "Outer-repo commit advances astaire submodule pointer to that SHA."
+      - id: SCN-8.3.3-03
+        check: "Post-bump astaire scan registers p10-and-cockpitvm-style-eval.md as evaluation AND the three profile files as adapter-profile."
+      - id: SCN-8.3.3-04
+        check: ".astaire/astaire query --tag phase=8.3 returns Phase 8.3 docs distinct from phase=8."
+    verification_commands:
+      - "cd astaire && ./.astaire/uv run pytest -x && cd .."
+      - "git submodule status"
+      - ".astaire/astaire scan --root ."
+      - ".astaire/astaire query --tag phase=8.3 --json | python3 -c 'import sys,json; assert len(json.load(sys.stdin)) >= 4'"
+      - ".astaire/astaire query -t evaluation --json"
+      - ".astaire/astaire query -t adapter-profile --json"
+      - ".astaire/astaire lint"
+      - "scripts/validate_governance.sh"
+    risks_to_monitor:
+      - R-8.3-02
+
+  - id: SCN-8.3.4
+    title: "Analyzer-capability declaration schema"
+    branch: SCN-8.3.4
+    scope_summary: >
+      Extend the governance manifest schema with an analyzerDeclaration
+      object carrying legacyString | structured (exactly one). Add §16 to
+      consistency rules, update the example manifest, and add positive +
+      negative fixtures.
+    new_files:
+      - path: validation/fixtures/analyzer-capability/positive-structured.yaml
+        purpose: "Valid manifest using analyzerDeclaration.structured with all four capabilitiesDetected booleans set to true."
+      - path: validation/fixtures/analyzer-capability/positive-legacy.yaml
+        purpose: "Valid manifest using analyzerDeclaration.legacyString only."
+      - path: validation/fixtures/analyzer-capability/negative-both-fields.yaml
+        purpose: "Invalid: legacyString and structured both populated. MUST be rejected."
+      - path: validation/fixtures/analyzer-capability/negative-false-capability.yaml
+        purpose: "Invalid: structured present but one of the four booleans is false. MUST be rejected."
+      - path: validation/fixtures/analyzer-capability/run.sh
+        purpose: "Driver script that asserts positive fixtures pass and negative fixtures are rejected with explicit error messages naming the offending field/capability."
+    modified_files:
+      - path: contracts/governance-manifest.schema.json
+        edit: |
+          Add an `analyzerDeclaration` property with oneOf:
+            - { required: [legacyString], properties: { legacyString: {type: string} } }
+            - { required: [structured], properties: {
+                structured: {
+                  type: object,
+                  required: [analyzer, version, capabilitiesDetected, selfAttestedBy, attestationDate],
+                  properties: {
+                    analyzer: {type: string},
+                    version: {type: string},
+                    capabilitiesDetected: {
+                      type: object,
+                      required: [recursion, unboundedLoops, dynamicAllocationPostInit, uncheckedReturnValues],
+                      additionalProperties: false,
+                      properties: {
+                        recursion: {type: boolean, const: true},
+                        unboundedLoops: {type: boolean, const: true},
+                        dynamicAllocationPostInit: {type: boolean, const: true},
+                        uncheckedReturnValues: {type: boolean, const: true}
+                      }
+                    },
+                    selfAttestedBy: {type: string},
+                    attestationDate: {type: string, format: date}
+                  }
+                }
+              } }
+          Reject manifests where both legacyString and structured are present (enforced by oneOf + explicit §16 rule).
+      - path: contracts/governance-manifest.example.yaml
+        edit: "Add a worked analyzerDeclaration.structured example next to the existing example block. Keep prior content untouched."
+      - path: validation/CONSISTENCY_RULES.md
+        edit: |
+          Append §16 — Analyzer Capability Declaration:
+            * exactly-one-of (legacyString XOR structured)
+            * when structured present, all four capabilitiesDetected booleans MUST be true
+            * cross-link to R-8.2-02 (closure waits on first downstream consumer adoption)
+      - path: scripts/validators/governance_gates.py
+        edit: "Wire validation of §16 into the per-manifest verdict. Reuse the existing schema-load path; surface errors with field-named messages."
+    todo_rows_to_tick: docs/planning/phase-8.3-todo.md  "## SCN-8.3.4" section (5 boxes)
+    acceptance_ids:
+      - id: SCN-8.3.4-01
+        check: "Schema delta lands; loads without error."
+      - id: SCN-8.3.4-02
+        check: "Consistency rule §16 present; validator enforces it."
+      - id: SCN-8.3.4-03
+        check: "bash validation/fixtures/analyzer-capability/run.sh exits 0; negatives produce explicit field-named errors."
+      - id: SCN-8.3.4-04
+        check: "Example manifest under structured validates; pre-existing manifests under legacyString continue to validate."
+    verification_commands:
+      - "scripts/validate_governance.sh"
+      - "bash validation/fixtures/analyzer-capability/run.sh"
+      - "python -m scripts.validators.governance_gates --manifest contracts/governance-manifest.example.yaml"
+      - ".astaire/astaire scan --root ."
+      - ".astaire/astaire lint"
+    risks_to_monitor:
+      - R-8.3-03
+      - R-8.2-02   # closure still waits on first downstream consumer adoption
+
+  - id: SCN-8.3.5
+    title: "Phase 8.3 board review packet + sign-off"
+    branch: SCN-8.3.5
+    preconditions:
+      - "SCN-8.3.1, SCN-8.3.2, SCN-8.3.3, SCN-8.3.4 all merged to main"
+      - "Astaire lint 0/0"
+      - "scripts/validate_governance.sh exit 0"
+    scope_summary: >
+      Mirror the SCN-8.2.5 shape. Produce the review packet + meeting
+      record, flip the signoffs row, close the SCN-8.3.5 traceability
+      row, tick TO-DO, and record R-8.2-05 disposition (closed if Phase
+      8.1 reciprocal landed; otherwise carry-forward to Phase 8.4).
+    reference_artifacts:
+      - "docs/planning/board/committee-review-packet-<DATE>-scn-8-2-5.md  # template-of-record"
+      - "docs/planning/board/committee-virtual-meeting-scn-8-2-5-phase-signoff-<DATE>.md  # meeting shape"
+      - "Discover exact filenames via: .astaire/astaire query -c ai-dev-governance --fts 'scn-8-2-5'"
+    new_files:
+      - path: docs/planning/board/committee-review-packet-<DATE>-scn-8-3-5.md
+        notes: "<DATE> is the actual review date in YYYY-MM-DD. Accountability Review cadence; chair continuity with MTG-0003."
+      - path: docs/planning/board/committee-virtual-meeting-scn-8-3-5-phase-signoff-<DATE>.md
+        notes: "Decisions recorded; ambiguity score and confidence cited from pool-question doc."
+    modified_files:
+      - path: docs/planning/signoffs.md
+        edit: "Flip Phase 8.3 row from pending → dated with score 0.0341, conf 4.00, decision adopted."
+      - path: docs/planning/traceability.md
+        edit: "Close SCN-8.3.5-01 row."
+      - path: docs/planning/phase-8.3-todo.md
+        edit: "Tick SCN-8.3.5 section (6 boxes including R-8.2-05 disposition and R-8.3-01..04 disposition)."
+      - path: docs/planning/phase-8.3-risks.md
+        edit: |
+          Record disposition for R-8.3-01..04. For R-8.2-05 carry-forward
+          row in the §Carried-forward section: if Phase 8.1 reciprocal
+          entry on main exists (verify by reading docs/planning/phase-8.1-risks.md
+          via .astaire/astaire query), mark closed and cite the Phase 8.1
+          risk ID; otherwise flip to "carry-forward to Phase 8.4 monitor lane".
+    acceptance_ids:
+      - id: SCN-8.3.5-01
+        check: "Packet + meeting + signoffs row + traceability + TO-DO closure all present; board adoption recorded; 0 open critical findings; Astaire lint 0/0; validator full pass."
+    verification_commands:
+      - "scripts/validate_governance.sh"
+      - ".astaire/astaire scan --root ."
+      - ".astaire/astaire lint"
+      - ".astaire/astaire query -t signoff --fts 'Phase 8.3'"
+      - "grep -E '^\\| Phase 8.3 ' docs/planning/signoffs.md  # row must be dated, not pending"
+
+# -----------------------------------------------------------------------------
+# Smoke test Codex should run before opening any PR.
+preflight_per_chunk:
+  - ".astaire/astaire startup --root ."
+  - "git status   # clean working tree on branch SCN-8.3.<n>"
+  - "<chunk-specific verification_commands above>"
+  - "git add <changed files explicitly; do NOT use git add -A>"
+  - "git diff --cached   # last-look review"
+  - "git commit -m 'SCN-8.3.<n>: <summary>'"
+  - ".astaire/astaire scan --root .  # picks up post-commit hook drift if any"
+  - ".astaire/astaire lint   # 0/0"
+
+# Pointers Codex may need but should reach via Astaire first.
+references:
+  planning_methodology: core/PLANNING_METHODOLOGY.md
+  autonomous_delivery: core/AUTONOMOUS_DELIVERY_GOVERNANCE.md
+  board_review_methodology: core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md
+  git_branch_strategy: core/GIT_BRANCH_STRATEGY.md
+  evidence_contract: core/EVIDENCE_CONTRACT.md
+  exceptions_and_waivers: core/EXCEPTIONS_AND_WAIVERS.md
+  cross_phase_coordination_anchor:
+    file: core/CODE_IMPLEMENTATION_COMPLEXITY_GOVERNANCE.md
+    sha: "5d47359"
+    clause: "§Cross-Phase In-Flight Coordination"

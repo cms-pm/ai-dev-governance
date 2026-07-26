@@ -211,19 +211,60 @@ choose to upgrade.
 
 ## Ambiguity Gate
 
+**Superseded scoring (2026-07-25).** The original gate claimed
+`0.0252` / `4.50` — a PASS exactly at the confidence threshold. Independent
+audit rejected it: three confidence-5 ratings (Q3, Q4, Q6) did not meet the
+rubric's `5: verified by measurement/test/data`, and Q3's stated measurement
+(".claude/ referenced by zero governance artifacts") was **false** —
+`runbooks/PUBLISH_WORKFLOW.md:12` and
+`runbooks/SUBMODULE_CONSUMER_RUNBOOK.md:174` both reference it. Correcting
+only those three yields `4.00`. The scoring below is the re-score after the
+verification work described in
+`docs/validation/scn-11.0/allowlist-verification.md`.
+
+### Re-scored (2026-07-26, post-verification)
+
+| Q | P | U | M | I | `P·U·M·I` | Conf | Basis |
+|---|---|---|---|---|---|---|---|
+| Q1 | 0.20 | 0.5 | 0.5 | 4 | 0.200 | 4 | 11 chunks / 5 high-tier; over-scope risk priced in. Reasoned. |
+| Q2 | 0.20 | 0.5 | 0.8 | 5 | 0.400 | **5** | Verified by test, both directions. `P` held at 0.20, not reduced — verification proved the oracle cannot certify completeness (R-11-08). |
+| Q3 | 0.05 | 0.5 | 0.3 | 3 | 0.023 | **5** | Reference count re-measured correctly; strip executed and consumer built without `.claude/` passes. |
+| Q4 | 0.05 | 0.5 | 0.4 | 3 | 0.030 | 4 | Tier lookup verified; the *classification* judgement is reasoned, not measured. |
+| Q5 | 0.15 | 0.5 | 0.6 | 4 | 0.180 | 4 | Retrofit ergonomics remain unverified. |
+| Q6 | 0.05 | 0.0 | 0.5 | 4 | 0.000 | 4 | Compelled by two core policies — rubric-4 wording verbatim. |
+
 ```
-score = sum(P * U * M * I) / sum(I)
-      = (0.10 + 0.30 + 0.00 + 0.06 + 0.12 + 0.00) / (4 + 5 + 3 + 3 + 4 + 4)
-      = 0.58 / 23
-      = 0.0252
+score = 0.8325 / 23 = 0.0362
+confidence = (4 + 5 + 5 + 4 + 4 + 4) / 6 = 4.33
 ```
 
 | Metric | Value | Strict-baseline gate | Verdict |
 |---|---|---|---|
-| Ambiguity score | `0.0252` | `<= 0.10` | PASS |
-| Confidence average | `4.50` | `>= 4.5` | PASS (at threshold) |
+| Ambiguity score | `0.0362` | `<= 0.10` | PASS |
+| Confidence average | `4.33` | `>= 4.5` | **FAIL** |
 
-Confidence average: `(4 + 4 + 5 + 5 + 4 + 5) / 6 = 4.50`.
+**The gate does not pass, and cannot be made to pass by further
+verification of this question set.** Reaching `4.5` requires three of six
+questions at rubric-5. Q2 and Q3 now hold it legitimately. Q1 (phase
+scope), Q4 (risk-tier classification), Q5 (CLI ergonomics), and Q6
+(release-history policy) are irreducibly judgement calls: no measurement
+exists that would verify them without inventing one, which would be
+Goodharting the rubric — the precise move `core/ACCEPTANCE_INTEGRITY.md`
+§Anti-Patterns item 1 prohibits.
+
+This is a **gate-design finding**, not merely a Phase 11 finding: the
+strict-baseline confidence gate of `>= 4.5` appears unreachable for any
+predominantly doctrinal or packaging phase, as distinct from an empirical
+one. It is escalated to the board alongside R-11-04 and is the reason
+Phase 11 cannot self-certify past planning. Related: `core/GATE_DESIGN.md`
+§tiered checks and the first-class `PARTIAL` verdict, which is the shape
+this gate arguably needs.
+
+**Ambiguity-model observation.** With `sum(I) = 23` and `U` capped at 0.5
+for any genuinely uncertain question, no single defective resolution can
+fail this phase on ambiguity — Q2 scored at `P = 0.50` still yields only
+`0.0623`. Confidence is the sole load-bearing constraint at this phase
+size. Escalated with R-11-04.
 
 **Gate selection note.** This phase is scored against the **strict-baseline**
 gate (`<= 0.10` / `>= 4.5`) because `governance.yaml` declares

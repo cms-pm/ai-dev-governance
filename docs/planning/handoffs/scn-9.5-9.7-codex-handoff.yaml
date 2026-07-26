@@ -1,0 +1,152 @@
+---
+schema: ai-dev-governance.handoff/v1
+phase: 9
+handoff_target: codex
+handoff_from: claude
+handoff_date: 2026-05-20
+trunk_branch: main
+current_head_branch: SCN-9.4
+current_head_sha: 7aea350
+landed_chunks:
+  - SCN-9.0
+  - SCN-9.1
+  - SCN-9.2
+  - SCN-9.3
+  - SCN-9.4
+remaining_chunks:
+  - SCN-9.5
+  - SCN-9.6
+  - SCN-9.7
+
+# Authoritative sources — read these via Astaire, do not duplicate here.
+authoritative_plan: docs/planning/chunks/phase-9-chunks.md
+todo_tracker: docs/planning/phase-9-todo.md          # per-SCN acceptance boxes; tick on merge
+risk_log: docs/planning/phase-9-risks.md             # R-9-01..05 + R-8.2 carry-forwards
+pool_questions: docs/planning/pool_questions/phase-9-tdr-hardening.md
+traceability: docs/planning/traceability.md
+signoffs: docs/planning/signoffs.md
+
+# Bootstrap — every Codex session MUST do this first.
+bootstrap:
+  - cmd: ".astaire/astaire startup --root ."
+    purpose: "init → scan → sync → status; populates L0 cache"
+  - cmd: ".astaire/astaire context --tag phase=9 --budget 6000"
+    purpose: "load chunk plan, risks, TO-DO, pool questions for Phase 9"
+  - cmd: ".astaire/astaire query -t chunk-plan --tag phase=9"
+    purpose: "confirm SCN-9.5/9.6/9.7 acceptance criteria from authoritative_plan"
+
+# Global rules. Fail-closed; identical discipline to SCN-8.3.* handoff.
+governance:
+  branch_model: "one SCN per branch named SCN-9.<n>, single atomic commit"
+  commit_message_pattern: "SCN-9.<n>: <imperative summary>"
+  artifact_read_policy: "All docs/planning/** and docs/releases/** reads go through .astaire/astaire query|context. Direct Read/Grep only for files Astaire has no projection of, or in immediate service of an Edit/Write."
+  post_edit_required:
+    - ".astaire/astaire scan --root ."
+    - ".astaire/astaire lint   # must be 0 warnings / 0 errors"
+  validator_required: "scripts/validate_governance.sh exit 0 at every intermediate commit."
+  rtk_required: "Bash-visible high-volume commands run as-is so the Claude Code hook compresses them. Don't bypass with built-in tools for broad sweeps."
+  do_not_modify_landed_artifacts:
+    - docs/planning/chunks/phase-9-chunks.md
+    - docs/planning/pool_questions/phase-9-tdr-hardening.md
+    - docs/planning/phase-9-risks.md
+    - core/MODULARITY_GOVERNANCE.md                  # SCN-9.1 normative
+    - core/DOMAIN_LANGUAGE_GOVERNANCE.md             # SCN-9.1 normative
+    - core/MUTATION_EVIDENCE.md                      # SCN-9.1 advisory-marked; flip lives in SCN-9.7 only
+    - contracts/governance-manifest.schema.json      # SCN-9.2 frozen at v1; new blocks stay OPTIONAL
+    - validation/CONSISTENCY_RULES.md §17,§18,§19    # SCN-9.2 wording is final
+    - scripts/validators/{mutation_threshold,glossary_coverage,architecture_fitness}.py  # SCN-9.2 frozen
+    - validation/architecture-fitness.yaml           # SCN-9.4 ruleset
+    - astaire/src/domain/claims/                     # SCN-9.4 hexagonal pilot; further refactor is Phase 10
+    - adapters/providers/claude/skills/              # SCN-9.3 frozen
+  no_unilateral_threshold_flip: >
+    core/MUTATION_EVIDENCE.md stays advisory and §17 stays WARN until SCN-9.7
+    board adoption (DEC-0005). SCN-9.5 only proposes thresholds; it does NOT
+    flip them. SCN-9.6 does not flip them either.
+  out_of_scope:
+    - Full-repo hexagonal refactor of astaire/ ingest/FTS/CLI (Phase 10)
+    - Codex adapter parity for the nine Claude skills (Phase 10)
+    - R-8.2-05 closure (Phase 8.1 reciprocal entry pending)
+    - Wider language style coverage (Rust/Go) — Phase 10+
+    - Any change to core/MUTATION_EVIDENCE.md tier table before SCN-9.7 sign-off
+
+sequencing:
+  description: >
+    Strict sequential: SCN-9.5 → SCN-9.6 → SCN-9.7. SCN-9.6 templates depend
+    on the SCN-9.5 mutation/Farley/characterisation evidence shape. SCN-9.7
+    board review ratifies thresholds derived from SCN-9.5 baseline numbers.
+  graph:
+    - from: SCN-9.4
+      to:   SCN-9.5
+    - from: SCN-9.5
+      to:   SCN-9.6
+    - from: SCN-9.5
+      to:   SCN-9.7
+    - from: SCN-9.6
+      to:   SCN-9.7
+
+# -----------------------------------------------------------------------------
+# Per-chunk pointers. Full acceptance lives in todo_tracker; only finish
+# direction + non-obvious constraints are restated here.
+chunks:
+
+  - id: SCN-9.5
+    title: "Self-application Part B — mutation + Farley + characterisation"
+    branch: SCN-9.5
+    target: "astaire/ claims/projection core refactored in SCN-9.4"
+    acceptance_source: "docs/planning/phase-9-todo.md §SCN-9.5"
+    finish_direction:
+      - "Configure Cosmic Ray at astaire/cosmic-ray.toml against the I/O-free domain in astaire/src/domain/claims/; run full pass."
+      - "Configure mutmut for the inner-loop; document trigger in adapters/providers/claude/skills/mutation-testing/SKILL.md (additive, no normative additions)."
+      - "Produce docs/evidence/mutation/astaire-claims-projection-<ISO_DATE>.md (registers as mutation-report via SCN-9.2 path-to-type entry)."
+      - "Produce docs/evidence/farley/astaire-pytest-<ISO_DATE>.md scoring the existing pytest suite against the 8-property rubric in BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md."
+      - "Author characterisation suite under astaire/tests/ marked @pytest.mark.characterisation; document at docs/evidence/seam-maps/astaire-characterisation-suite.md."
+      - "Author docs/planning/board/threshold-ratification-proposal-scn-9-7.md citing baseline numbers; recommend adopt-as-proposed / revise / defer per Q3."
+      - "Wire mutation_threshold.py in WARN mode inside validate_governance.sh (advisory per R-9-02). MUST NOT fail-close."
+    evidence_paths:
+      - docs/evidence/mutation/
+      - docs/evidence/farley/
+      - docs/evidence/seam-maps/
+      - docs/planning/board/threshold-ratification-proposal-scn-9-7.md
+    risk_links: [R-9-01, R-9-02]
+    non_obvious:
+      - "Sparse-survivor or unkillable-mutant cases must be triaged in the report (survivor analysis); equivalent-mutant exceptions follow core/MUTATION_EVIDENCE.md."
+      - "If baseline numbers are unattainable for the pilot scope, the proposal MUST recommend revision or deferral — do not silently lower core/ thresholds."
+
+  - id: SCN-9.6
+    title: "Runbooks + templates + consumer migration note"
+    branch: SCN-9.6
+    acceptance_source: "docs/planning/phase-9-todo.md §SCN-9.6"
+    finish_direction:
+      - "Author runbooks/MUTATION_TESTING.md, runbooks/GLOSSARY_AUTHORING.md, runbooks/TEST_DESIGN_REVIEW.md — operational only; cite core/ for normative rules."
+      - "Author templates/MIGRATION_PHASE_9.md plus stub blocks for analyzers.{mutation,domainGlossary,architectureFitness} and a stub docs/glossary/<context>.md."
+      - "Update README.md §Governance Principles with cross-references to the three new runbooks."
+      - "Dry-run migration note against this repo's governance.yaml; validate_governance.sh MUST exit 0."
+    risk_links: [R-9-04, R-9-05]
+    non_obvious:
+      - "Templates document tier-vs-presence semantics from CONSISTENCY_RULES.md §17–§19; new blocks remain OPTIONAL at schema v1."
+      - "Runbooks MUST NOT introduce new MUST/SHOULD/MAY — they execute existing core policy (R-9-03 pattern, applied to adapter→runbook layer)."
+
+  - id: SCN-9.7
+    title: "Phase 9 board review + sign-off (ratifies thresholds via DEC-0005)"
+    branch: SCN-9.7
+    acceptance_source: "docs/planning/phase-9-todo.md §SCN-9.7"
+    finish_direction:
+      - "Author docs/planning/board/committee-review-packet-<ISO_DATE>-scn-9-7.md (Accountability Review; chair continuity with MTG-0004); reference threshold-ratification-proposal-scn-9-7.md as DEC-0005 candidate."
+      - "Author docs/planning/board/committee-virtual-meeting-scn-9-7-phase-signoff-<ISO_DATE>.md recording DEC-0005 outcome (adopt-as-proposed / revise / defer)."
+      - "On ADOPT: strip advisory marker from core/MUTATION_EVIDENCE.md (lines :13, :15, :45, :151 per SCN-9.1 evidence) and flip the tier table to normative — same commit."
+      - "On ADOPT: flip validation/CONSISTENCY_RULES.md §17 from WARN to fail-close at ratified tiers; validate_governance.sh exit 0 with §17 active against this repo."
+      - "Stamp docs/planning/signoffs.md Phase 9 row; close SCN-9.7-01 in docs/planning/traceability.md."
+      - "Record dispositions for R-9-01..05; record R-8.2-05 disposition (closed iff Phase 8.1 reciprocal landed on main; else carry-forward to Phase 10)."
+    risk_links: [R-9-01, R-9-02, R-9-03, R-9-04, R-9-05, R-8.2-05]
+    non_obvious:
+      - "DEC-0005 outcome may be REVISE or DEFER. In those branches, the advisory marker stays and §17 stays WARN; do NOT flip. Phase 9 still signs off."
+      - "Sign-off rollback pattern is per core/PLANNING_METHODOLOGY.md §Sign-off and Auditability — single revert covers signoff row + traceability flip + TO-DO ticks + advisory marker re-introduction + §17 fail-close revert."
+
+# -----------------------------------------------------------------------------
+# Deferred past Phase 9 (do NOT pull into 9.x scope).
+follow_ups:
+  - "Phase 10 — full-repo hexagonal refactor of astaire/ (ingest, FTS, CLI), gated by SCN-9.5 characterisation suite."
+  - "Phase 10 — Codex adapter parity for the nine Claude skills."
+  - "R-9-04 final closure on first downstream consumer adoption of each new manifest block."
+  - "R-8.2-05 final closure if not landed by Phase 9 sign-off."
+  - "Wider language style coverage (Rust, Go) — Phase 10+."
