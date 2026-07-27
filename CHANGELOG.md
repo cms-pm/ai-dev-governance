@@ -6,6 +6,25 @@ All notable changes to this governance repository are documented in this file.
 
 ## [1.2.3] - 2026-07-19
 
+### Changed
+- Bumped the bundled Astaire submodule from `00b4c9f` (v1.2.2's pin) to
+  `v0.6.2` (`505a63b`). Astaire changes carried by this bump, none of which
+  alter existing ADG call sites:
+  - Phase 9 hexagonal pilot (`src/domain/claims/`, `src/adapters/sqlite/`) and
+    a mutation baseline harness — both unwired pilots, no existing call site
+    is routed through them.
+  - Collection path-to-type entries for Phase 9 evidence and provider-skill
+    paths, plus fractional `phase` tag support (`9.2`, `9.4`), so those
+    artifacts register with the correct doc-type instead of the default.
+  - `lint` no longer reports a false `l0_staleness` error on every run.
+  - README and guide updates for the optional claims module and current CLI
+    surface.
+
+  This also retires the last consumer-visible trace of Astaire's `v0.5.0` tag,
+  which was cut on a branch that never merged to Astaire's `main`. Every ADG
+  release from `v1.0.0` through `v1.1.5` pinned that off-mainline commit;
+  `v0.6.2` is tagged on `main`.
+
 ### Removed
 - The bundled `.claude/skills/` tree (30 vendor `SKILL.md` files, −19,477
   lines). These were unrelated third-party tooling artifacts that arrived
@@ -14,6 +33,25 @@ All notable changes to this governance repository are documented in this file.
   verdict machinery, so removal also eliminates text that could contradict
   ADG core if a consumer agent ingested the tree wholesale.
   `adapters/providers/claude/skills/` (ADG's own adapter skills) is untouched.
+
+### Upgrade steps
+- **Run `astaire startup` (or `astaire init`) once after taking this pin,
+  before any `scan`/`sync`/`register`.** Astaire v0.6.0 widened `document_fts`
+  with a `body` column for opt-in content indexing. The schema ships as
+  `CREATE VIRTUAL TABLE IF NOT EXISTS`, so an existing database keeps its
+  older three-column table; the rebuild is performed by
+  `migrate_document_fts_body_column()`, which runs from `init_db()` and
+  therefore only on `init`/`startup`. Skipping this step leaves `scan` failing
+  with `sqlite3.OperationalError: no such column: body`. Reproduced and
+  verified against a real pre-upgrade database.
+
+### Known findings
+- `astaire lint` against this repository now reports `tag_vocabulary_drift`
+  warnings (zero errors). These are new advisory signal from the lint added in
+  Astaire v0.6.0, not a regression: `stage_produced` is absent from
+  `exception-registry` documents while covering other doc-types in the
+  `ai-dev-governance` collection. Non-blocking under
+  `runbooks/RELEASE_PROCESS.md`; worth reconciling before the next minor.
 
 ### Notes
 - `v1.2.2` was tagged as an astaire-submodule repin only and did not receive
