@@ -4,6 +4,30 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Bumped the bundled Astaire submodule from `v0.5.0` (`ed16f6d`) to `v0.6.2`
+  (`505a63b`). This is the first pin bump since `v1.0.0` and closes a
+  side-history pin: `v0.5.0` was tagged on a feature branch that never merged
+  to Astaire's `main`, so every release from `v1.0.0` through `v1.1.5` shipped
+  against a commit outside Astaire's mainline. `v0.6.2` is tagged on `main`.
+
+  Astaire changes carried by this bump, none of which alter existing call
+  sites:
+  - Opt-in document content indexing for `--fts`, with zero-result
+    diagnostics, tag-value prefix matching, tag-vocabulary lint, and
+    query-operation logging.
+  - The claim/entity/relationship/contradiction subsystem is now an optional
+    module; `astaire doctor` reports its install state and `astaire init
+    --with-claims` enables it.
+  - Phase 9 hexagonal pilot (`src/domain/claims/`, `src/adapters/sqlite/`) and
+    the mutation baseline harness, both unwired pilots.
+  - Collection path-to-type entries for Phase 9 evidence and provider-skill
+    paths, plus fractional `phase` tag support.
+  - `lint` no longer reports a false `l0_staleness` error on every run.
+
+  Consumers on the optional claims subsystem should note it is no longer
+  installed by default on a fresh `init`.
+
 ## [1.2.1] - 2026-07-12
 
 ### Scope
