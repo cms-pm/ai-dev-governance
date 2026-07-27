@@ -4,6 +4,8 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.2.2] - 2026-07-26
+
 ### Changed
 - Bumped the bundled Astaire submodule from `v0.5.0` (`ed16f6d`) to `v0.6.2`
   (`505a63b`). This is the first pin bump since `v1.0.0` and closes a
@@ -27,6 +29,25 @@ All notable changes to this governance repository are documented in this file.
 
   Consumers on the optional claims subsystem should note it is no longer
   installed by default on a fresh `init`.
+
+### Upgrade steps
+- **Run `astaire startup` (or `astaire init`) once after taking this pin,
+  before any `scan`/`sync`/`register`.** Astaire v0.6.0 widened `document_fts`
+  with a `body` column for opt-in content indexing. The schema ships as
+  `CREATE VIRTUAL TABLE IF NOT EXISTS`, so an existing database keeps its
+  older three-column table; the rebuild is performed by
+  `migrate_document_fts_body_column()`, which runs from `init_db()` and
+  therefore only on `init`/`startup`. Skipping this step leaves `scan` failing
+  with `sqlite3.OperationalError: no such column: body`. Verified against this
+  repository's own database while cutting this release.
+
+### Known findings
+- The v1.2.2 health report carries 93 `tag_vocabulary_drift` warnings and zero
+  errors. These are new advisory signal from the tag-vocabulary lint added in
+  Astaire v0.6.0, not a regression: `stage_produced` is absent from
+  `exception-registry` documents while covering other doc-types in the
+  `ai-dev-governance` collection. Non-blocking under
+  `runbooks/RELEASE_PROCESS.md`; worth reconciling before the next minor.
 
 ## [1.2.1] - 2026-07-12
 
