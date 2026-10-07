@@ -23,3 +23,12 @@ __pycache__/
 raw/**/*.pdf
 raw/**/*.docx
 raw/
+
+# Personal agent tooling (not part of ADG; keep local)
+.claude/agents/
+.claude/commands/
+.claude/helpers/
+.claude/settings.local.json
+.claude-flow/
+.swarm/
+.mcp.json

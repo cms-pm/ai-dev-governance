@@ -1,0 +1,17 @@
+# Language statistics: ADG is mostly written doctrine, so count Markdown.
+*.md linguist-detectable=true
+validation/fixtures/** linguist-vendored
+
+# Release archives (GitHub "Source code" zip/tarball, `git archive`) ship the
+# framework only. ADG's own governance record stays in the repository and in
+# git history; consumers use submodules, which are unaffected.
+docs/planning/** export-ignore
+docs/validation/** export-ignore
+docs/evidence/** export-ignore
+docs/governance/** export-ignore
+docs/glossary/** export-ignore
+artifacts/** export-ignore
+.astaire/** export-ignore
+.codegraph/** export-ignore
+.rtk/** export-ignore
+.claude/** export-ignore
