@@ -19,31 +19,31 @@ Linked to: `docs/planning/chunks/phase-12-chunks.md`,
 - [x] No unpushed commits in ADG or Astaire checkouts
 
 ## SCN-12.2 — Licence + community files
-- [ ] MIT `LICENSE` + relicensing note
-- [ ] `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`
+- [x] MIT `LICENSE` + relicensing note
+- [x] `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`
 
 ## SCN-12.3 — Phase 11 fix salvage
-- [ ] R-11-08 cherry-pick
-- [ ] R-11-09 fix
-- [ ] v1.2.1 evidence bundle
-- [ ] Planted-violation evidence
+- [x] R-11-08 cherry-pick
+- [x] R-11-09 fix
+- [x] v1.2.1 evidence bundle
+- [x] Planted-violation evidence
 
 ## SCN-12.4 — Release-record hygiene
-- [ ] Matrix rows v0.7.1, v1.2.0, v1.2.1, v1.2.2
-- [ ] CHANGELOG `[1.2.2]`
-- [ ] GitHub Release v1.2.1
-- [ ] Close #3 with evidence; triage #1
+- [x] Matrix rows v0.7.1, v1.2.0, v1.2.1, v1.2.2
+- [x] CHANGELOG `[1.2.2]`
+- [x] GitHub Release v1.2.1 (also v1.1.0, v1.1.1; tag `v1.1.1` was local-only and is now pushed)
+- [x] Close #3 with evidence; triage #1
 
 ## SCN-12.5 — Astaire test-card forward-port (cms-pm/astaire)
-- [ ] Port PR merged
-- [ ] v0.6.3 released; v0.6.2 Release back-filled; topics
+- [x] Port PR merged (cms-pm/astaire#32)
+- [x] v0.6.3 released; v0.6.2 Release back-filled; topics
 
 ## SCN-12.6 — Docs + README + metadata
-- [ ] Test-card guidance ported
-- [ ] README positioning; `AGENTS.md`; topics
+- [x] Test-card guidance ported
+- [x] README positioning; `AGENTS.md`; topics
 
-## SCN-12.7 — Release v1.2.4 + sign-off
-- [ ] Repin Astaire v0.6.3; version bumps incl. `governance.yaml`
-- [ ] Release evidence; tag; GitHub Release
-- [ ] Book citation report; rename follow-on issue
+## SCN-12.7 — Release v1.3.0 + sign-off
+- [x] Repin Astaire v0.6.3; version bumps incl. `governance.yaml`
+- [ ] Release evidence; tag; GitHub Release (evidence in `docs/releases/v1.3.0/`; tag after merge)
+- [x] Book citation report (`docs/validation/scn-12.7/book-citations.md`); rename follow-on issue #41
 - [ ] Human sign-off

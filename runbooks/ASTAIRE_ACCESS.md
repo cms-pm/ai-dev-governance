@@ -75,7 +75,7 @@ Flags shared across subcommands: `--db <path>` (the wrapper sets this),
 
 Consumer repos that keep governed test definitions as markdown under
 `tests/cards/` get them registered as `test-card` documents (Astaire
-v0.6.3+, bundled from ADG v1.2.4). Scalar frontmatter `id` and `paradigm`
+v0.6.3+, bundled from ADG v1.3.0). Scalar frontmatter `id` and `paradigm`
 become tags, and `id` becomes the document's external ID. Generated
 snapshots under any `_golden/` directory are skipped.
 
