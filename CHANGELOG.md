@@ -55,7 +55,16 @@ All notable changes to this governance repository are documented in this file.
 
 ### Notes
 - `v1.2.2` was tagged as an astaire-submodule repin only and did not receive
-  a VERSION bump or changelog entry; this release resumes the convention.
+  a VERSION bump at the time; its entry below was added retroactively.
+
+## [1.2.2] - 2026-07-17
+
+### Changed
+- Repinned the bundled Astaire submodule from `ed16f6d` (v0.5.0) to
+  `00b4c9f`, an untagged commit on Astaire's `main` carrying opt-in
+  content indexing for `--fts` with zero-result diagnostics, and the
+  optional claim/entity/relationship/contradiction module. No ADG doctrine,
+  contract, or validator change; `VERSION` was not bumped for this tag.
 
 ## [1.2.1] - 2026-07-12
 
