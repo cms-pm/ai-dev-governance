@@ -8,32 +8,46 @@ cd "$CONSUMER_ROOT"
 
 GOVERNANCE_MOUNT="${GOVERNANCE_MOUNT:-.governance/ai-dev-governance}"
 
-fail() { echo "[FAIL] $1" >&2; FAILURES=$((FAILURES + 1)); }
-pass() { echo "[PASS] $1"; }
-warn() { echo "[WARN] $1"; }
+fail() { echo "[FAIL] $1" >&2; FAILURES=$((FAILURES + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); }
+pass() { echo "[PASS] $1"; CHECKS_RUN=$((CHECKS_RUN + 1)); }
+warn() { echo "[WARN] $1"; CHECKS_RUN=$((CHECKS_RUN + 1)); }
+# Emit PASS only if no fail() fired since the check began (R-11-09): a
+# check that failed must never also print a PASS line for the same artifact.
+pass_unless_failed() { if (( FAILURES == $1 )); then pass "$2"; fi; }
 
 FAILURES=0
+CHECKS_RUN=0
+# Executed-check floor (R-11-08). Every check below MUST emit exactly one
+# pass/fail/warn. A total under this floor means a branch went silent, which
+# is the failure mode that let a consumer with no Astaire tentacle certify
+# green. Calibrated against a healthy consumer: 13 parent-emitted checks
+# (nested validator output is counted by the child, not here). Overridable
+# for configurations that legitimately emit fewer.
+MIN_CHECKS="${MIN_CHECKS:-13}"
 
 # ── 1. Astaire wrapper ──────────────────────────────────────────────────────
+F0=$FAILURES
 [[ -f ".astaire/astaire" ]] || fail ".astaire/astaire does not exist"
 [[ -x ".astaire/astaire" ]] || fail ".astaire/astaire is not executable"
-pass ".astaire/astaire present and executable"
+pass_unless_failed "$F0" ".astaire/astaire present and executable"
 
 # ── 2. Database gitignored ──────────────────────────────────────────────────
 if [[ -f ".gitignore" ]]; then
+  F0=$FAILURES
   grep -qF ".astaire/memory_palace.db" .gitignore \
     || fail ".astaire/memory_palace.db not in .gitignore"
-  pass ".astaire/memory_palace.db gitignored"
+  pass_unless_failed "$F0" ".astaire/memory_palace.db gitignored"
 else
   fail ".gitignore not found"
 fi
 
 # ── 3. Governance manifest ──────────────────────────────────────────────────
+F0=$FAILURES
 [[ -f "governance.yaml" ]] || fail "governance.yaml not found"
 for key in apiVersion governanceVersion profile adapters evidence automation boardReview; do
   grep -q "^${key}:" governance.yaml || fail "governance.yaml missing key: ${key}"
 done
-pass "governance.yaml present with required keys"
+pass_unless_failed "$F0" "governance.yaml present with required keys"
 
 if [[ -f "governance.yaml" && -f "$GOVERNANCE_MOUNT/VERSION" ]]; then
   MANIFEST_VERSION="$(sed -nE 's/^governanceVersion:[[:space:]]*([^[:space:]]+).*/\1/p' governance.yaml | head -1)"
@@ -65,6 +79,7 @@ done
 if [[ -z "$BOOTSTRAP_FILE" ]]; then
   fail "Neither AGENTS.md nor CLAUDE.md found"
 else
+  F0=$FAILURES
   grep -q "ai-dev-governance:bootstrap:start" "$BOOTSTRAP_FILE" \
     || fail "$BOOTSTRAP_FILE missing bootstrap start marker"
   grep -q "ai-dev-governance:bootstrap:end" "$BOOTSTRAP_FILE" \
@@ -73,19 +88,21 @@ else
     || fail "$BOOTSTRAP_FILE does not reference .astaire/astaire"
   grep -q "port-of-first-resort" "$BOOTSTRAP_FILE" \
     || fail "$BOOTSTRAP_FILE missing port-of-first-resort clause"
-  pass "$BOOTSTRAP_FILE contains bootstrap block with Astaire surface"
+  pass_unless_failed "$F0" "$BOOTSTRAP_FILE contains bootstrap block with Astaire surface"
 fi
 
 # ── 5. Directory structure ──────────────────────────────────────────────────
+F0=$FAILURES
 for d in docs/planning docs/releases docs/governance; do
   [[ -d "$d" ]] || fail "Missing directory: $d"
 done
-pass "Required directory structure present"
+pass_unless_failed "$F0" "Required directory structure present"
 
 # ── 6. Governance submodule ─────────────────────────────────────────────────
 if [[ -d "$GOVERNANCE_MOUNT" ]]; then
+  F0=$FAILURES
   [[ -f "$GOVERNANCE_MOUNT/VERSION" ]] || fail "$GOVERNANCE_MOUNT/VERSION not found (submodule uninitialized?)"
-  pass "Governance submodule initialized at $GOVERNANCE_MOUNT"
+  pass_unless_failed "$F0" "Governance submodule initialized at $GOVERNANCE_MOUNT"
 else
   fail "Governance submodule not found at $GOVERNANCE_MOUNT"
 fi
@@ -138,16 +155,40 @@ else
   warn ".astaire/memory_palace.db not found — run: .astaire/astaire startup --root ."
 fi
 
-# ── 9. Tentacle pin verification ─────────────────────────────────────────────
+# ── 9. Astaire tentacle presence (fail-closed) ──────────────────────────────
+# The .astaire/astaire wrapper runs `uv sync --project $GOVERNANCE_MOUNT/astaire`.
+# Without a populated tentacle there is no Astaire at all, so presence is a
+# hard requirement in its own right — not merely a precondition for the
+# optional pin check below. Testing pyproject.toml rather than the git dir
+# affirms the submodule is *populated*: an initialized-but-empty checkout
+# satisfies `git rev-parse` and still cannot run. See R-11-08.
+ASTAIRE_DIR="$GOVERNANCE_MOUNT/astaire"
+if [[ -f "$ASTAIRE_DIR/pyproject.toml" ]]; then
+  pass "Astaire tentacle present and populated at $ASTAIRE_DIR"
+  ASTAIRE_PRESENT=true
+else
+  fail "Astaire tentacle missing or uninitialized at $ASTAIRE_DIR — the .astaire/astaire wrapper cannot run. Fix: git submodule update --init --recursive"
+  ASTAIRE_PRESENT=false
+fi
+
+# ── 9b. Tentacle pin verification ───────────────────────────────────────────
+# Every branch emits a verdict. No path may leave this block silently — that
+# is what R-11-08 was.
 MATRIX="$GOVERNANCE_MOUNT/runbooks/COMPATIBILITY_MATRIX.md"
-if [[ -f "$MATRIX" ]]; then
-  # Extract expected astaire SHA from matrix (tag + parenthesized SHA, or bare SHA).
+if [[ "$ASTAIRE_PRESENT" != true ]]; then
+  warn "Astaire pin check skipped — tentacle absent (see failure above)"
+elif [[ ! -f "$MATRIX" ]]; then
+  fail "COMPATIBILITY_MATRIX.md missing at $MATRIX — cannot verify tentacle pin; the governance surface is incomplete"
+else
   EXPECTED_ASTAIRE_SHA="$(sed -nE 's/.*`astaire` @ `[^`]+` \(`?([a-f0-9]{7,40})`?\).*/\1/p; s/.*`astaire` @ `([a-f0-9]{7,40})`.*/\1/p' "$MATRIX" | head -1 || true)"
-  if [[ -n "$EXPECTED_ASTAIRE_SHA" ]] && \
-     git -C "$GOVERNANCE_MOUNT/astaire" rev-parse --git-dir >/dev/null 2>&1; then
-    ACTUAL_SHA="$(git -C "$GOVERNANCE_MOUNT/astaire" rev-parse --short HEAD 2>/dev/null || true)"
-    if [[ "${ACTUAL_SHA}" == "${EXPECTED_ASTAIRE_SHA}"* ]] || \
-       [[ "${EXPECTED_ASTAIRE_SHA}" == "${ACTUAL_SHA}"* ]]; then
+  if [[ -z "$EXPECTED_ASTAIRE_SHA" ]]; then
+    warn "Could not parse an expected astaire SHA from $MATRIX — pin unverified"
+  else
+    ACTUAL_SHA="$(git -C "$ASTAIRE_DIR" rev-parse --short HEAD 2>/dev/null || true)"
+    if [[ -z "$ACTUAL_SHA" ]]; then
+      fail "Astaire tentacle at $ASTAIRE_DIR is not a git checkout — cannot verify pin"
+    elif [[ "${ACTUAL_SHA}" == "${EXPECTED_ASTAIRE_SHA}"* ]] || \
+         [[ "${EXPECTED_ASTAIRE_SHA}" == "${ACTUAL_SHA}"* ]]; then
       pass "Astaire submodule pinned to expected SHA ($ACTUAL_SHA)"
     else
       warn "Astaire pin mismatch: matrix expects $EXPECTED_ASTAIRE_SHA, got $ACTUAL_SHA"
@@ -169,8 +210,13 @@ fi
 
 # ── Summary ──────────────────────────────────────────────────────────────────
 echo ""
+if (( CHECKS_RUN < MIN_CHECKS )); then
+  echo "[FAIL] only $CHECKS_RUN checks executed, expected >= $MIN_CHECKS — a check branch went silent (R-11-08)" >&2
+  FAILURES=$((FAILURES + 1))
+fi
+
 if [[ $FAILURES -eq 0 ]]; then
-  echo "Bootstrap validation passed."
+  echo "Bootstrap validation passed ($CHECKS_RUN checks executed)."
 else
   echo "$FAILURES check(s) failed." >&2
   exit 1
