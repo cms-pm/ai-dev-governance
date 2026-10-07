@@ -254,3 +254,11 @@ Consuming repositories MAY also maintain an optional local overlay at `docs/gove
 - `consumer/bootstrap-*` branches are the human-readable bootstrap surfaces
   cut per bootstrap line (most recent: `consumer/bootstrap-v1.1.0`);
   consumers pin release tags for stable consumption
+
+## License
+
+MIT — see `LICENSE`. Every earlier tag of this repository, including those
+published with an "Internal Use Only" notice, is also available under MIT.
+The bundled Astaire submodule is licensed separately (Apache-2.0).
+
+To cite a specific release, use `CITATION.cff`.

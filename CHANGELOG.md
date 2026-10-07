@@ -4,6 +4,15 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Relicensed under the MIT License. The previous `LICENSE` carried an
+  "Internal Use Only" notice; every earlier tag is also available under
+  MIT.
+- `CODEOWNERS` now names the actual maintainer instead of a placeholder team.
+
+### Added
+- `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`.
+
 ## [1.2.3] - 2026-07-19
 
 ### Changed

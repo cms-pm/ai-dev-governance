@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you reference this framework, please cite it as below."
+title: "ai-dev-governance"
+abstract: >-
+  A versioned governance framework for AI-assisted software delivery:
+  planning methodology, evidence contracts, acceptance-integrity rules,
+  provider adapters, and validators, with an embedded-systems profile.
+type: software
+authors:
+  - family-names: Slothouber
+    given-names: Chris
+repository-code: "https://github.com/cms-pm/ai-dev-governance"
+license: MIT
+version: "1.2.3"
+date-released: "2026-07-19"
