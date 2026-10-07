@@ -62,6 +62,25 @@ Flags shared across subcommands: `--db <path>` (the wrapper sets this),
   (note: hyphens inside FTS terms are fragile — prefer phrases or
   unhyphenated forms).
 - **"Assemble context for work in phase N."** → `context --tag phase=<n> --budget <n>`.
+- **"Which test cards exist?"** → `query -t test-card`, filtered with
+  `--tag paradigm=<value>` (for example `hil`, `sil-qemu`).
+- **"How do I run a governed test?"** → query the card first:
+  `query -t test-card --tag id=<card-id>`, then `context --tag id=<card-id>
+  --budget 3000` for the full card. If the card declares an
+  `agent_invocation` frontmatter mapping (`discover`, `run`,
+  `evidence_dir_template`), use that signpost rather than reconstructing
+  the command from other artifacts.
+
+## Test Cards
+
+Consumer repos that keep governed test definitions as markdown under
+`tests/cards/` get them registered as `test-card` documents (Astaire
+v0.6.3+, bundled from ADG v1.2.4). Scalar frontmatter `id` and `paradigm`
+become tags, and `id` becomes the document's external ID. Generated
+snapshots under any `_golden/` directory are skipped.
+
+Project-specific commands belong in the consumer's card (its
+`agent_invocation` mapping), never in this shared governance submodule.
 
 ## FTS Caveat
 
