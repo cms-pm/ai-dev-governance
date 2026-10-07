@@ -11,6 +11,9 @@ GOVERNANCE_MOUNT="${GOVERNANCE_MOUNT:-.governance/ai-dev-governance}"
 fail() { echo "[FAIL] $1" >&2; FAILURES=$((FAILURES + 1)); CHECKS_RUN=$((CHECKS_RUN + 1)); }
 pass() { echo "[PASS] $1"; CHECKS_RUN=$((CHECKS_RUN + 1)); }
 warn() { echo "[WARN] $1"; CHECKS_RUN=$((CHECKS_RUN + 1)); }
+# Emit PASS only if no fail() fired since the check began (R-11-09): a
+# check that failed must never also print a PASS line for the same artifact.
+pass_unless_failed() { if (( FAILURES == $1 )); then pass "$2"; fi; }
 
 FAILURES=0
 CHECKS_RUN=0
@@ -23,25 +26,28 @@ CHECKS_RUN=0
 MIN_CHECKS="${MIN_CHECKS:-13}"
 
 # ── 1. Astaire wrapper ──────────────────────────────────────────────────────
+F0=$FAILURES
 [[ -f ".astaire/astaire" ]] || fail ".astaire/astaire does not exist"
 [[ -x ".astaire/astaire" ]] || fail ".astaire/astaire is not executable"
-pass ".astaire/astaire present and executable"
+pass_unless_failed "$F0" ".astaire/astaire present and executable"
 
 # ── 2. Database gitignored ──────────────────────────────────────────────────
 if [[ -f ".gitignore" ]]; then
+  F0=$FAILURES
   grep -qF ".astaire/memory_palace.db" .gitignore \
     || fail ".astaire/memory_palace.db not in .gitignore"
-  pass ".astaire/memory_palace.db gitignored"
+  pass_unless_failed "$F0" ".astaire/memory_palace.db gitignored"
 else
   fail ".gitignore not found"
 fi
 
 # ── 3. Governance manifest ──────────────────────────────────────────────────
+F0=$FAILURES
 [[ -f "governance.yaml" ]] || fail "governance.yaml not found"
 for key in apiVersion governanceVersion profile adapters evidence automation boardReview; do
   grep -q "^${key}:" governance.yaml || fail "governance.yaml missing key: ${key}"
 done
-pass "governance.yaml present with required keys"
+pass_unless_failed "$F0" "governance.yaml present with required keys"
 
 if [[ -f "governance.yaml" && -f "$GOVERNANCE_MOUNT/VERSION" ]]; then
   MANIFEST_VERSION="$(sed -nE 's/^governanceVersion:[[:space:]]*([^[:space:]]+).*/\1/p' governance.yaml | head -1)"
@@ -73,6 +79,7 @@ done
 if [[ -z "$BOOTSTRAP_FILE" ]]; then
   fail "Neither AGENTS.md nor CLAUDE.md found"
 else
+  F0=$FAILURES
   grep -q "ai-dev-governance:bootstrap:start" "$BOOTSTRAP_FILE" \
     || fail "$BOOTSTRAP_FILE missing bootstrap start marker"
   grep -q "ai-dev-governance:bootstrap:end" "$BOOTSTRAP_FILE" \
@@ -81,19 +88,21 @@ else
     || fail "$BOOTSTRAP_FILE does not reference .astaire/astaire"
   grep -q "port-of-first-resort" "$BOOTSTRAP_FILE" \
     || fail "$BOOTSTRAP_FILE missing port-of-first-resort clause"
-  pass "$BOOTSTRAP_FILE contains bootstrap block with Astaire surface"
+  pass_unless_failed "$F0" "$BOOTSTRAP_FILE contains bootstrap block with Astaire surface"
 fi
 
 # ── 5. Directory structure ──────────────────────────────────────────────────
+F0=$FAILURES
 for d in docs/planning docs/releases docs/governance; do
   [[ -d "$d" ]] || fail "Missing directory: $d"
 done
-pass "Required directory structure present"
+pass_unless_failed "$F0" "Required directory structure present"
 
 # ── 6. Governance submodule ─────────────────────────────────────────────────
 if [[ -d "$GOVERNANCE_MOUNT" ]]; then
+  F0=$FAILURES
   [[ -f "$GOVERNANCE_MOUNT/VERSION" ]] || fail "$GOVERNANCE_MOUNT/VERSION not found (submodule uninitialized?)"
-  pass "Governance submodule initialized at $GOVERNANCE_MOUNT"
+  pass_unless_failed "$F0" "Governance submodule initialized at $GOVERNANCE_MOUNT"
 else
   fail "Governance submodule not found at $GOVERNANCE_MOUNT"
 fi

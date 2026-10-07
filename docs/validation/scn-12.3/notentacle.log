@@ -1,0 +1,21 @@
+[PASS] .astaire/astaire present and executable
+[PASS] .astaire/memory_palace.db gitignored
+[PASS] governance.yaml present with required keys
+[PASS] governanceVersion matches installed ADG (v1.2.3)
+[PASS] CLAUDE.md contains bootstrap block with Astaire surface
+[PASS] Required directory structure present
+[PASS] Governance submodule initialized at .governance/ai-dev-governance
+[PASS] CodeGraph consumer contract visible at docs/governance/codegraph-contract.md
+[PASS] CodeGraph not declared; CG wiring validation not required
+[PASS] .astaire/memory_palace.db exists (Astaire initialized)
+[FAIL] Astaire tentacle missing or uninitialized at .governance/ai-dev-governance/astaire — the .astaire/astaire wrapper cannot run. Fix: git submodule update --init --recursive
+[WARN] Astaire pin check skipped — tentacle absent (see failure above)
+[PASS] .astaire/astaire wrapper is executable
+[PASS] CLAUDE.md contains Astaire CLI snippet (Claude)
+[PASS] .gitignore excludes memory_palace.db
+
+All Astaire wiring checks passed.
+[PASS] Astaire wiring validated (provider-aware)
+
+1 check(s) failed.
+exit=1
