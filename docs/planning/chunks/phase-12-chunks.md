@@ -99,7 +99,7 @@ ADG consumes them only via a submodule repin.
   (topics set).
 - **Risk tier.** Low.
 
-## SCN-12.7 — Release v1.2.4 + book cross-check + sign-off
+## SCN-12.7 — Release v1.3.0 + book cross-check + sign-off
 
 - **Scope.** Repin `astaire` to v0.6.3; bump `VERSION`, example manifest,
   fixtures, and the repo's own `governance.yaml` (currently v1.2.1);

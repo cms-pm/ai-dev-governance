@@ -25,8 +25,8 @@ consumer-enforcement scope, book manuscript edits.
 
 ## Resolved Questions
 
-Q1–Q6 were resolved by the accountable human (cms-pm) on 2026-10-07.
-Q7–Q8 are agent-proposed and are confirmed or overturned at sign-off.
+Q1–Q7 were resolved by the accountable human (cms-pm) on 2026-10-07.
+Q8 is agent-proposed and is confirmed or overturned at sign-off.
 
 ### Q1 — Licence
 
@@ -63,11 +63,11 @@ evaluation tracked as a post-launch issue.
 
 **Resolution: deferred** to a separate follow-on after this phase.
 
-### Q7 — Release number (agent-proposed)
+### Q7 — Release number
 
-**Proposal: v1.2.4.** The archived Phase 11 plan reserves `v1.3.0` for its
-consumer-branch work; ADG's v1.2.x line already carries additive changes
-as patches (v1.2.1 `harnessMetrics`).
+Agent proposal was `v1.2.4` (the archived Phase 11 plan reserves `v1.3.0`).
+**Resolution: v1.3.0** (human, 2026-10-07). The Phase 11 archive's version
+targets are adjusted when that phase resumes.
 
 ### Q8 — Vendor-named GitHub topic (agent-proposed)
 
@@ -80,9 +80,10 @@ remain documented as adapters.
 Scored against the declared `strict-baseline` gate (≤ `0.10` / ≥ `4.5`),
 per R-11-04's disposition that new phases do not inherit the looser gate.
 
-- **Ambiguity score:** `0.0500` ≤ `0.10` (gate-PASS). 0/8 unresolved; a
-  `0.05` penalty for the two agent-proposed resolutions (Q7, Q8) pending
-  human confirmation.
+- **Ambiguity score:** `0.0500` ≤ `0.10` (gate-PASS) at bootstrap: 0/8
+  unresolved, with a `0.05` penalty for the two then-agent-proposed
+  resolutions (Q7, Q8). Q7 has since been resolved by the human; Q8 remains
+  agent-proposed.
 - **Confidence:** `4.5` ≥ `4.5` (gate-PASS, at threshold). Low technical
   novelty; the main uncertainty is Q4's forward-port onto a collection
   module that moved from v0.4.x to v0.6.2.

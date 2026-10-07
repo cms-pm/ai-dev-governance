@@ -127,33 +127,33 @@ per `governance.yaml` (SCN-1.1).
 | SCN-10.10-03 | SCN-10.10 | `docs/planning/signoffs.md` (Phase 10 row flipped to `ratified`) | Phase 10 row now dated 2026-05-23 with MTG-0006 continuity, fine-tooth review reference, and monitor-lane dispositions. | done |
 | SCN-10.10-04 | SCN-10.10 | `docs/planning/traceability.md` (SCN-10.0..SCN-10.10 all `done`) | Traceability closes SCN-10.0..SCN-10.10 after the fine-tooth review corrected stale SCN-10.0 pending rows. | done |
 | SCN-10.10-05 | SCN-10.10 | `docs/planning/phase-10-risks.md` (R-10-01 closed; R-10-02/03/04 monitor lane) | R-10-01 closed at sign-off; downstream-adoption and pilot risks remain monitor-lane items. | done |
-| SCN-12.0-01 | SCN-12.0 | `docs/planning/chunks/phase-12-chunks.md` | Phase 12 chunk plan | pending |
-| SCN-12.0-02 | SCN-12.0 | `docs/planning/pool_questions/phase-12-launch-readiness.md` | Pool Q1–Q8 resolved | pending |
-| SCN-12.0-03 | SCN-12.0 | `docs/planning/phase-12-risks.md` | Phase 12 risk log | pending |
-| SCN-12.0-04 | SCN-12.0 | `docs/planning/phase-12-todo.md` | Phase 12 TO-DO | pending |
-| SCN-12.0-05 | SCN-12.0 | `.astaire/memory_palace.db` | `astaire query --tag phase=12` | pending |
+| SCN-12.0-01 | SCN-12.0 | `docs/planning/chunks/phase-12-chunks.md` | Phase 12 chunk plan | complete |
+| SCN-12.0-02 | SCN-12.0 | `docs/planning/pool_questions/phase-12-launch-readiness.md` | Pool Q1–Q8 resolved | complete |
+| SCN-12.0-03 | SCN-12.0 | `docs/planning/phase-12-risks.md` | Phase 12 risk log | complete |
+| SCN-12.0-04 | SCN-12.0 | `docs/planning/phase-12-todo.md` | Phase 12 TO-DO | complete |
+| SCN-12.0-05 | SCN-12.0 | `.astaire/memory_palace.db` | `astaire query --tag phase=12` | complete |
 | SCN-12.1-01 | SCN-12.1 | remote `archive/*` refs | `docs/validation/scn-12.1/archive-refs.md` | complete |
 | SCN-12.1-02 | SCN-12.1 | local branches | `docs/validation/scn-12.1/archive-refs.md` | complete |
-| SCN-12.2-01 | SCN-12.2 | `LICENSE` | `gh repo view --json licenseInfo` | pending |
-| SCN-12.2-02 | SCN-12.2 | `CHANGELOG.md`, `README.md` | relicensing note | pending |
-| SCN-12.2-03 | SCN-12.2 | `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff` | files present | pending |
-| SCN-12.3-01 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | pending |
-| SCN-12.3-02 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | pending |
-| SCN-12.3-03 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | pending |
-| SCN-12.3-04 | SCN-12.3 | `docs/releases/v1.2.1/` | evidence bundle on `main` | pending |
-| SCN-12.4-01 | SCN-12.4 | `runbooks/COMPATIBILITY_MATRIX.md` | tag/row diff | pending |
-| SCN-12.4-02 | SCN-12.4 | `CHANGELOG.md` | tag/section/release diff | pending |
-| SCN-12.4-03 | SCN-12.4 | issue #3 | closing comment | pending |
-| SCN-12.4-04 | SCN-12.4 | issue #1 | triage comment | pending |
-| SCN-12.5-01 | SCN-12.5 | cms-pm/astaire `src/collections/ai_dev_governance.py` | Astaire PR | pending |
-| SCN-12.5-02 | SCN-12.5 | cms-pm/astaire `tests/test_collections.py` | `uv run pytest` | pending |
-| SCN-12.5-03 | SCN-12.5 | cms-pm/astaire releases | `gh release list -R cms-pm/astaire` | pending |
-| SCN-12.6-01 | SCN-12.6 | `runbooks/ASTAIRE_ACCESS.md`, `CLAUDE.md` | diff vs archive branch | pending |
-| SCN-12.6-02 | SCN-12.6 | `README.md` | first-screen review | pending |
-| SCN-12.6-03 | SCN-12.6 | `AGENTS.md` | file present | pending |
-| SCN-12.6-04 | SCN-12.6 | GitHub topics | `gh repo view --json repositoryTopics` | pending |
-| SCN-12.7-01 | SCN-12.7 | `docs/releases/v1.2.4/` | release evidence bundle | pending |
-| SCN-12.7-02 | SCN-12.7 | `governance.yaml`, `VERSION` | versions equal | pending |
-| SCN-12.7-03 | SCN-12.7 | book citation report | `docs/validation/scn-12.7/` | pending |
-| SCN-12.7-04 | SCN-12.7 | rename follow-on issue | issue link | pending |
+| SCN-12.2-01 | SCN-12.2 | `LICENSE` | `gh repo view --json licenseInfo` | complete |
+| SCN-12.2-02 | SCN-12.2 | `CHANGELOG.md`, `README.md` | relicensing note | complete |
+| SCN-12.2-03 | SCN-12.2 | `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff` | files present | complete |
+| SCN-12.3-01 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | complete |
+| SCN-12.3-02 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | complete |
+| SCN-12.3-03 | SCN-12.3 | `scripts/validate_bootstrap.sh` | `docs/validation/scn-12.3/` | complete |
+| SCN-12.3-04 | SCN-12.3 | `docs/releases/v1.2.1/` | evidence bundle on `main` | complete |
+| SCN-12.4-01 | SCN-12.4 | `runbooks/COMPATIBILITY_MATRIX.md` | tag/row diff | complete |
+| SCN-12.4-02 | SCN-12.4 | `CHANGELOG.md` | tag/section/release diff | complete |
+| SCN-12.4-03 | SCN-12.4 | issue #3 | closing comment | complete |
+| SCN-12.4-04 | SCN-12.4 | issue #1 | triage comment | complete |
+| SCN-12.5-01 | SCN-12.5 | cms-pm/astaire `src/collections/ai_dev_governance.py` | Astaire PR | complete |
+| SCN-12.5-02 | SCN-12.5 | cms-pm/astaire `tests/test_collections.py` | `uv run pytest` | complete |
+| SCN-12.5-03 | SCN-12.5 | cms-pm/astaire releases | `gh release list -R cms-pm/astaire` | complete |
+| SCN-12.6-01 | SCN-12.6 | `runbooks/ASTAIRE_ACCESS.md`, `CLAUDE.md` | diff vs archive branch | complete |
+| SCN-12.6-02 | SCN-12.6 | `README.md` | first-screen review | complete |
+| SCN-12.6-03 | SCN-12.6 | `AGENTS.md` | file present | complete |
+| SCN-12.6-04 | SCN-12.6 | GitHub topics | `gh repo view --json repositoryTopics` | complete |
+| SCN-12.7-01 | SCN-12.7 | `docs/releases/v1.3.0/` | release evidence bundle | pending |
+| SCN-12.7-02 | SCN-12.7 | `governance.yaml`, `VERSION` | versions equal | complete |
+| SCN-12.7-03 | SCN-12.7 | book citation report | `docs/validation/scn-12.7/` | complete |
+| SCN-12.7-04 | SCN-12.7 | rename follow-on issue | issue link | complete |
 | SCN-12.7-05 | SCN-12.7 | `docs/planning/signoffs.md` | human sign-off | pending |

@@ -4,14 +4,52 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.3.0] - 2026-10-07
+
+### Scope
+Launch-readiness release (Phase 12). Relicenses the repository under MIT,
+hardens the consumer bootstrap validator, completes the release record, and
+repositions the README for first-time readers. No change to `core/` doctrine
+or to the manifest schema.
+
 ### Changed
-- Relicensed under the MIT License. The previous `LICENSE` carried an
+- **Relicensed under the MIT License.** The previous `LICENSE` carried an
   "Internal Use Only" notice; every earlier tag is also available under
-  MIT.
-- `CODEOWNERS` now names the actual maintainer instead of a placeholder team.
+  MIT. `CODEOWNERS` now names the actual maintainer instead of a placeholder
+  team.
+- Bumped the bundled Astaire submodule from `v0.6.2` (`505a63b`) to `v0.6.3`
+  (`e6a7737`): adds the `test-card` doc type to the `ai-dev-governance`
+  collection (`tests/cards/`), promoting frontmatter `id`/`paradigm` to tags
+  and skipping `_golden/` snapshots. No schema migration.
+- `README.md`: plain-language pitch, badges, "Who This Is For", quickstart
+  ahead of the principles; release references are version-agnostic and point
+  to `runbooks/COMPATIBILITY_MATRIX.md`.
+- This repository's own `governance.yaml` now tracks the current release
+  (it had been left at `v1.2.1`).
+
+### Fixed
+- `scripts/validate_bootstrap.sh` no longer certifies a consumer with no
+  Astaire tentacle (R-11-08): tentacle presence fails closed, the pin check
+  emits a verdict on every path, and an executed-check floor (`MIN_CHECKS`)
+  catches silent branches.
+- `scripts/validate_bootstrap.sh` no longer prints `[PASS]` for a check that
+  also failed (R-11-09, checks 1-6). Exit codes were already correct.
 
 ### Added
+- Root `AGENTS.md` (tool-neutral bootstrap alongside `CLAUDE.md`).
 - `CONTRIBUTING.md`, `SECURITY.md`, `CITATION.cff`.
+- Test-card read patterns and the `agent_invocation` signpost in
+  `runbooks/ASTAIRE_ACCESS.md` and `templates/ASTAIRE_CLI_SNIPPET.md`.
+- Release-record back-fill: compatibility-matrix rows for v0.7.1 and
+  v1.2.0-v1.2.2, a `[1.2.2]` changelog entry, and `docs/releases/v1.2.1/`.
+
+### Upgrade steps
+- Take the new tag and run `git submodule update --init --recursive` so the
+  Astaire tentacle moves to `v0.6.3`.
+- Set `governanceVersion: v1.3.0` in your `governance.yaml`.
+- Re-run `scripts/validate_bootstrap.sh`. A consumer whose Astaire submodule
+  was never initialized now **fails** where it previously passed; fix with
+  `git submodule update --init --recursive`.
 
 ## [1.2.3] - 2026-07-19
 
