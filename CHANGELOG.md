@@ -4,6 +4,34 @@ All notable changes to this governance repository are documented in this file.
 
 ## [Unreleased]
 
+## [1.3.1] - 2026-10-07
+
+### Scope
+Repository presentation patch. No doctrine, contract, validator, or
+Astaire-pin change.
+
+### Removed
+- A vendored third-party agent-swarm toolkit (`.claude/agents/`,
+  `.claude/commands/`, `.claude/helpers/`, `.claude-flow/`, `.swarm/`,
+  `.mcp.json`; 238 files) that was never part of ADG. ADG's own Claude
+  commands and skills remain in `adapters/providers/claude/`.
+- `raw/README.md` from tracking (`raw/` is a local, gitignored corpus).
+
+### Changed
+- `.claude/settings.json` now carries only ADG's Astaire hooks (session
+  `startup`, post-commit `scan`) as a working example for Claude Code users.
+- `README.md`: a "Start here for your tool" table (Claude Code, Codex, any
+  other agent) and a section explaining that `governance.yaml`, `.astaire/`
+  and `docs/` are ADG's own governance record rather than part of what a
+  consumer adopts.
+
+### Added
+- `.gitattributes`: release archives exclude ADG's internal governance record
+  (`docs/planning`, `docs/validation`, `docs/evidence`, `docs/governance`,
+  `docs/glossary`, `artifacts/`, and tool dot-directories), while
+  `docs/releases/` is kept. Markdown counts toward language statistics.
+  Submodule consumers are unaffected.
+
 ## [1.3.0] - 2026-10-07
 
 ### Scope

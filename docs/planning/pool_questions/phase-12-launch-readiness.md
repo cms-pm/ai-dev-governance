@@ -26,7 +26,7 @@ consumer-enforcement scope, book manuscript edits.
 ## Resolved Questions
 
 Q1–Q7 were resolved by the accountable human (cms-pm) on 2026-10-07.
-Q8 is agent-proposed and is confirmed or overturned at sign-off.
+Q8 (agent-proposed) was overturned by the human on 2026-10-07.
 
 ### Q1 — Licence
 
@@ -69,11 +69,13 @@ Agent proposal was `v1.2.4` (the archived Phase 11 plan reserves `v1.3.0`).
 **Resolution: v1.3.0** (human, 2026-10-07). The Phase 11 archive's version
 targets are adjusted when that phase resumes.
 
-### Q8 — Vendor-named GitHub topic (agent-proposed)
+### Q8 — Vendor-named GitHub topic
 
-**Proposal:** drop `claude-code` from the suggested topic set. The book's
-R-TOOL-AGNOSTIC rule positions ADG as tool-agnostic; provider adapters
-remain documented as adapters.
+Agent proposal was to drop `claude-code`, citing the book's R-TOOL-AGNOSTIC
+rule. **Resolution: overturned** (human, 2026-10-07). Tool-agnostic doctrine
+coexists with per-tool signposts. Topics include `claude-code` and `codex`,
+and the README carries a "Start here for your tool" table. R-TOOL-AGNOSTIC
+governs the book manuscript, not the repository.
 
 ## Gate Score & Confidence
 

@@ -47,3 +47,10 @@ Linked to: `docs/planning/chunks/phase-12-chunks.md`,
 - [ ] Release evidence; tag; GitHub Release (evidence in `docs/releases/v1.3.0/`; tag after merge)
 - [x] Book citation report (`docs/validation/scn-12.7/book-citations.md`); rename follow-on issue #41
 - [ ] Human sign-off
+
+## SCN-12.8 — Repository presentation patch (v1.3.1)
+- [x] Third-party agent toolkit untracked; settings trimmed to Astaire hooks
+- [x] `.gitattributes` export-ignore verified with `git archive`
+- [x] README tool signposts + governance-record note; topics restored
+- [x] Badges verified (license: MIT, release: v1.3.0, CI passing)
+- [ ] v1.3.1 tag + GitHub Release

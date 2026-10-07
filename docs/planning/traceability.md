@@ -157,3 +157,7 @@ per `governance.yaml` (SCN-1.1).
 | SCN-12.7-03 | SCN-12.7 | book citation report | `docs/validation/scn-12.7/` | complete |
 | SCN-12.7-04 | SCN-12.7 | rename follow-on issue | issue link | complete |
 | SCN-12.7-05 | SCN-12.7 | `docs/planning/signoffs.md` | human sign-off | pending |
+| SCN-12.8-01 | SCN-12.8 | `.claude/`, `.gitignore` | `git ls-files` | complete |
+| SCN-12.8-02 | SCN-12.8 | `.gitattributes` | `git archive HEAD` listing | complete |
+| SCN-12.8-03 | SCN-12.8 | `README.md` badges | badge SVG titles | complete |
+| SCN-12.8-04 | SCN-12.8 | `docs/releases/v1.3.1/` | release evidence | pending |

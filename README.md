@@ -25,8 +25,16 @@ release, October 2026), uses this framework throughout.
 - **Not for** one-off scripts or prototypes where a plan, evidence, and a gate
   would cost more than the code.
 - **Not tied to one AI tool.** Doctrine in `core/` is tool-agnostic; per-tool
-  wiring lives in `adapters/providers/` (currently two providers), and new
-  adapters slot in without changing the core.
+  wiring lives in `adapters/providers/`, and new adapters slot in without
+  changing the core.
+
+### Start here for your tool
+
+| Using | Start with |
+|---|---|
+| Claude Code | `CLAUDE.md`, `adapters/providers/CLAUDE_CONTEXT_ADAPTER.md`, and the slash commands and skills in `adapters/providers/claude/` |
+| OpenAI Codex | `AGENTS.md`, `adapters/providers/CODEX_CONTEXT_ADAPTER.md`, `adapters/providers/codex/` |
+| Any other agent | `AGENTS.md`, then `templates/ASTAIRE_CLI_SNIPPET.md` for your agent's bootstrap file |
 
 ## Get Started
 
@@ -189,6 +197,15 @@ Tool versions pinned by each release are listed in
 
 Legacy flat-layout policy files remain at the repository root for
 compatibility; canonical content lives in `core/` (see `MIGRATION.md`).
+
+### ADG's own governance record
+
+This repository is governed by ADG itself. Its own manifest (`governance.yaml`),
+the `.astaire/` wrapper, and `docs/` (phase plans, board reviews, validation
+evidence, release evidence bundles) are the working record of that, not
+part of what a consumer adopts. They're kept public as evidence the method
+works on its own development. Release archives exclude them; `docs/releases/`
+is kept.
 
 Consuming repositories MAY also maintain an optional local overlay at `docs/governance/amendments/`. That overlay lives outside this repository and is intended for project-specific tightening that should not be upstreamed into the shared baseline.
 

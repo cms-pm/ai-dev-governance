@@ -112,3 +112,18 @@ ADG consumes them only via a submodule repin.
   SCN-12.7-05 (human sign-off recorded).
 - **Risk tier.** Medium. **Validation.** `scripts/validate_governance.sh`,
   `scripts/validate_astaire_wiring.sh --root .`, CI green.
+
+## SCN-12.8 — Repository presentation patch (v1.3.1)
+
+- **Scope.** Remove the vendored third-party agent toolkit from tracking.
+  Trim `.claude/settings.json` to ADG's Astaire hooks. Add a README tool
+  signpost table and a governance-record note. Add `.gitattributes`
+  (archive `export-ignore`, language stats). Restore the tool topics
+  (pool Q8 overturned). Release v1.3.1.
+- **Acceptance IDs.** SCN-12.8-01 (no `.claude/agents|commands|helpers`,
+  `.claude-flow`, `.swarm`, `.mcp.json` tracked), SCN-12.8-02
+  (`git archive HEAD` contains no internal-record files and keeps
+  `docs/releases/`), SCN-12.8-03 (badges render license MIT, latest
+  release, CI passing), SCN-12.8-04 (v1.3.1 tag, GitHub Release, evidence).
+- **Risk tier.** Low. **Validation.** `validate_governance.sh`; archive
+  listing; badge SVG titles.
