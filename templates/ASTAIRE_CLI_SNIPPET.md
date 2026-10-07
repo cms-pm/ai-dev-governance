@@ -46,6 +46,10 @@ reuses the shared `.astaire/.venv` entrypoint, and only falls back to
 Hyphens inside `--fts` queries are fragile (SQLite FTS5); prefer
 phrasal forms.
 
+**Governed tests:** query the card before invoking any bench or simulator
+command (`.astaire/astaire query -t test-card --tag id=<card-id>`). If the
+card has `agent_invocation` frontmatter, use that signpost.
+
 Full surface: see `.governance/ai-dev-governance/runbooks/ASTAIRE_ACCESS.md`
 (path depends on where the governance submodule is mounted).
 

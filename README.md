@@ -1,8 +1,83 @@
 # AI Dev Governance
 
-`ai-dev-governance` is a reusable governance baseline for AI-assisted software
-development. It is meant to be consumed from a downstream project as a
-submodule, not copied piecemeal from this repo's authoring branch.
+[![License: MIT](https://img.shields.io/github/license/cms-pm/ai-dev-governance)](LICENSE)
+[![Latest release](https://img.shields.io/github/v/release/cms-pm/ai-dev-governance)](https://github.com/cms-pm/ai-dev-governance/releases/latest)
+[![governance-consistency](https://github.com/cms-pm/ai-dev-governance/actions/workflows/governance-consistency.yml/badge.svg)](https://github.com/cms-pm/ai-dev-governance/actions/workflows/governance-consistency.yml)
+
+`ai-dev-governance` is a versioned rulebook and toolkit for building software
+with AI coding agents without lowering your engineering bar. It gives an
+existing repo a planning method, evidence and acceptance rules that agents
+can't grade themselves against, and validators that fail when a rule is
+skipped. You add it as a pinned Git submodule and bootstrap it in about five
+minutes; an opt-in embedded profile covers firmware and hardware-in-the-loop
+work.
+
+The companion guide, *AI-Assisted Embedded Development* (Chapter 1 early
+release, October 2026), uses this framework throughout.
+
+## Who This Is For
+
+- **For** teams and senior engineers who want AI agents on real codebases,
+  including safety- or reliability-minded embedded and firmware work, and need
+  every agent change to be planned, evidenced, and reviewable.
+- **For** repos that can pin a governance version and upgrade on purpose,
+  the same way they pin a compiler or an RTOS.
+- **Not for** one-off scripts or prototypes where a plan, evidence, and a gate
+  would cost more than the code.
+- **Not tied to one AI tool.** Doctrine in `core/` is tool-agnostic; per-tool
+  wiring lives in `adapters/providers/` (currently two providers), and new
+  adapters slot in without changing the core.
+
+## Get Started
+
+Bootstrap from `consumer/bootstrap-v1.1.0`, the human-readable bootstrap
+branch, and pin the [latest release tag](https://github.com/cms-pm/ai-dev-governance/releases/latest)
+for stable consumption; later releases are published as annotated tags over
+that bootstrap line. See `runbooks/COMPATIBILITY_MATRIX.md` for what each release changes
+and which tool versions it pins.
+
+```bash
+git submodule add -b consumer/bootstrap-v1.1.0 https://github.com/cms-pm/ai-dev-governance.git .governance/ai-dev-governance
+git submodule update --init --recursive
+.governance/ai-dev-governance/scripts/bootstrap_project.sh --retrofit --force
+.governance/ai-dev-governance/scripts/validate_bootstrap.sh
+```
+
+What this gives the consumer repo:
+
+- repo-local Astaire wrapper at `.astaire/astaire`
+- generated `governance.yaml`
+- an agent bootstrap block in `AGENTS.md` and/or a provider-specific file,
+  according to the providers declared in `governance.yaml`
+- visible optional-CodeGraph decision record at
+  `docs/governance/codegraph-contract.md`
+- bootstrap directories under `docs/`
+- recursive tentacle initialization for nested submodules such as Astaire
+
+For the full bootstrap decision tree (new-project vs retrofit vs manual
+submodule add), see `runbooks/PROJECT_BOOTSTRAP.md`. For submodule pinning
+guidance after bootstrap, see `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
+
+## Why Use It
+
+`ai-dev-governance` gives a consuming project a working operating system for
+AI-assisted delivery:
+
+- **Astaire-first context routing** so agents start from durable low-token
+  memory instead of raw file fan-out
+- **RTK-guided shell discipline** so broad exploration, git inspection, and
+  validation stay token-efficient
+- **Optional CodeGraph structural awareness** so planning, refactoring, and
+  bug-hunting can route through declared codebase topology when configured
+- **strict planning and evidence contracts** so changes are traceable,
+  reviewable, and releasable
+- **consumer bootstrap automation** so a new or existing repo can be wired into
+  the baseline with the provided scripts instead of a manual checklist
+
+The `v1.1.0` consumer bootstrap line was validated both locally and through a
+fresh-repo consumer bootstrap smoke test (see
+`docs/releases/v1.1.0/evidence-bundle.md`); each subsequent release carries its
+own Astaire evidence bundle under `docs/releases/<version>/`.
 
 ## Governance Principles
 
@@ -32,8 +107,8 @@ Top-level agent directives for this baseline should keep these links
 front-and-center:
 
 - `runbooks/ASTAIRE_ACCESS.md` for Astaire-first read discipline
-- `templates/ASTAIRE_CLI_SNIPPET.md` for consumer-facing `AGENTS.md` /
-  `CLAUDE.md` wiring
+- `templates/ASTAIRE_CLI_SNIPPET.md` for consumer-facing agent-bootstrap
+  wiring (`AGENTS.md` or a provider-specific equivalent)
 - `core/BOARD_REVIEW_GOVERNANCE_METHODOLOGY.md` for board critique and
   test-design review
 - `core/PLANNING_METHODOLOGY.md` for phase gating, sign-off, and
@@ -41,68 +116,6 @@ front-and-center:
 
 Phase 10 closeout artifacts should be read as evidence that this wiring
 is active end-to-end, not as a substitute for the directives themselves.
-
-## Why Use It
-
-`ai-dev-governance` gives a consuming project a working operating system for
-AI-assisted delivery:
-
-- **Astaire-first context routing** so agents start from durable low-token
-  memory instead of raw file fan-out
-- **RTK-guided shell discipline** so broad exploration, git inspection, and
-  validation stay token-efficient
-- **Optional CodeGraph structural awareness** so planning, refactoring, and
-  bug-hunting can route through declared codebase topology when configured
-- **strict planning and evidence contracts** so changes are traceable,
-  reviewable, and releasable
-- **consumer bootstrap automation** so a new or existing repo can be wired into
-  the baseline with the provided scripts instead of a manual checklist
-
-The `v1.1.0` consumer bootstrap line was validated both locally and through a
-fresh-repo consumer bootstrap smoke test (see
-`docs/releases/v1.1.0/evidence-bundle.md`); each subsequent release carries its
-own Astaire evidence bundle under `docs/releases/<version>/`.
-
-## Purpose
-
-This repository provides a strict baseline that teams can reuse across projects via Git submodule, with provider, tooling, and project-specific adapters layered on top.
-
-## Get Started
-
-Recommended consumer entrypoints for the current release:
-
-- stable tag: `v1.2.0` (latest published tag; `main` additionally carries the
-  `v1.2.1` changelog entry recorded in `VERSION`, not yet published as a tag)
-- dedicated bootstrap branch: `consumer/bootstrap-v1.1.0`
-
-Downstream consumers should use the tag for stable pins and treat the
-`consumer/bootstrap-*` branch as the human-readable bootstrap surface for its
-release line. All releases after `v1.1.0` — the `v1.1.x` patches and the
-`v1.2.x` doctrine minors — are published as annotated tags over the `v1.1.0`
-bootstrap line; no newer bootstrap branch has been cut.
-
-### New or Existing Project Bootstrap
-
-```bash
-git submodule add -b consumer/bootstrap-v1.1.0 https://github.com/cms-pm/ai-dev-governance.git .governance/ai-dev-governance
-git submodule update --init --recursive
-.governance/ai-dev-governance/scripts/bootstrap_project.sh --retrofit --force
-.governance/ai-dev-governance/scripts/validate_bootstrap.sh
-```
-
-What this gives the consumer repo:
-
-- repo-local Astaire wrapper at `.astaire/astaire`
-- generated `governance.yaml`
-- provider-appropriate bootstrap instructions in `AGENTS.md` / `CLAUDE.md`
-- visible optional-CodeGraph decision record at
-  `docs/governance/codegraph-contract.md`
-- bootstrap directories under `docs/`
-- recursive tentacle initialization for nested submodules such as Astaire
-
-For the full bootstrap decision tree (new-project vs retrofit vs manual
-submodule add), see `runbooks/PROJECT_BOOTSTRAP.md`. For submodule pinning
-guidance after bootstrap, see `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
 
 ## Integrated Stack
 
@@ -115,11 +128,8 @@ guidance after bootstrap, see `runbooks/SUBMODULE_CONSUMER_RUNBOOK.md`.
 - **CodeGraph** is the optional source-code intelligence lane for consumers
   that declare and validate a local code graph.
 
-Current published tentacle releases used by the consumer baseline:
-
-- `ai-dev-governance` — `v1.2.0` (latest published tag)
-- `astaire` — `v0.5.0` (pinned at `ed16f6d`; see
-  `runbooks/COMPATIBILITY_MATRIX.md`)
+Tool versions pinned by each release are listed in
+`runbooks/COMPATIBILITY_MATRIX.md`.
 
 ## Repository Layout
 
