@@ -12,8 +12,8 @@ skipped. You add it as a pinned Git submodule and bootstrap it in about five
 minutes; an opt-in embedded profile covers firmware and hardware-in-the-loop
 work.
 
-The companion guide, *AI-Assisted Embedded Development* (Chapter 1 early
-release, October 2026), uses this framework throughout.
+The companion guide, [*AI-Assisted Embedded Development*](https://failclosed.dev)
+(Chapter 1 early release, October 2026), uses this framework throughout.
 
 ## Who This Is For
 
